@@ -1,0 +1,281 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import useSWR from "swr";
+import Link from "next/link";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
+import { ArrowLeft, Plus, Trash2 } from "lucide-react";
+
+interface Truck {
+  id: string;
+  code: string;
+}
+
+interface Area {
+  id: string;
+  name: string;
+}
+
+interface Driver {
+  id: string;
+  name: string;
+  email: string;
+}
+
+interface StopInput {
+  name: string;
+  address: string;
+  type: string;
+  expectedVolumeKg: string;
+}
+
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
+export default function NewRoutePage() {
+  const router = useRouter();
+  const { data: trucks } = useSWR<Truck[]>("/api/trucks", fetcher);
+  const { data: areas } = useSWR<Area[]>("/api/areas", fetcher);
+  const { data: drivers } = useSWR<Driver[]>("/api/users/drivers", fetcher);
+
+  const [name, setName] = useState("");
+  const [scheduledDate, setScheduledDate] = useState("");
+  const [truckId, setTruckId] = useState("");
+  const [areaId, setAreaId] = useState("");
+  const [driverId, setDriverId] = useState("");
+  const [stops, setStops] = useState<StopInput[]>([
+    { name: "", address: "", type: "RESIDENTIAL", expectedVolumeKg: "" },
+  ]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  function addStop() {
+    setStops((s) => [
+      ...s,
+      { name: "", address: "", type: "RESIDENTIAL", expectedVolumeKg: "" },
+    ]);
+  }
+
+  function removeStop(index: number) {
+    setStops((s) => s.filter((_, i) => i !== index));
+  }
+
+  function updateStop(index: number, field: keyof StopInput, value: string) {
+    setStops((s) =>
+      s.map((stop, i) => (i === index ? { ...stop, [field]: value } : stop)),
+    );
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!name || !scheduledDate || !truckId || !areaId) {
+      toast.error("Please fill required fields");
+      return;
+    }
+    if (!trucks?.length || !areas?.length) {
+      toast.error("Trucks and areas must be set up first");
+      return;
+    }
+    setIsSubmitting(true);
+    try {
+      const res = await fetch("/api/routes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          scheduledDate,
+          truckId,
+          areaId,
+          driverId: driverId || null,
+          stops: stops
+            .filter((s) => s.name.trim() || s.address.trim())
+            .map((s, i) => ({
+              sequence: i + 1,
+              name: s.name.trim() || null,
+              address: s.address.trim() || null,
+              type: s.type,
+              expectedVolumeKg: s.expectedVolumeKg
+                ? parseInt(s.expectedVolumeKg, 10)
+                : null,
+            })),
+        }),
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        toast.error(err.message ?? "Failed to create route");
+        return;
+      }
+      const route = await res.json();
+      toast.success("Route created");
+      router.push(`/routes/${route.id}`);
+    } catch {
+      toast.error("Failed to create route");
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
+  return (
+    <div className="space-y-6">
+      <Link href="/routes">
+        <Button variant="ghost" size="sm">
+          <ArrowLeft className="mr-2 size-4" />
+          Back to routes
+        </Button>
+      </Link>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Create route</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="name">Route name *</Label>
+                <Input
+                  id="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="date">Scheduled date *</Label>
+                <Input
+                  id="date"
+                  type="date"
+                  value={scheduledDate}
+                  onChange={(e) => setScheduledDate(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="truck">Truck *</Label>
+                <select
+                  id="truck"
+                  className="h-9 w-full rounded-md border border-input bg-transparent px-3 text-sm"
+                  value={truckId}
+                  onChange={(e) => setTruckId(e.target.value)}
+                  required
+                >
+                  <option value="">Select truck</option>
+                  {trucks?.map((t) => (
+                    <option key={t.id} value={t.id}>
+                      {t.code}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="area">Area *</Label>
+                <select
+                  id="area"
+                  className="h-9 w-full rounded-md border border-input bg-transparent px-3 text-sm"
+                  value={areaId}
+                  onChange={(e) => setAreaId(e.target.value)}
+                  required
+                >
+                  <option value="">Select area</option>
+                  {areas?.map((a) => (
+                    <option key={a.id} value={a.id}>
+                      {a.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="driver">Driver</Label>
+                <select
+                  id="driver"
+                  className="h-9 w-full rounded-md border border-input bg-transparent px-3 text-sm"
+                  value={driverId}
+                  onChange={(e) => setDriverId(e.target.value)}
+                >
+                  <option value="">No driver assigned</option>
+                  {drivers?.map((d) => (
+                    <option key={d.id} value={d.id}>
+                      {d.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <div className="flex items-center justify-between">
+                <Label>Stops</Label>
+                <Button type="button" variant="outline" size="sm" onClick={addStop}>
+                  <Plus className="mr-1 size-4" />
+                  Add stop
+                </Button>
+              </div>
+              <div className="mt-2 space-y-3">
+                {stops.map((stop, i) => (
+                  <div
+                    key={i}
+                    className="flex gap-2 rounded-lg border p-3"
+                  >
+                    <div className="flex-1 grid gap-2 sm:grid-cols-4">
+                      <Input
+                        placeholder="Name"
+                        value={stop.name}
+                        onChange={(e) => updateStop(i, "name", e.target.value)}
+                      />
+                      <Input
+                        placeholder="Address"
+                        value={stop.address}
+                        onChange={(e) => updateStop(i, "address", e.target.value)}
+                      />
+                      <select
+                        className="h-9 rounded-md border border-input bg-transparent px-3 text-sm"
+                        value={stop.type}
+                        onChange={(e) => updateStop(i, "type", e.target.value)}
+                      >
+                        <option value="RESIDENTIAL">Residential</option>
+                        <option value="COMMERCIAL">Commercial</option>
+                        <option value="MIXED">Mixed</option>
+                      </select>
+                      <Input
+                        type="number"
+                        min={0}
+                        placeholder="Expected kg"
+                        value={stop.expectedVolumeKg}
+                        onChange={(e) =>
+                          updateStop(i, "expectedVolumeKg", e.target.value)
+                        }
+                      />
+                    </div>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => removeStop(i)}
+                      disabled={stops.length <= 1}
+                    >
+                      <Trash2 className="size-4 text-destructive" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex gap-2">
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "Creating..." : "Create route"}
+              </Button>
+              <Link href="/routes">
+                <Button type="button" variant="outline">
+                  Cancel
+                </Button>
+              </Link>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}

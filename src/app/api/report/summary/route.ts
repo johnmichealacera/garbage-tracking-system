@@ -5,7 +5,7 @@ import { authOptions, assertRole } from "@/lib/auth";
 
 export async function GET(request: Request) {
   const session = await getServerSession(authOptions);
-  assertRole(session, ["ADMIN"]);
+  assertRole(session, ["ADMIN", "DISPATCHER", "DRIVER"]);
 
   const { searchParams } = new URL(request.url);
   const from = searchParams.get("from");

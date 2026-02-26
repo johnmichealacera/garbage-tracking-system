@@ -2,8 +2,10 @@
 
 import useSWR from "swr";
 import { useState } from "react";
+import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 interface Area {
   id: string;
@@ -52,7 +54,12 @@ export default function RoutesPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-semibold">Routes</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-semibold">Routes</h1>
+        <Link href="/routes/new">
+          <Button>Create route</Button>
+        </Link>
+      </div>
       <Card>
         <CardHeader>
           <CardTitle>Filters</CardTitle>
@@ -100,6 +107,7 @@ export default function RoutesPage() {
                   <th className="text-left py-2 pr-4">Stops</th>
                   <th className="text-left py-2 pr-4">Completed</th>
                   <th className="text-left py-2 pr-4">Status</th>
+                  <th className="text-left py-2 pr-4"></th>
                 </tr>
               </thead>
               <tbody>
@@ -120,13 +128,20 @@ export default function RoutesPage() {
                         {completed}/{totalStops}
                       </td>
                       <td className="py-2 pr-4">{route.status}</td>
+                      <td className="py-2 pr-4">
+                        <Link href={`/routes/${route.id}`}>
+                          <Button variant="ghost" size="sm">
+                            View
+                          </Button>
+                        </Link>
+                      </td>
                     </tr>
                   );
                 })}
                 {!routes?.length && (
                   <tr>
                     <td
-                      colSpan={7}
+                      colSpan={8}
                       className="py-4 text-center text-muted-foreground"
                     >
                       No routes found.

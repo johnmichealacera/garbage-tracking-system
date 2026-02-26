@@ -1,8 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import useSWR, { mutate } from "swr";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 
 interface Area {
@@ -45,16 +48,24 @@ const fetcher = (url: string) =>
 
 export default function MyRoutePage() {
   const { data, error } = useSWR<MyRoute>("/api/my-route", fetcher);
+  const [pendingStop, setPendingStop] = useState<Stop | null>(null);
+  const [volumeKg, setVolumeKg] = useState("");
+  const [notes, setNotes] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  async function completeStop(stopId: string) {
+  async function completeStop(stopId: string, payload?: { actualVolumeKg?: number; notes?: string }) {
     if (!data) return;
+    setIsSubmitting(true);
     try {
       const res = await fetch(
         `/api/routes/${data.id}/stops/${stopId}/complete`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({}),
+          body: JSON.stringify({
+            actualVolumeKg: payload?.actualVolumeKg ?? null,
+            notes: payload?.notes || null,
+          }),
         },
       );
       if (!res.ok) {
@@ -63,9 +74,30 @@ export default function MyRoutePage() {
       }
       mutate("/api/my-route");
       toast.success("Pickup logged");
+      setPendingStop(null);
+      setVolumeKg("");
+      setNotes("");
     } catch {
       toast.error("Failed to log pickup");
+    } finally {
+      setIsSubmitting(false);
     }
+  }
+
+  function handleOpenComplete(stop: Stop) {
+    setPendingStop(stop);
+    setVolumeKg("");
+    setNotes("");
+  }
+
+  function handleSubmitComplete(e: React.FormEvent) {
+    e.preventDefault();
+    if (!pendingStop) return;
+    const actualVolumeKg = volumeKg ? parseInt(volumeKg, 10) : undefined;
+    completeStop(pendingStop.id, {
+      actualVolumeKg: Number.isNaN(actualVolumeKg) ? undefined : actualVolumeKg,
+      notes: notes.trim() || undefined,
+    });
   }
 
   if (error) {
@@ -129,7 +161,7 @@ export default function MyRoutePage() {
                   size="sm"
                   variant={isCompleted ? "outline" : "default"}
                   disabled={isCompleted}
-                  onClick={() => completeStop(stop.id)}
+                  onClick={() => handleOpenComplete(stop)}
                 >
                   {isCompleted ? "Completed" : "Mark completed"}
                 </Button>
@@ -143,6 +175,55 @@ export default function MyRoutePage() {
           )}
         </CardContent>
       </Card>
+
+      {pendingStop && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="w-full max-w-md rounded-lg border bg-background p-6 shadow-lg">
+            <h3 className="text-lg font-semibold">Log pickup</h3>
+            <p className="mt-1 text-sm text-muted-foreground">
+              #{pendingStop.sequence} {pendingStop.name ?? pendingStop.address ?? "Stop"}
+            </p>
+            <form onSubmit={handleSubmitComplete} className="mt-4 space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="volume">Volume (kg)</Label>
+                <Input
+                  id="volume"
+                  type="number"
+                  min={0}
+                  placeholder="Optional"
+                  value={volumeKg}
+                  onChange={(e) => setVolumeKg(e.target.value)}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="notes">Notes</Label>
+                <Input
+                  id="notes"
+                  placeholder="Optional"
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                />
+              </div>
+              <div className="flex gap-2 justify-end">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => {
+                    setPendingStop(null);
+                    setVolumeKg("");
+                    setNotes("");
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" disabled={isSubmitting}>
+                  {isSubmitting ? "Saving..." : "Confirm pickup"}
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

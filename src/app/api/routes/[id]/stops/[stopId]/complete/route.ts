@@ -14,15 +14,35 @@ export async function POST(
   const userId = session!.user.id;
   const body = await request.json().catch(() => ({}));
 
-  const log = await db.pickupLog.create({
-    data: {
-      routeId: id,
-      routeStopId: stopId,
-      completedById: userId,
-      completedAt: body.completedAt ? new Date(body.completedAt) : new Date(),
-      actualVolumeKg: body.actualVolumeKg ?? null,
-      notes: body.notes ?? null,
-    },
+  const log = await db.$transaction(async (tx) => {
+    const pickupLog = await tx.pickupLog.create({
+      data: {
+        routeId: id,
+        routeStopId: stopId,
+        completedById: userId,
+        completedAt: body.completedAt ? new Date(body.completedAt) : new Date(),
+        actualVolumeKg: body.actualVolumeKg ?? null,
+        notes: body.notes ?? null,
+      },
+    });
+
+    const stopsCount = await tx.routeStop.count({ where: { routeId: id } });
+    const completedCount = await tx.pickupLog.count({
+      where: { routeId: id },
+    });
+
+    let newStatus: "PLANNED" | "IN_PROGRESS" | "COMPLETED" | "CANCELLED" =
+      "IN_PROGRESS";
+    if (completedCount >= stopsCount) {
+      newStatus = "COMPLETED";
+    }
+
+    await tx.route.update({
+      where: { id },
+      data: { status: newStatus },
+    });
+
+    return pickupLog;
   });
 
   return NextResponse.json(log, { status: 201 });

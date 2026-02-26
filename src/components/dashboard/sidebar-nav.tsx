@@ -8,6 +8,7 @@ import {
   Truck,
   MapPin,
   BarChart3,
+  Map,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -15,13 +16,14 @@ const navConfig = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/routes", label: "Routes", icon: Route },
   { href: "/trucks", label: "Trucks", icon: Truck },
+  { href: "/areas", label: "Areas", icon: Map },
   { href: "/my-route", label: "My Route", icon: MapPin },
   { href: "/reporting", label: "Reporting", icon: BarChart3 },
 ] as const;
 
 const roleNavMap: Record<string, string[]> = {
-  ADMIN: ["/dashboard", "/routes", "/trucks", "/reporting"],
-  DISPATCHER: ["/dashboard", "/routes", "/trucks"],
+  ADMIN: ["/dashboard", "/routes", "/trucks", "/areas", "/reporting"],
+  DISPATCHER: ["/dashboard", "/routes", "/trucks", "/areas"],
   DRIVER: ["/dashboard", "/my-route"],
 };
 

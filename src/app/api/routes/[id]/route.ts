@@ -19,7 +19,9 @@ export async function GET(
       stops: {
         orderBy: { sequence: "asc" },
       },
-      pickupLogs: true,
+      pickupLogs: {
+        include: { completedBy: true },
+      },
     },
   });
 
