@@ -1,17 +1,8 @@
 import type { ReactNode } from "react";
-import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/auth";
-import { Button } from "@/components/ui/button";
-
-const navItems = [
-  { href: "/dashboard", label: "Dashboard", roles: ["ADMIN", "DISPATCHER", "DRIVER"] },
-  { href: "/routes", label: "Routes", roles: ["ADMIN", "DISPATCHER"] },
-  { href: "/trucks", label: "Trucks", roles: ["ADMIN", "DISPATCHER"] },
-  { href: "/my-route", label: "My Route", roles: ["DRIVER"] },
-  { href: "/reporting", label: "Reporting", roles: ["ADMIN"] },
-];
+import { SidebarNav } from "@/components/dashboard/sidebar-nav";
 
 export default async function DashboardLayout({
   children,
@@ -25,34 +16,24 @@ export default async function DashboardLayout({
   }
 
   const role = session.user.role;
-  const filteredNav = navItems.filter((item) => item.roles.includes(role));
 
   return (
     <div className="min-h-screen flex bg-background text-foreground">
-      <aside className="w-64 border-r px-4 py-6 flex flex-col gap-6">
-        <div>
-          <p className="text-xs uppercase text-muted-foreground tracking-wide">
+      <aside className="w-64 shrink-0 border-r bg-muted/30 px-4 py-6 flex flex-col gap-8">
+        <div className="px-2">
+          <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
             Garbage Tracking
           </p>
-          <p className="font-semibold text-sm mt-1 truncate">
+          <p className="mt-2 font-semibold text-sm truncate">
             {session.user.name ?? session.user.email}
           </p>
-          <p className="text-xs text-muted-foreground">{role}</p>
+          <p className="mt-0.5 text-xs text-muted-foreground capitalize">
+            {role.toLowerCase()}
+          </p>
         </div>
-        <nav className="flex flex-col gap-2">
-          {filteredNav.map((item) => (
-            <Link key={item.href} href={item.href}>
-              <Button
-                variant="ghost"
-                className="w-full justify-start"
-              >
-                {item.label}
-              </Button>
-            </Link>
-          ))}
-        </nav>
+        <SidebarNav role={role} />
       </aside>
-      <main className="flex-1 px-6 py-6">{children}</main>
+      <main className="flex-1 min-w-0 px-6 py-6">{children}</main>
     </div>
   );
 }
