@@ -47,7 +47,9 @@ const fetcher = (url: string) =>
   });
 
 export default function MyRoutePage() {
-  const { data, error } = useSWR<MyRoute>("/api/my-route", fetcher);
+  const { data, error } = useSWR<MyRoute>("/api/my-route", fetcher, {
+    refreshInterval: 10000,
+  });
   const [pendingStop, setPendingStop] = useState<Stop | null>(null);
   const [volumeKg, setVolumeKg] = useState("");
   const [notes, setNotes] = useState("");

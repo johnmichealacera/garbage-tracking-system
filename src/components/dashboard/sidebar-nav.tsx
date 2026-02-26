@@ -9,6 +9,7 @@ import {
   MapPin,
   BarChart3,
   Map,
+  Package,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -18,13 +19,14 @@ const navConfig = [
   { href: "/trucks", label: "Trucks", icon: Truck },
   { href: "/areas", label: "Areas", icon: Map },
   { href: "/my-route", label: "My Route", icon: MapPin },
+  { href: "/pickup-history", label: "Pickup history", icon: Package },
   { href: "/reporting", label: "Reporting", icon: BarChart3 },
 ] as const;
 
 const roleNavMap: Record<string, string[]> = {
-  ADMIN: ["/dashboard", "/routes", "/trucks", "/areas", "/reporting"],
-  DISPATCHER: ["/dashboard", "/routes", "/trucks", "/areas"],
-  DRIVER: ["/dashboard", "/my-route"],
+  ADMIN: ["/dashboard", "/routes", "/trucks", "/areas", "/pickup-history", "/reporting"],
+  DISPATCHER: ["/dashboard", "/routes", "/trucks", "/areas", "/pickup-history"],
+  DRIVER: ["/dashboard", "/my-route", "/pickup-history"],
 };
 
 interface SidebarNavProps {

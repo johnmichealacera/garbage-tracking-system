@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { RouteMap } from "@/components/map/route-map";
 import { ArrowLeft, CheckCircle2, Circle, Pencil } from "lucide-react";
 
 interface CompletedBy {
@@ -27,6 +28,8 @@ interface RouteStop {
   sequence: number;
   name: string | null;
   address: string | null;
+  latitude: number | null;
+  longitude: number | null;
   type: string;
   expectedVolumeKg: number | null;
 }
@@ -59,6 +62,7 @@ export default function RouteDetailPage() {
   const { data, error } = useSWR<RouteDetail>(
     id ? `/api/routes/${id}` : null,
     fetcher,
+    { refreshInterval: 10000 },
   );
 
   if (error) {
@@ -122,6 +126,18 @@ export default function RouteDetailPage() {
             </span>
           </div>
         </CardHeader>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Map</CardTitle>
+          <p className="text-sm text-muted-foreground">
+            Route stops on map (green = completed, gray = pending)
+          </p>
+        </CardHeader>
+        <CardContent>
+          <RouteMap stops={data.stops} completedStopIds={completedStopIds} />
+        </CardContent>
       </Card>
 
       <Card>
