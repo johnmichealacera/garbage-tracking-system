@@ -1,0 +1,211 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// =============================================================================
+// ENUMS
+// =============================================================================
+
+enum UserRole {
+  ADMIN
+  DISPATCHER
+  DRIVER
+}
+
+enum TruckStatus {
+  ACTIVE
+  INACTIVE
+  MAINTENANCE
+}
+
+enum RouteStatus {
+  PLANNED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum RouteStopType {
+  RESIDENTIAL
+  COMMERCIAL
+  MIXED
+}
+
+// =============================================================================
+// AUTH MODELS (NextAuth-compatible)
+// =============================================================================
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  password  String
+  role      UserRole @default(DRIVER)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  accounts Account[]
+  sessions Session[]
+
+  pickupLogs   PickupLog[] @relation("CompletedBy")
+  driverRoutes Route[]     @relation("Driver")
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+// =============================================================================
+// CORE GARBAGE TRACKING MODELS
+// =============================================================================
+
+model Area {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  // Optional simple geometry
+  centerLat   Float?
+  centerLng   Float?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  routes       Route[]
+  currentTrucks Truck[] @relation("CurrentArea")
+
+  @@map("areas")
+}
+
+model Truck {
+  id          String      @id @default(cuid())
+  code        String      @unique
+  plateNumber String?
+  capacityKg  Int?
+  status      TruckStatus @default(ACTIVE)
+
+  currentAreaId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  currentArea Area?   @relation("CurrentArea", fields: [currentAreaId], references: [id])
+  routes      Route[]
+
+  @@map("trucks")
+}
+
+model Route {
+  id            String      @id @default(cuid())
+  name          String
+  scheduledDate DateTime
+  status        RouteStatus @default(PLANNED)
+
+  truckId String
+  areaId  String
+
+  driverId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  truck  Truck @relation(fields: [truckId], references: [id])
+  area   Area  @relation(fields: [areaId], references: [id])
+  driver User? @relation("Driver", fields: [driverId], references: [id])
+
+  stops      RouteStop[]
+  pickupLogs PickupLog[]
+
+  @@index([scheduledDate])
+  @@index([areaId])
+  @@index([truckId])
+  @@map("routes")
+}
+
+model RouteStop {
+  id        String        @id @default(cuid())
+  routeId   String
+  sequence  Int
+  name      String?
+  address   String?
+  latitude  Float?
+  longitude Float?
+  eta       DateTime?
+  type      RouteStopType @default(RESIDENTIAL)
+  expectedVolumeKg Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  route      Route      @relation(fields: [routeId], references: [id], onDelete: Cascade)
+  pickupLogs PickupLog[]
+
+  @@index([routeId, sequence])
+  @@map("route_stops")
+}
+
+model PickupLog {
+  id             String   @id @default(cuid())
+  routeId        String
+  routeStopId    String
+  completedById  String
+  completedAt    DateTime @default(now())
+  actualVolumeKg Int?
+  notes          String?
+
+  createdAt DateTime @default(now())
+
+  route     Route     @relation(fields: [routeId], references: [id], onDelete: Cascade)
+  routeStop RouteStop @relation(fields: [routeStopId], references: [id], onDelete: Cascade)
+  completedBy User    @relation("CompletedBy", fields: [completedById], references: [id])
+
+  @@index([routeId])
+  @@index([routeStopId])
+  @@index([completedById])
+  @@index([completedAt])
+  @@map("pickup_logs")
+}
+
