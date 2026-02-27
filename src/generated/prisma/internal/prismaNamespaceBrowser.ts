@@ -59,6 +59,7 @@ export const ModelName = {
   Truck: 'Truck',
   Route: 'Route',
   RouteStop: 'RouteStop',
+  MissedStop: 'MissedStop',
   PickupLog: 'PickupLog'
 } as const
 
@@ -187,6 +188,18 @@ export const RouteStopScalarFieldEnum = {
 } as const
 
 export type RouteStopScalarFieldEnum = (typeof RouteStopScalarFieldEnum)[keyof typeof RouteStopScalarFieldEnum]
+
+
+export const MissedStopScalarFieldEnum = {
+  id: 'id',
+  routeId: 'routeId',
+  routeStopId: 'routeStopId',
+  reportedById: 'reportedById',
+  reportedAt: 'reportedAt',
+  reason: 'reason'
+} as const
+
+export type MissedStopScalarFieldEnum = (typeof MissedStopScalarFieldEnum)[keyof typeof MissedStopScalarFieldEnum]
 
 
 export const PickupLogScalarFieldEnum = {

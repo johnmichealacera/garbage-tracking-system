@@ -22,6 +22,12 @@ interface PickupLog {
   routeStopId: string;
 }
 
+interface MissedStop {
+  id: string;
+  routeStopId: string;
+  reason: string | null;
+}
+
 interface Stop {
   id: string;
   sequence: number;
@@ -37,6 +43,7 @@ interface MyRoute {
   truck: Truck;
   stops: Stop[];
   pickupLogs: PickupLog[];
+  missedStops: MissedStop[];
 }
 
 const fetcher = (url: string) =>
@@ -52,8 +59,10 @@ export default function MyRoutePage() {
     refreshInterval: 10000,
   });
   const [pendingStop, setPendingStop] = useState<Stop | null>(null);
+  const [pendingMissed, setPendingMissed] = useState<Stop | null>(null);
   const [volumeKg, setVolumeKg] = useState("");
   const [notes, setNotes] = useState("");
+  const [missedReason, setMissedReason] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function completeStop(stopId: string, payload?: { actualVolumeKg?: number; notes?: string }) {
@@ -87,10 +96,48 @@ export default function MyRoutePage() {
     }
   }
 
+  async function markMissed(stopId: string, reason?: string) {
+    if (!data) return;
+    setIsSubmitting(true);
+    try {
+      const res = await fetch(
+        `/api/routes/${data.id}/stops/${stopId}/missed`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ reason: reason || null }),
+        },
+      );
+      if (!res.ok) {
+        toast.error("Failed to log missed stop");
+        return;
+      }
+      mutate("/api/my-route");
+      toast.success("Missed stop logged");
+      setPendingMissed(null);
+      setMissedReason("");
+    } catch {
+      toast.error("Failed to log missed stop");
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
   function handleOpenComplete(stop: Stop) {
     setPendingStop(stop);
     setVolumeKg("");
     setNotes("");
+  }
+
+  function handleOpenMissed(stop: Stop) {
+    setPendingMissed(stop);
+    setMissedReason("");
+  }
+
+  function handleSubmitMissed(e: React.FormEvent) {
+    e.preventDefault();
+    if (!pendingMissed) return;
+    markMissed(pendingMissed.id, missedReason.trim() || undefined);
   }
 
   function handleSubmitComplete(e: React.FormEvent) {
@@ -139,6 +186,7 @@ export default function MyRoutePage() {
   }
 
   const completedIds = new Set(data.pickupLogs.map((log) => log.routeStopId));
+  const missedIds = new Set(data.missedStops?.map((m) => m.routeStopId) ?? []);
 
   return (
     <div className="space-y-6">
@@ -162,6 +210,8 @@ export default function MyRoutePage() {
         <CardContent className="space-y-2">
           {data.stops.map((stop) => {
             const isCompleted = completedIds.has(stop.id);
+            const isMissed = missedIds.has(stop.id);
+            const isDone = isCompleted || isMissed;
             return (
               <div
                 key={stop.id}
@@ -176,15 +226,30 @@ export default function MyRoutePage() {
                       {stop.address}
                     </p>
                   ) : null}
+                  {isMissed && (
+                    <p className="mt-1 text-xs text-amber-600 dark:text-amber-500">
+                      Marked as missed
+                    </p>
+                  )}
                 </div>
-                <Button
-                  size="sm"
-                  variant={isCompleted ? "outline" : "default"}
-                  disabled={isCompleted}
-                  onClick={() => handleOpenComplete(stop)}
-                >
-                  {isCompleted ? "Completed" : "Mark completed"}
-                </Button>
+                <div className="flex gap-2">
+                  <Button
+                    size="sm"
+                    variant={isCompleted ? "outline" : "default"}
+                    disabled={isDone}
+                    onClick={() => handleOpenComplete(stop)}
+                  >
+                    {isCompleted ? "Completed" : "Mark completed"}
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant={isMissed ? "outline" : "destructive"}
+                    disabled={isDone}
+                    onClick={() => handleOpenMissed(stop)}
+                  >
+                    {isMissed ? "Missed" : "Mark missed"}
+                  </Button>
+                </div>
               </div>
             );
           })}
@@ -238,6 +303,43 @@ export default function MyRoutePage() {
                 </Button>
                 <Button type="submit" disabled={isSubmitting}>
                   {isSubmitting ? "Saving..." : "Confirm pickup"}
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {pendingMissed && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="w-full max-w-md rounded-lg border bg-background p-6 shadow-lg">
+            <h3 className="text-lg font-semibold">Mark missed stop</h3>
+            <p className="mt-1 text-sm text-muted-foreground">
+              #{pendingMissed.sequence} {pendingMissed.name ?? pendingMissed.address ?? "Stop"}
+            </p>
+            <form onSubmit={handleSubmitMissed} className="mt-4 space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="reason">Reason (optional)</Label>
+                <Input
+                  id="reason"
+                  placeholder="e.g. Road blocked, No access, Gate locked"
+                  value={missedReason}
+                  onChange={(e) => setMissedReason(e.target.value)}
+                />
+              </div>
+              <div className="flex gap-2 justify-end">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => {
+                    setPendingMissed(null);
+                    setMissedReason("");
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" disabled={isSubmitting}>
+                  {isSubmitting ? "Saving..." : "Confirm missed"}
                 </Button>
               </div>
             </form>

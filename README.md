@@ -1,6 +1,6 @@
-## Garbage Tracking System
+## Socorro Garbage Tracking System
 
-Garbage collection tracking dashboard inspired by the UI of the `digital-profiling` app. It uses Next.js App Router, Tailwind v4 + shadcn/ui, Prisma, PostgreSQL and NextAuth.
+Garbage collection tracking system for the Municipality of Socorro, Surigao del Norte. Tracks routes, pickups, and missed stops across 14 barangays (4–6 collection areas). Built with Next.js App Router, Tailwind v4 + shadcn/ui, Prisma, PostgreSQL and NextAuth.
 
 ### Tech stack
 
@@ -24,12 +24,15 @@ cp .env.example .env
 # then edit .env to set DATABASE_URL and NEXTAUTH_SECRET
 ```
 
-3. Apply the Prisma schema to your database and generate the client:
+3. Apply the Prisma schema and seed Socorro data:
 
 ```bash
 npm run db:generate
-npm run db:push   # or npm run db:migrate once you add migrations
+npm run db:push
+npm run db:seed
 ```
+
+For a fresh Socorro setup (clears existing data): `npm run db:reset` then `npm run db:seed`
 
 4. Run the dev server:
 
@@ -39,12 +42,25 @@ npm run dev
 
 ### Main flows
 
-- **Auth**: visit `/sign-in` to log in using a credentials account in the `User` table.
-- **Dashboard**: `/dashboard` shows high-level pickups and volume metrics.
-- **Routes**: `/routes` lists routes with filters by date and area.
-- **Trucks**: `/trucks` manages collection trucks.
-- **Driver “My Route”**: `/my-route` shows the logged-in driver their assigned route for today and lets them mark stops as completed.
-- **Reporting**: `/reporting` (admin) shows pickups per day and per area.
+- **Home**: `/` – Sign in (staff) or view public collection schedule.
+- **Public schedule**: `/schedule` – No login. View collection routes and status by date.
+- **Auth**: `/sign-in` – Log in with Socorro LGU credentials.
+- **Dashboard**: `/dashboard` – KPIs for all roles.
+- **Routes**: `/routes` – Create, view, edit routes. Filter by date and barangay.
+- **Trucks**: `/trucks` – Manage collection trucks.
+- **Areas**: `/areas` – Manage barangays (Socorro’s 14 barangays).
+- **My Route**: `/my-route` – Drivers see today’s route, mark stops completed or missed.
+- **Pickup history**: `/pickup-history` – Recent pickups (drivers see own only).
+- **Reporting**: `/reporting` (admin) – Charts and barangay summary table.
+
+### Seed accounts (after `npm run db:seed`)
+
+| Role       | Email                     | Password   |
+|-----------|---------------------------|------------|
+| Admin     | admin@socorro.gov.ph      | password123 |
+| Dispatcher| dispatcher@socorro.gov.ph | password123 |
+| Driver 1  | driver1@socorro.gov.ph    | password123 |
+| Driver 2  | driver2@socorro.gov.ph    | password123 |
 
 Roles (`ADMIN`, `DISPATCHER`, `DRIVER`) are enforced in the API via NextAuth sessions and Prisma.
 

@@ -22,6 +22,9 @@ export async function GET(
       pickupLogs: {
         include: { completedBy: true },
       },
+      missedStops: {
+        include: { reportedBy: { select: { id: true, name: true } } },
+      },
     },
   });
 

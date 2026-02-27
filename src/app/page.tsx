@@ -12,16 +12,23 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-background text-foreground">
-      <div className="max-w-md space-y-4 text-center">
+      <div className="max-w-md space-y-6 text-center">
         <h1 className="text-3xl font-semibold">
-          Garbage Tracking System
+          Socorro Garbage Tracking System
         </h1>
         <p className="text-muted-foreground text-sm">
-          Sign in to manage garbage collection routes, trucks, and pickups.
+          Municipality of Socorro, Surigao del Norte
         </p>
-        <Link href="/sign-in">
-          <Button>Go to sign in</Button>
-        </Link>
+        <div className="flex flex-col gap-3">
+          <Link href="/sign-in">
+            <Button className="w-full">Sign in (Staff)</Button>
+          </Link>
+          <Link href="/schedule">
+            <Button variant="outline" className="w-full">
+              View collection schedule
+            </Button>
+          </Link>
+        </div>
       </div>
     </main>
   );

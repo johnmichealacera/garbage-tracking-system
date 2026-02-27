@@ -392,6 +392,7 @@ export const ModelName = {
   Truck: 'Truck',
   Route: 'Route',
   RouteStop: 'RouteStop',
+  MissedStop: 'MissedStop',
   PickupLog: 'PickupLog'
 } as const
 
@@ -408,7 +409,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "account" | "session" | "verificationToken" | "area" | "truck" | "route" | "routeStop" | "pickupLog"
+    modelProps: "user" | "account" | "session" | "verificationToken" | "area" | "truck" | "route" | "routeStop" | "missedStop" | "pickupLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1004,6 +1005,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    MissedStop: {
+      payload: Prisma.$MissedStopPayload<ExtArgs>
+      fields: Prisma.MissedStopFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MissedStopFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MissedStopPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MissedStopFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MissedStopPayload>
+        }
+        findFirst: {
+          args: Prisma.MissedStopFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MissedStopPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MissedStopFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MissedStopPayload>
+        }
+        findMany: {
+          args: Prisma.MissedStopFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MissedStopPayload>[]
+        }
+        create: {
+          args: Prisma.MissedStopCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MissedStopPayload>
+        }
+        createMany: {
+          args: Prisma.MissedStopCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MissedStopCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MissedStopPayload>[]
+        }
+        delete: {
+          args: Prisma.MissedStopDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MissedStopPayload>
+        }
+        update: {
+          args: Prisma.MissedStopUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MissedStopPayload>
+        }
+        deleteMany: {
+          args: Prisma.MissedStopDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MissedStopUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MissedStopUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MissedStopPayload>[]
+        }
+        upsert: {
+          args: Prisma.MissedStopUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MissedStopPayload>
+        }
+        aggregate: {
+          args: Prisma.MissedStopAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMissedStop>
+        }
+        groupBy: {
+          args: Prisma.MissedStopGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MissedStopGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MissedStopCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MissedStopCountAggregateOutputType> | number
+        }
+      }
+    }
     PickupLog: {
       payload: Prisma.$PickupLogPayload<ExtArgs>
       fields: Prisma.PickupLogFieldRefs
@@ -1226,6 +1301,18 @@ export const RouteStopScalarFieldEnum = {
 } as const
 
 export type RouteStopScalarFieldEnum = (typeof RouteStopScalarFieldEnum)[keyof typeof RouteStopScalarFieldEnum]
+
+
+export const MissedStopScalarFieldEnum = {
+  id: 'id',
+  routeId: 'routeId',
+  routeStopId: 'routeStopId',
+  reportedById: 'reportedById',
+  reportedAt: 'reportedAt',
+  reason: 'reason'
+} as const
+
+export type MissedStopScalarFieldEnum = (typeof MissedStopScalarFieldEnum)[keyof typeof MissedStopScalarFieldEnum]
 
 
 export const PickupLogScalarFieldEnum = {
@@ -1493,6 +1580,7 @@ export type GlobalOmitConfig = {
   truck?: Prisma.TruckOmit
   route?: Prisma.RouteOmit
   routeStop?: Prisma.RouteStopOmit
+  missedStop?: Prisma.MissedStopOmit
   pickupLog?: Prisma.PickupLogOmit
 }
 

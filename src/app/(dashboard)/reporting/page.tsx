@@ -23,6 +23,7 @@ interface SummaryResponse {
     areaName: string;
     count: number;
     volumeKg: number;
+    missedCount: number;
   }[];
 }
 
@@ -79,6 +80,9 @@ export default function ReportingPage() {
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-semibold">Reporting</h1>
+      <p className="text-sm text-muted-foreground">
+        Barangay-level pickup and missed stop analytics for Socorro
+      </p>
 
       <Card>
         <CardHeader>
@@ -128,7 +132,7 @@ export default function ReportingPage() {
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Pickups per area</CardTitle>
+            <CardTitle>Pickups per barangay</CardTitle>
           </CardHeader>
           <CardContent className="h-64">
             {data?.byArea?.length ? (
@@ -148,6 +152,49 @@ export default function ReportingPage() {
           </CardContent>
         </Card>
       </div>
+
+      {data?.byArea?.length ? (
+        <Card>
+          <CardHeader>
+            <CardTitle>Barangay summary table</CardTitle>
+            <p className="text-sm text-muted-foreground">
+              Pickups and missed stops by barangay (Socorro)
+            </p>
+          </CardHeader>
+          <CardContent>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="border-b text-muted-foreground">
+                  <tr>
+                    <th className="text-left py-2 pr-4">Barangay</th>
+                    <th className="text-right py-2 pr-4">Pickups</th>
+                    <th className="text-right py-2 pr-4">Volume (kg)</th>
+                    <th className="text-right py-2 pr-4">Missed</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.byArea.map((row) => (
+                    <tr key={row.areaId} className="border-b last:border-0">
+                      <td className="py-2 pr-4 font-medium">{row.areaName}</td>
+                      <td className="py-2 pr-4 text-right">{row.count}</td>
+                      <td className="py-2 pr-4 text-right">{row.volumeKg}</td>
+                      <td className="py-2 pr-4 text-right">
+                        {row.missedCount > 0 ? (
+                          <span className="text-amber-600 dark:text-amber-500">
+                            {row.missedCount}
+                          </span>
+                        ) : (
+                          "0"
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </CardContent>
+        </Card>
+      ) : null}
     </div>
   );
 }

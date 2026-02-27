@@ -286,6 +286,7 @@ export type RouteStopWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"RouteStop"> | Date | string
   route?: Prisma.XOR<Prisma.RouteScalarRelationFilter, Prisma.RouteWhereInput>
   pickupLogs?: Prisma.PickupLogListRelationFilter
+  missedStops?: Prisma.MissedStopListRelationFilter
 }
 
 export type RouteStopOrderByWithRelationInput = {
@@ -303,6 +304,7 @@ export type RouteStopOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   route?: Prisma.RouteOrderByWithRelationInput
   pickupLogs?: Prisma.PickupLogOrderByRelationAggregateInput
+  missedStops?: Prisma.MissedStopOrderByRelationAggregateInput
 }
 
 export type RouteStopWhereUniqueInput = Prisma.AtLeast<{
@@ -323,6 +325,7 @@ export type RouteStopWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"RouteStop"> | Date | string
   route?: Prisma.XOR<Prisma.RouteScalarRelationFilter, Prisma.RouteWhereInput>
   pickupLogs?: Prisma.PickupLogListRelationFilter
+  missedStops?: Prisma.MissedStopListRelationFilter
 }, "id">
 
 export type RouteStopOrderByWithAggregationInput = {
@@ -377,6 +380,7 @@ export type RouteStopCreateInput = {
   updatedAt?: Date | string
   route: Prisma.RouteCreateNestedOneWithoutStopsInput
   pickupLogs?: Prisma.PickupLogCreateNestedManyWithoutRouteStopInput
+  missedStops?: Prisma.MissedStopCreateNestedManyWithoutRouteStopInput
 }
 
 export type RouteStopUncheckedCreateInput = {
@@ -393,6 +397,7 @@ export type RouteStopUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   pickupLogs?: Prisma.PickupLogUncheckedCreateNestedManyWithoutRouteStopInput
+  missedStops?: Prisma.MissedStopUncheckedCreateNestedManyWithoutRouteStopInput
 }
 
 export type RouteStopUpdateInput = {
@@ -409,6 +414,7 @@ export type RouteStopUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   route?: Prisma.RouteUpdateOneRequiredWithoutStopsNestedInput
   pickupLogs?: Prisma.PickupLogUpdateManyWithoutRouteStopNestedInput
+  missedStops?: Prisma.MissedStopUpdateManyWithoutRouteStopNestedInput
 }
 
 export type RouteStopUncheckedUpdateInput = {
@@ -425,6 +431,7 @@ export type RouteStopUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pickupLogs?: Prisma.PickupLogUncheckedUpdateManyWithoutRouteStopNestedInput
+  missedStops?: Prisma.MissedStopUncheckedUpdateManyWithoutRouteStopNestedInput
 }
 
 export type RouteStopCreateManyInput = {
@@ -603,6 +610,20 @@ export type EnumRouteStopTypeFieldUpdateOperationsInput = {
   set?: $Enums.RouteStopType
 }
 
+export type RouteStopCreateNestedOneWithoutMissedStopsInput = {
+  create?: Prisma.XOR<Prisma.RouteStopCreateWithoutMissedStopsInput, Prisma.RouteStopUncheckedCreateWithoutMissedStopsInput>
+  connectOrCreate?: Prisma.RouteStopCreateOrConnectWithoutMissedStopsInput
+  connect?: Prisma.RouteStopWhereUniqueInput
+}
+
+export type RouteStopUpdateOneRequiredWithoutMissedStopsNestedInput = {
+  create?: Prisma.XOR<Prisma.RouteStopCreateWithoutMissedStopsInput, Prisma.RouteStopUncheckedCreateWithoutMissedStopsInput>
+  connectOrCreate?: Prisma.RouteStopCreateOrConnectWithoutMissedStopsInput
+  upsert?: Prisma.RouteStopUpsertWithoutMissedStopsInput
+  connect?: Prisma.RouteStopWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.RouteStopUpdateToOneWithWhereWithoutMissedStopsInput, Prisma.RouteStopUpdateWithoutMissedStopsInput>, Prisma.RouteStopUncheckedUpdateWithoutMissedStopsInput>
+}
+
 export type RouteStopCreateNestedOneWithoutPickupLogsInput = {
   create?: Prisma.XOR<Prisma.RouteStopCreateWithoutPickupLogsInput, Prisma.RouteStopUncheckedCreateWithoutPickupLogsInput>
   connectOrCreate?: Prisma.RouteStopCreateOrConnectWithoutPickupLogsInput
@@ -630,6 +651,7 @@ export type RouteStopCreateWithoutRouteInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   pickupLogs?: Prisma.PickupLogCreateNestedManyWithoutRouteStopInput
+  missedStops?: Prisma.MissedStopCreateNestedManyWithoutRouteStopInput
 }
 
 export type RouteStopUncheckedCreateWithoutRouteInput = {
@@ -645,6 +667,7 @@ export type RouteStopUncheckedCreateWithoutRouteInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   pickupLogs?: Prisma.PickupLogUncheckedCreateNestedManyWithoutRouteStopInput
+  missedStops?: Prisma.MissedStopUncheckedCreateNestedManyWithoutRouteStopInput
 }
 
 export type RouteStopCreateOrConnectWithoutRouteInput = {
@@ -691,6 +714,86 @@ export type RouteStopScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"RouteStop"> | Date | string
 }
 
+export type RouteStopCreateWithoutMissedStopsInput = {
+  id?: string
+  sequence: number
+  name?: string | null
+  address?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  eta?: Date | string | null
+  type?: $Enums.RouteStopType
+  expectedVolumeKg?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  route: Prisma.RouteCreateNestedOneWithoutStopsInput
+  pickupLogs?: Prisma.PickupLogCreateNestedManyWithoutRouteStopInput
+}
+
+export type RouteStopUncheckedCreateWithoutMissedStopsInput = {
+  id?: string
+  routeId: string
+  sequence: number
+  name?: string | null
+  address?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  eta?: Date | string | null
+  type?: $Enums.RouteStopType
+  expectedVolumeKg?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  pickupLogs?: Prisma.PickupLogUncheckedCreateNestedManyWithoutRouteStopInput
+}
+
+export type RouteStopCreateOrConnectWithoutMissedStopsInput = {
+  where: Prisma.RouteStopWhereUniqueInput
+  create: Prisma.XOR<Prisma.RouteStopCreateWithoutMissedStopsInput, Prisma.RouteStopUncheckedCreateWithoutMissedStopsInput>
+}
+
+export type RouteStopUpsertWithoutMissedStopsInput = {
+  update: Prisma.XOR<Prisma.RouteStopUpdateWithoutMissedStopsInput, Prisma.RouteStopUncheckedUpdateWithoutMissedStopsInput>
+  create: Prisma.XOR<Prisma.RouteStopCreateWithoutMissedStopsInput, Prisma.RouteStopUncheckedCreateWithoutMissedStopsInput>
+  where?: Prisma.RouteStopWhereInput
+}
+
+export type RouteStopUpdateToOneWithWhereWithoutMissedStopsInput = {
+  where?: Prisma.RouteStopWhereInput
+  data: Prisma.XOR<Prisma.RouteStopUpdateWithoutMissedStopsInput, Prisma.RouteStopUncheckedUpdateWithoutMissedStopsInput>
+}
+
+export type RouteStopUpdateWithoutMissedStopsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  sequence?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  eta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  type?: Prisma.EnumRouteStopTypeFieldUpdateOperationsInput | $Enums.RouteStopType
+  expectedVolumeKg?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  route?: Prisma.RouteUpdateOneRequiredWithoutStopsNestedInput
+  pickupLogs?: Prisma.PickupLogUpdateManyWithoutRouteStopNestedInput
+}
+
+export type RouteStopUncheckedUpdateWithoutMissedStopsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  routeId?: Prisma.StringFieldUpdateOperationsInput | string
+  sequence?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  eta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  type?: Prisma.EnumRouteStopTypeFieldUpdateOperationsInput | $Enums.RouteStopType
+  expectedVolumeKg?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pickupLogs?: Prisma.PickupLogUncheckedUpdateManyWithoutRouteStopNestedInput
+}
+
 export type RouteStopCreateWithoutPickupLogsInput = {
   id?: string
   sequence: number
@@ -704,6 +807,7 @@ export type RouteStopCreateWithoutPickupLogsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   route: Prisma.RouteCreateNestedOneWithoutStopsInput
+  missedStops?: Prisma.MissedStopCreateNestedManyWithoutRouteStopInput
 }
 
 export type RouteStopUncheckedCreateWithoutPickupLogsInput = {
@@ -719,6 +823,7 @@ export type RouteStopUncheckedCreateWithoutPickupLogsInput = {
   expectedVolumeKg?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  missedStops?: Prisma.MissedStopUncheckedCreateNestedManyWithoutRouteStopInput
 }
 
 export type RouteStopCreateOrConnectWithoutPickupLogsInput = {
@@ -750,6 +855,7 @@ export type RouteStopUpdateWithoutPickupLogsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   route?: Prisma.RouteUpdateOneRequiredWithoutStopsNestedInput
+  missedStops?: Prisma.MissedStopUpdateManyWithoutRouteStopNestedInput
 }
 
 export type RouteStopUncheckedUpdateWithoutPickupLogsInput = {
@@ -765,6 +871,7 @@ export type RouteStopUncheckedUpdateWithoutPickupLogsInput = {
   expectedVolumeKg?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  missedStops?: Prisma.MissedStopUncheckedUpdateManyWithoutRouteStopNestedInput
 }
 
 export type RouteStopCreateManyRouteInput = {
@@ -794,6 +901,7 @@ export type RouteStopUpdateWithoutRouteInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pickupLogs?: Prisma.PickupLogUpdateManyWithoutRouteStopNestedInput
+  missedStops?: Prisma.MissedStopUpdateManyWithoutRouteStopNestedInput
 }
 
 export type RouteStopUncheckedUpdateWithoutRouteInput = {
@@ -809,6 +917,7 @@ export type RouteStopUncheckedUpdateWithoutRouteInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pickupLogs?: Prisma.PickupLogUncheckedUpdateManyWithoutRouteStopNestedInput
+  missedStops?: Prisma.MissedStopUncheckedUpdateManyWithoutRouteStopNestedInput
 }
 
 export type RouteStopUncheckedUpdateManyWithoutRouteInput = {
@@ -832,10 +941,12 @@ export type RouteStopUncheckedUpdateManyWithoutRouteInput = {
 
 export type RouteStopCountOutputType = {
   pickupLogs: number
+  missedStops: number
 }
 
 export type RouteStopCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   pickupLogs?: boolean | RouteStopCountOutputTypeCountPickupLogsArgs
+  missedStops?: boolean | RouteStopCountOutputTypeCountMissedStopsArgs
 }
 
 /**
@@ -855,6 +966,13 @@ export type RouteStopCountOutputTypeCountPickupLogsArgs<ExtArgs extends runtime.
   where?: Prisma.PickupLogWhereInput
 }
 
+/**
+ * RouteStopCountOutputType without action
+ */
+export type RouteStopCountOutputTypeCountMissedStopsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MissedStopWhereInput
+}
+
 
 export type RouteStopSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -871,6 +989,7 @@ export type RouteStopSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   updatedAt?: boolean
   route?: boolean | Prisma.RouteDefaultArgs<ExtArgs>
   pickupLogs?: boolean | Prisma.RouteStop$pickupLogsArgs<ExtArgs>
+  missedStops?: boolean | Prisma.RouteStop$missedStopsArgs<ExtArgs>
   _count?: boolean | Prisma.RouteStopCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["routeStop"]>
 
@@ -925,6 +1044,7 @@ export type RouteStopOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs 
 export type RouteStopInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   route?: boolean | Prisma.RouteDefaultArgs<ExtArgs>
   pickupLogs?: boolean | Prisma.RouteStop$pickupLogsArgs<ExtArgs>
+  missedStops?: boolean | Prisma.RouteStop$missedStopsArgs<ExtArgs>
   _count?: boolean | Prisma.RouteStopCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type RouteStopIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -939,6 +1059,7 @@ export type $RouteStopPayload<ExtArgs extends runtime.Types.Extensions.InternalA
   objects: {
     route: Prisma.$RoutePayload<ExtArgs>
     pickupLogs: Prisma.$PickupLogPayload<ExtArgs>[]
+    missedStops: Prisma.$MissedStopPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1349,6 +1470,7 @@ export interface Prisma__RouteStopClient<T, Null = never, ExtArgs extends runtim
   readonly [Symbol.toStringTag]: "PrismaPromise"
   route<T extends Prisma.RouteDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.RouteDefaultArgs<ExtArgs>>): Prisma.Prisma__RouteClient<runtime.Types.Result.GetResult<Prisma.$RoutePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   pickupLogs<T extends Prisma.RouteStop$pickupLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.RouteStop$pickupLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PickupLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  missedStops<T extends Prisma.RouteStop$missedStopsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.RouteStop$missedStopsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MissedStopPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1807,6 +1929,30 @@ export type RouteStop$pickupLogsArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.PickupLogScalarFieldEnum | Prisma.PickupLogScalarFieldEnum[]
+}
+
+/**
+ * RouteStop.missedStops
+ */
+export type RouteStop$missedStopsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MissedStop
+   */
+  select?: Prisma.MissedStopSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MissedStop
+   */
+  omit?: Prisma.MissedStopOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MissedStopInclude<ExtArgs> | null
+  where?: Prisma.MissedStopWhereInput
+  orderBy?: Prisma.MissedStopOrderByWithRelationInput | Prisma.MissedStopOrderByWithRelationInput[]
+  cursor?: Prisma.MissedStopWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MissedStopScalarFieldEnum | Prisma.MissedStopScalarFieldEnum[]
 }
 
 /**

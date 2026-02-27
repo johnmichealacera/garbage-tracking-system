@@ -58,6 +58,11 @@ export type Route = Prisma.RouteModel
  */
 export type RouteStop = Prisma.RouteStopModel
 /**
+ * Model MissedStop
+ * 
+ */
+export type MissedStop = Prisma.MissedStopModel
+/**
  * Model PickupLog
  * 
  */

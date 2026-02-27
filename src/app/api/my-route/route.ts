@@ -36,6 +36,7 @@ export async function GET() {
         orderBy: { sequence: "asc" },
       },
       pickupLogs: true,
+      missedStops: true,
     },
     orderBy: {
       scheduledDate: "asc",

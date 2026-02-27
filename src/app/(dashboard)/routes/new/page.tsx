@@ -32,6 +32,8 @@ interface StopInput {
   address: string;
   type: string;
   expectedVolumeKg: string;
+  latitude: string;
+  longitude: string;
 }
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
@@ -48,14 +50,28 @@ export default function NewRoutePage() {
   const [areaId, setAreaId] = useState("");
   const [driverId, setDriverId] = useState("");
   const [stops, setStops] = useState<StopInput[]>([
-    { name: "", address: "", type: "RESIDENTIAL", expectedVolumeKg: "" },
+    {
+      name: "",
+      address: "",
+      type: "RESIDENTIAL",
+      expectedVolumeKg: "",
+      latitude: "",
+      longitude: "",
+    },
   ]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   function addStop() {
     setStops((s) => [
       ...s,
-      { name: "", address: "", type: "RESIDENTIAL", expectedVolumeKg: "" },
+      {
+        name: "",
+        address: "",
+        type: "RESIDENTIAL",
+        expectedVolumeKg: "",
+        latitude: "",
+        longitude: "",
+      },
     ]);
   }
 
@@ -99,6 +115,12 @@ export default function NewRoutePage() {
               type: s.type,
               expectedVolumeKg: s.expectedVolumeKg
                 ? parseInt(s.expectedVolumeKg, 10)
+                : null,
+              latitude: s.latitude.trim()
+                ? parseFloat(s.latitude)
+                : null,
+              longitude: s.longitude.trim()
+                ? parseFloat(s.longitude)
                 : null,
             })),
         }),
@@ -219,7 +241,7 @@ export default function NewRoutePage() {
                     key={i}
                     className="flex gap-2 rounded-lg border p-3"
                   >
-                    <div className="flex-1 grid gap-2 sm:grid-cols-4">
+                    <div className="flex-1 grid gap-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6">
                       <Input
                         placeholder="Name"
                         value={stop.name}
@@ -246,6 +268,24 @@ export default function NewRoutePage() {
                         value={stop.expectedVolumeKg}
                         onChange={(e) =>
                           updateStop(i, "expectedVolumeKg", e.target.value)
+                        }
+                      />
+                      <Input
+                        type="number"
+                        step="any"
+                        placeholder="Latitude (e.g. 9.6)"
+                        value={stop.latitude}
+                        onChange={(e) =>
+                          updateStop(i, "latitude", e.target.value)
+                        }
+                      />
+                      <Input
+                        type="number"
+                        step="any"
+                        placeholder="Longitude (e.g. 125.9)"
+                        value={stop.longitude}
+                        onChange={(e) =>
+                          updateStop(i, "longitude", e.target.value)
                         }
                       />
                     </div>

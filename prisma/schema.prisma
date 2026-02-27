@@ -53,8 +53,9 @@ model User {
   accounts Account[]
   sessions Session[]
 
-  pickupLogs   PickupLog[] @relation("CompletedBy")
-  driverRoutes Route[]     @relation("Driver")
+  pickupLogs   PickupLog[]  @relation("CompletedBy")
+  missedStops  MissedStop[]
+  driverRoutes Route[]      @relation("Driver")
 
   @@map("users")
 }
@@ -156,8 +157,9 @@ model Route {
   area   Area  @relation(fields: [areaId], references: [id])
   driver User? @relation("Driver", fields: [driverId], references: [id])
 
-  stops      RouteStop[]
-  pickupLogs PickupLog[]
+  stops       RouteStop[]
+  pickupLogs  PickupLog[]
+  missedStops MissedStop[]
 
   @@index([scheduledDate])
   @@index([areaId])
@@ -180,11 +182,29 @@ model RouteStop {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  route      Route      @relation(fields: [routeId], references: [id], onDelete: Cascade)
-  pickupLogs PickupLog[]
+  route        Route         @relation(fields: [routeId], references: [id], onDelete: Cascade)
+  pickupLogs   PickupLog[]
+  missedStops  MissedStop[]
 
   @@index([routeId, sequence])
   @@map("route_stops")
+}
+
+model MissedStop {
+  id          String   @id @default(cuid())
+  routeId     String
+  routeStopId String
+  reportedById String
+  reportedAt  DateTime @default(now())
+  reason      String?
+
+  route      Route     @relation(fields: [routeId], references: [id], onDelete: Cascade)
+  routeStop  RouteStop @relation(fields: [routeStopId], references: [id], onDelete: Cascade)
+  reportedBy User     @relation(fields: [reportedById], references: [id])
+
+  @@index([routeId])
+  @@index([routeStopId])
+  @@map("missed_stops")
 }
 
 model PickupLog {

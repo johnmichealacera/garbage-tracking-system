@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { RouteMap } from "@/components/map/route-map";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ArrowLeft, CheckCircle2, Circle, Pencil } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Circle, Pencil, XCircle } from "lucide-react";
 
 interface CompletedBy {
   id: string;
@@ -35,6 +35,13 @@ interface RouteStop {
   expectedVolumeKg: number | null;
 }
 
+interface MissedStop {
+  id: string;
+  routeStopId: string;
+  reason: string | null;
+  reportedBy: { id: string; name: string };
+}
+
 interface RouteDetail {
   id: string;
   name: string;
@@ -45,6 +52,7 @@ interface RouteDetail {
   driver: { name: string } | null;
   stops: RouteStop[];
   pickupLogs: PickupLog[];
+  missedStops?: MissedStop[];
 }
 
 const fetcher = (url: string) =>
@@ -108,9 +116,14 @@ export default function RouteDetailPage() {
   }
 
   const completedStopIds = new Set(data.pickupLogs.map((l) => l.routeStopId));
+  const missedStopIds = new Set(data.missedStops?.map((m) => m.routeStopId) ?? []);
   const pickupLogByStop = new Map<string, PickupLog>();
+  const missedByStop = new Map<string, MissedStop>();
   for (const log of data.pickupLogs) {
     pickupLogByStop.set(log.routeStopId, log);
+  }
+  for (const m of data.missedStops ?? []) {
+    missedByStop.set(m.routeStopId, m);
   }
 
   return (
@@ -170,7 +183,9 @@ export default function RouteDetailPage() {
         <CardContent className="space-y-4">
           {data.stops.map((stop) => {
             const isCompleted = completedStopIds.has(stop.id);
+            const isMissed = missedStopIds.has(stop.id);
             const log = pickupLogByStop.get(stop.id);
+            const missed = missedByStop.get(stop.id);
 
             return (
               <div
@@ -180,6 +195,8 @@ export default function RouteDetailPage() {
                 <div className="flex items-start gap-3">
                   {isCompleted ? (
                     <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-primary" />
+                  ) : isMissed ? (
+                    <XCircle className="mt-0.5 size-5 shrink-0 text-amber-500" />
                   ) : (
                     <Circle className="mt-0.5 size-5 shrink-0 text-muted-foreground" />
                   )}
@@ -211,6 +228,18 @@ export default function RouteDetailPage() {
                         )}
                         {log.notes && (
                           <p className="mt-1 italic">{log.notes}</p>
+                        )}
+                      </div>
+                    )}
+                    {missed && (
+                      <div className="mt-3 rounded-md bg-amber-50 dark:bg-amber-950/30 p-3 text-sm">
+                        <p className="font-medium text-amber-800 dark:text-amber-200">
+                          Missed – reported by {missed.reportedBy.name}
+                        </p>
+                        {missed.reason && (
+                          <p className="mt-1 italic text-amber-700 dark:text-amber-300">
+                            {missed.reason}
+                          </p>
                         )}
                       </div>
                     )}
