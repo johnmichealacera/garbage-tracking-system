@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { RouteMap } from "@/components/map/route-map";
+import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowLeft, CheckCircle2, Circle, Pencil } from "lucide-react";
 
 interface CompletedBy {
@@ -81,8 +82,27 @@ export default function RouteDetailPage() {
 
   if (!data) {
     return (
-      <div className="space-y-4">
-        <p className="text-muted-foreground">Loading...</p>
+      <div className="space-y-6">
+        <div className="flex gap-2">
+          <Skeleton className="h-9 w-28" />
+          <Skeleton className="h-9 w-24" />
+        </div>
+        <Card>
+          <CardHeader>
+            <Skeleton className="h-6 w-48" />
+            <Skeleton className="h-4 w-64" />
+          </CardHeader>
+        </Card>
+        <Card>
+          <CardHeader>
+            <Skeleton className="h-5 w-32" />
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {[1, 2, 3, 4].map((i) => (
+              <Skeleton key={i} className="h-20 w-full" />
+            ))}
+          </CardContent>
+        </Card>
       </div>
     );
   }

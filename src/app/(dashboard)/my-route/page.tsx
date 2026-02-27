@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 
 interface Area {
@@ -113,9 +114,26 @@ export default function MyRoutePage() {
 
   if (!data) {
     return (
-      <div className="space-y-4">
-        <h1 className="text-2xl font-semibold">My Route</h1>
-        <p className="text-muted-foreground">Loading...</p>
+      <div className="space-y-6">
+        <Skeleton className="h-8 w-40" />
+        <Card>
+          <CardHeader>
+            <Skeleton className="h-5 w-48" />
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <Skeleton className="h-4 w-full" />
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <Skeleton className="h-5 w-24" />
+          </CardHeader>
+          <CardContent className="space-y-2">
+            {[1, 2, 3, 4].map((i) => (
+              <Skeleton key={i} className="h-12 w-full" />
+            ))}
+          </CardContent>
+        </Card>
       </div>
     );
   }

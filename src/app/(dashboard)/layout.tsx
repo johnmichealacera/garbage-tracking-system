@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/auth";
 import { SidebarNav } from "@/components/dashboard/sidebar-nav";
+import { SignOutButton } from "@/components/dashboard/sign-out-button";
 
 export default async function DashboardLayout({
   children,
@@ -32,6 +33,9 @@ export default async function DashboardLayout({
           </p>
         </div>
         <SidebarNav role={role} />
+        <div className="mt-auto pt-4 border-t">
+          <SignOutButton />
+        </div>
       </aside>
       <main className="flex-1 min-w-0 px-6 py-6">{children}</main>
     </div>

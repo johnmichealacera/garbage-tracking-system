@@ -264,11 +264,19 @@ export default function NewRoutePage() {
             </div>
 
             <div className="flex gap-2">
-              <Button type="submit" disabled={isSubmitting}>
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:shadow-md"
+              >
                 {isSubmitting ? "Creating..." : "Create route"}
               </Button>
               <Link href="/routes">
-                <Button type="button" variant="outline">
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="cursor-pointer transition-colors hover:bg-accent"
+                >
                   Cancel
                 </Button>
               </Link>

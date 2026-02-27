@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 
 interface Truck {
@@ -18,7 +19,7 @@ interface Truck {
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function TrucksPage() {
-  const { data } = useSWR<Truck[]>("/api/trucks", fetcher);
+  const { data, isLoading } = useSWR<Truck[]>("/api/trucks", fetcher);
   const [code, setCode] = useState("");
   const [plateNumber, setPlateNumber] = useState("");
   const [capacityKg, setCapacityKg] = useState("");
@@ -49,6 +50,39 @@ export default function TrucksPage() {
     } finally {
       setIsSubmitting(false);
     }
+  }
+
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <Skeleton className="h-8 w-32" />
+        <Card>
+          <CardHeader>
+            <Skeleton className="h-5 w-24" />
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-4 md:grid-cols-4">
+              <Skeleton className="h-9 w-full" />
+              <Skeleton className="h-9 w-full" />
+              <Skeleton className="h-9 w-full" />
+              <Skeleton className="h-9 w-full" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <Skeleton className="h-5 w-24" />
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              {[1, 2, 3, 4, 5].map((i) => (
+                <Skeleton key={i} className="h-10 w-full" />
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
   }
 
   return (
@@ -91,7 +125,7 @@ export default function TrucksPage() {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full"
+                className="w-full cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:shadow-md"
               >
                 {isSubmitting ? "Saving..." : "Save"}
               </Button>

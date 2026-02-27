@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 
 interface Area {
@@ -23,7 +24,7 @@ const fetcher = (url: string) =>
   });
 
 export default function AreasPage() {
-  const { data, error } = useSWR<Area[]>("/api/areas", fetcher);
+  const { data, error, isLoading } = useSWR<Area[]>("/api/areas", fetcher);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -69,6 +70,36 @@ export default function AreasPage() {
     );
   }
 
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <Skeleton className="h-8 w-24" />
+        <Card>
+          <CardHeader>
+            <Skeleton className="h-5 w-24" />
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <Skeleton className="h-9 w-full max-w-md" />
+            <Skeleton className="h-9 w-full max-w-md" />
+            <Skeleton className="h-9 w-20" />
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <Skeleton className="h-5 w-24" />
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              {[1, 2, 3, 4].map((i) => (
+                <Skeleton key={i} className="h-10 w-full" />
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-semibold">Areas</h1>
@@ -96,7 +127,11 @@ export default function AreasPage() {
                 placeholder="Optional"
               />
             </div>
-            <Button type="submit" disabled={isSubmitting}>
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              className="cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:shadow-md"
+            >
               {isSubmitting ? "Saving..." : "Save"}
             </Button>
           </form>

@@ -50,7 +50,7 @@ export function SidebarNav({ role }: SidebarNavProps) {
           <Link key={item.href} href={item.href}>
             <span
               className={cn(
-                "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
+                "flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
                 "hover:bg-accent/80",
                 isActive
                   ? "bg-primary/10 text-primary shadow-sm ring-1 ring-primary/20"

@@ -4,6 +4,7 @@ import useSWR from "swr";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Package, ArrowLeft } from "lucide-react";
 
 interface PickupLogItem {
@@ -33,7 +34,7 @@ const fetcher = (url: string) =>
   });
 
 export default function PickupHistoryPage() {
-  const { data, error } = useSWR<PickupLogItem[]>(
+  const { data, error, isLoading } = useSWR<PickupLogItem[]>(
     "/api/pickup-history",
     fetcher,
     { refreshInterval: 10000 },
@@ -48,12 +49,38 @@ export default function PickupHistoryPage() {
     );
   }
 
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <Skeleton className="h-8 w-40" />
+          <Skeleton className="h-9 w-28" />
+        </div>
+        <Card>
+          <CardHeader>
+            <Skeleton className="h-5 w-32" />
+            <Skeleton className="h-4 w-64" />
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <Skeleton key={i} className="h-20 w-full" />
+            ))}
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Pickup history</h1>
         <Link href="/dashboard">
-          <Button variant="ghost" size="sm">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="cursor-pointer transition-colors hover:bg-accent"
+          >
             <ArrowLeft className="mr-2 size-4" />
             Dashboard
           </Button>

@@ -11,6 +11,7 @@ import {
 } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import React from "react";
 
 interface SummaryResponse {
@@ -35,10 +36,45 @@ export default function ReportingPage() {
   if (from) params.set("from", from);
   if (to) params.set("to", to);
 
-  const { data } = useSWR<SummaryResponse>(
+  const { data, isLoading } = useSWR<SummaryResponse>(
     `/api/report/summary${params.toString() ? `?${params.toString()}` : ""}`,
     fetcher,
   );
+
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <Skeleton className="h-8 w-32" />
+        <Card>
+          <CardHeader>
+            <Skeleton className="h-5 w-20" />
+          </CardHeader>
+          <CardContent className="grid gap-4 md:grid-cols-2">
+            <Skeleton className="h-9 w-full" />
+            <Skeleton className="h-9 w-full" />
+          </CardContent>
+        </Card>
+        <div className="grid gap-4 md:grid-cols-2">
+          <Card>
+            <CardHeader>
+              <Skeleton className="h-5 w-32" />
+            </CardHeader>
+            <CardContent className="h-64">
+              <Skeleton className="h-full w-full" />
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <Skeleton className="h-5 w-32" />
+            </CardHeader>
+            <CardContent className="h-64">
+              <Skeleton className="h-full w-full" />
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

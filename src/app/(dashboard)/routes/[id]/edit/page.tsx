@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { ArrowLeft, Plus, Trash2 } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface Truck {
   id: string;
@@ -178,7 +179,27 @@ export default function EditRoutePage() {
   }
 
   if (!route) {
-    return <p className="text-muted-foreground">Loading...</p>;
+    return (
+      <div className="space-y-6">
+        <Skeleton className="h-9 w-32" />
+        <Card>
+          <CardHeader>
+            <Skeleton className="h-6 w-48" />
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid gap-4 md:grid-cols-2">
+              <Skeleton className="h-9 w-full" />
+              <Skeleton className="h-9 w-full" />
+            </div>
+            <div className="space-y-2">
+              {[1, 2, 3].map((i) => (
+                <Skeleton key={i} className="h-14 w-full" />
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
   }
 
   return (
@@ -324,11 +345,19 @@ export default function EditRoutePage() {
             </div>
 
             <div className="flex gap-2">
-              <Button type="submit" disabled={isSubmitting}>
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:shadow-md"
+              >
                 {isSubmitting ? "Saving..." : "Save changes"}
               </Button>
               <Link href={`/routes/${id}`}>
-                <Button type="button" variant="outline">
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="cursor-pointer transition-colors hover:bg-accent"
+                >
                   Cancel
                 </Button>
               </Link>

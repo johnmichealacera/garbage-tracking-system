@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface Area {
   id: string;
@@ -47,17 +48,51 @@ export default function RoutesPage() {
   if (date) params.set("date", date);
   if (areaId) params.set("areaId", areaId);
 
-  const { data: routes } = useSWR<Route[]>(
+  const { data: routes, isLoading } = useSWR<Route[]>(
     `/api/routes${params.toString() ? `?${params.toString()}` : ""}`,
     fetcher,
   );
+
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <Skeleton className="h-8 w-32" />
+          <Skeleton className="h-9 w-28" />
+        </div>
+        <Card>
+          <CardHeader>
+            <Skeleton className="h-5 w-20" />
+          </CardHeader>
+          <CardContent className="grid gap-4 md:grid-cols-3">
+            <Skeleton className="h-9 w-full" />
+            <Skeleton className="h-9 w-full" />
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <Skeleton className="h-5 w-32" />
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              {[1, 2, 3, 4, 5].map((i) => (
+                <Skeleton key={i} className="h-10 w-full" />
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Routes</h1>
         <Link href="/routes/new">
-          <Button>Create route</Button>
+          <Button className="cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:shadow-md">
+            Create route
+          </Button>
         </Link>
       </div>
       <Card>
