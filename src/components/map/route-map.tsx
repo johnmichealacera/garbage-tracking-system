@@ -16,6 +16,10 @@ interface StopWithCoords {
 interface RouteMapProps {
   stops: StopWithCoords[];
   completedStopIds: Set<string>;
+  /** Override helper text when no coordinates (e.g. public schedule vs staff). */
+  emptyMessage?: string;
+  /** Map height in pixels (default 400). */
+  mapHeightPx?: number;
 }
 
 const RouteMapInner = dynamic(
@@ -32,16 +36,20 @@ const RouteMapInner = dynamic(
 );
 
 export function RouteMap(props: RouteMapProps) {
+  const { emptyMessage, mapHeightPx, ...rest } = props;
   const stopsWithCoords = props.stops.filter(
     (s) => s.latitude != null && s.longitude != null,
   );
 
   if (stopsWithCoords.length === 0) {
     return (
-      <div className="flex h-[400px] items-center justify-center rounded-lg border bg-muted/30">
+      <div
+        className="flex items-center justify-center rounded-lg border bg-muted/30 px-4 text-center"
+        style={{ height: mapHeightPx ?? 400 }}
+      >
         <p className="text-sm text-muted-foreground">
-          No stop coordinates available. Add latitude/longitude to stops to see
-          them on the map.
+          {emptyMessage ??
+            "No stop coordinates available. Add latitude/longitude to stops to see them on the map."}
         </p>
       </div>
     );
@@ -49,7 +57,7 @@ export function RouteMap(props: RouteMapProps) {
 
   return (
     <div className="overflow-hidden rounded-lg border">
-      <RouteMapInner {...props} />
+      <RouteMapInner {...rest} mapHeightPx={mapHeightPx} />
     </div>
   );
 }

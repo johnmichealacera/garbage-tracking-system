@@ -50,17 +50,25 @@ export function SidebarNav({ role }: SidebarNavProps) {
           <Link key={item.href} href={item.href}>
             <span
               className={cn(
-                "flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
-                "hover:bg-accent/80",
+                "group relative flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
+                "hover:bg-accent/70",
                 isActive
-                  ? "bg-primary/10 text-primary shadow-sm ring-1 ring-primary/20"
+                  ? "bg-linear-to-r from-primary/12 to-primary/0 text-primary shadow-sm ring-1 ring-primary/20"
                   : "text-muted-foreground hover:text-foreground",
               )}
             >
+              {isActive ? (
+                <span
+                  className="absolute inset-y-1.5 left-0 w-0.5 rounded-full bg-primary"
+                  aria-hidden
+                />
+              ) : null}
               <Icon
                 className={cn(
-                  "size-5 shrink-0 transition-colors",
-                  isActive ? "text-primary" : "text-muted-foreground",
+                  "size-[18px] shrink-0 transition-colors",
+                  isActive
+                    ? "text-primary"
+                    : "text-muted-foreground group-hover:text-foreground",
                 )}
               />
               {item.label}

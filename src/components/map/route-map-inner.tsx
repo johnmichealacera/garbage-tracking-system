@@ -22,11 +22,13 @@ interface StopWithCoords {
 interface RouteMapInnerProps {
   stops: StopWithCoords[];
   completedStopIds: Set<string>;
+  mapHeightPx?: number;
 }
 
 export function RouteMapInner({
   stops,
   completedStopIds,
+  mapHeightPx = 400,
 }: RouteMapInnerProps) {
   const stopsWithCoords = stops.filter(
     (s): s is StopWithCoords & { latitude: number; longitude: number } =>
@@ -47,7 +49,7 @@ export function RouteMapInner({
     <MapContainer
       center={center}
       zoom={MAP_DEFAULT_ZOOM}
-      style={{ height: "400px", width: "100%" }}
+      style={{ height: mapHeightPx, width: "100%" }}
       scrollWheelZoom
     >
       <TileLayer
