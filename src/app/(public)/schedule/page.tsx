@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { RouteMap } from "@/components/map/route-map";
+import { getTodayInPhilippinesYmd } from "@/lib/philippine-time";
 import {
   CheckCircle2,
   XCircle,
@@ -100,9 +101,7 @@ function statusLabel(status: string) {
 }
 
 export default function PublicSchedulePage() {
-  const [date, setDate] = useState(() =>
-    new Date().toISOString().slice(0, 10),
-  );
+  const [date, setDate] = useState(() => getTodayInPhilippinesYmd());
   const [selectedRouteId, setSelectedRouteId] = useState<string | null>(
     null,
   );

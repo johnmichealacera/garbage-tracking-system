@@ -1,5 +1,9 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import {
+  getTodayInPhilippinesYmd,
+  getUtcBoundsForPhilippinesDay,
+} from "@/lib/philippine-time";
 
 /**
  * Public API - no auth required.
@@ -8,20 +12,26 @@ import { db } from "@/lib/db";
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const dateParam = searchParams.get("date");
+  const requestedYmd = dateParam ?? getTodayInPhilippinesYmd();
 
-  const targetDate = dateParam ? new Date(dateParam) : new Date();
-  const startOfDay = new Date(
-    targetDate.getFullYear(),
-    targetDate.getMonth(),
-    targetDate.getDate(),
-  );
-  const endOfDay = new Date(startOfDay.getTime() + 86400000);
+  let startUtc: Date;
+  let endUtc: Date;
+  let canonicalYmd: string;
+  try {
+    ({ startUtc, endUtc, canonicalYmd } =
+      getUtcBoundsForPhilippinesDay(requestedYmd));
+  } catch {
+    return NextResponse.json(
+      { message: "Invalid date. Expected YYYY-MM-DD." },
+      { status: 400 },
+    );
+  }
 
   const routes = await db.route.findMany({
     where: {
       scheduledDate: {
-        gte: startOfDay,
-        lt: endOfDay,
+        gte: startUtc,
+        lt: endUtc,
       },
     },
     include: {
@@ -103,7 +113,7 @@ export async function GET(request: Request) {
   }));
 
   return NextResponse.json({
-    date: startOfDay.toISOString().slice(0, 10),
+    date: canonicalYmd,
     routes: schedule,
   });
 }
