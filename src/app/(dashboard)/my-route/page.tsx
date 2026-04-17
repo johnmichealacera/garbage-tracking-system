@@ -46,6 +46,8 @@ interface MyRoute {
   missedStops: MissedStop[];
 }
 
+type PendingStopCtx = { routeId: string; stop: Stop };
+
 const fetcher = (url: string) =>
   fetch(url).then(async (res) => {
     if (!res.ok) {
@@ -55,22 +57,29 @@ const fetcher = (url: string) =>
   });
 
 export default function MyRoutePage() {
-  const { data, error } = useSWR<MyRoute>("/api/my-route", fetcher, {
+  const { data, error } = useSWR<MyRoute[]>("/api/my-route", fetcher, {
     refreshInterval: 10000,
   });
-  const [pendingStop, setPendingStop] = useState<Stop | null>(null);
-  const [pendingMissed, setPendingMissed] = useState<Stop | null>(null);
+  const [pendingStop, setPendingStop] = useState<PendingStopCtx | null>(
+    null,
+  );
+  const [pendingMissed, setPendingMissed] = useState<PendingStopCtx | null>(
+    null,
+  );
   const [volumeKg, setVolumeKg] = useState("");
   const [notes, setNotes] = useState("");
   const [missedReason, setMissedReason] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  async function completeStop(stopId: string, payload?: { actualVolumeKg?: number; notes?: string }) {
-    if (!data) return;
+  async function completeStop(
+    routeId: string,
+    stopId: string,
+    payload?: { actualVolumeKg?: number; notes?: string },
+  ) {
     setIsSubmitting(true);
     try {
       const res = await fetch(
-        `/api/routes/${data.id}/stops/${stopId}/complete`,
+        `/api/routes/${routeId}/stops/${stopId}/complete`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -96,12 +105,11 @@ export default function MyRoutePage() {
     }
   }
 
-  async function markMissed(stopId: string, reason?: string) {
-    if (!data) return;
+  async function markMissed(routeId: string, stopId: string, reason?: string) {
     setIsSubmitting(true);
     try {
       const res = await fetch(
-        `/api/routes/${data.id}/stops/${stopId}/missed`,
+        `/api/routes/${routeId}/stops/${stopId}/missed`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -123,28 +131,32 @@ export default function MyRoutePage() {
     }
   }
 
-  function handleOpenComplete(stop: Stop) {
-    setPendingStop(stop);
+  function handleOpenComplete(routeId: string, stop: Stop) {
+    setPendingStop({ routeId, stop });
     setVolumeKg("");
     setNotes("");
   }
 
-  function handleOpenMissed(stop: Stop) {
-    setPendingMissed(stop);
+  function handleOpenMissed(routeId: string, stop: Stop) {
+    setPendingMissed({ routeId, stop });
     setMissedReason("");
   }
 
   function handleSubmitMissed(e: React.FormEvent) {
     e.preventDefault();
     if (!pendingMissed) return;
-    markMissed(pendingMissed.id, missedReason.trim() || undefined);
+    markMissed(
+      pendingMissed.routeId,
+      pendingMissed.stop.id,
+      missedReason.trim() || undefined,
+    );
   }
 
   function handleSubmitComplete(e: React.FormEvent) {
     e.preventDefault();
     if (!pendingStop) return;
     const actualVolumeKg = volumeKg ? parseInt(volumeKg, 10) : undefined;
-    completeStop(pendingStop.id, {
+    completeStop(pendingStop.routeId, pendingStop.stop.id, {
       actualVolumeKg: Number.isNaN(actualVolumeKg) ? undefined : actualVolumeKg,
       notes: notes.trim() || undefined,
     });
@@ -185,88 +197,109 @@ export default function MyRoutePage() {
     );
   }
 
-  const completedIds = new Set(data.pickupLogs.map((log) => log.routeStopId));
-  const missedIds = new Set(data.missedStops?.map((m) => m.routeStopId) ?? []);
-
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-semibold">My Route</h1>
-      <Card>
-        <CardHeader>
-          <CardTitle>{data.name}</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-2">
-          <p className="text-sm text-muted-foreground">
-            {new Date(data.scheduledDate).toLocaleDateString()} •{" "}
-            {data.area.name} • Truck {data.truck.code}
+      <div>
+        <h1 className="text-2xl font-semibold">My Route</h1>
+        {data.length > 1 ? (
+          <p className="mt-1 text-sm text-muted-foreground">
+            You have {data.length} routes scheduled for today.
           </p>
-        </CardContent>
-      </Card>
+        ) : null}
+      </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Stops</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-2">
-          {data.stops.map((stop) => {
-            const isCompleted = completedIds.has(stop.id);
-            const isMissed = missedIds.has(stop.id);
-            const isDone = isCompleted || isMissed;
-            return (
-              <div
-                key={stop.id}
-                className="flex items-center justify-between rounded-lg border px-3 py-2 text-sm"
-              >
-                <div>
-                  <p className="font-medium">
-                    #{stop.sequence} {stop.name ?? stop.address ?? "Stop"}
+      {data.map((route) => {
+        const completedIds = new Set(
+          route.pickupLogs.map((log) => log.routeStopId),
+        );
+        const missedIds = new Set(
+          route.missedStops?.map((m) => m.routeStopId) ?? [],
+        );
+        return (
+          <div key={route.id} className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>{route.name}</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <p className="text-sm text-muted-foreground">
+                  {new Date(route.scheduledDate).toLocaleDateString()} •{" "}
+                  {route.area.name} • Truck {route.truck.code}
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Stops</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                {route.stops.map((stop) => {
+                  const isCompleted = completedIds.has(stop.id);
+                  const isMissed = missedIds.has(stop.id);
+                  const isDone = isCompleted || isMissed;
+                  return (
+                    <div
+                      key={stop.id}
+                      className="flex items-center justify-between rounded-lg border px-3 py-2 text-sm"
+                    >
+                      <div>
+                        <p className="font-medium">
+                          #{stop.sequence}{" "}
+                          {stop.name ?? stop.address ?? "Stop"}
+                        </p>
+                        {stop.address ? (
+                          <p className="text-xs text-muted-foreground">
+                            {stop.address}
+                          </p>
+                        ) : null}
+                        {isMissed && (
+                          <p className="mt-1 text-xs text-amber-600 dark:text-amber-500">
+                            Marked as missed
+                          </p>
+                        )}
+                      </div>
+                      <div className="flex gap-2">
+                        <Button
+                          size="sm"
+                          variant={isCompleted ? "outline" : "default"}
+                          disabled={isDone}
+                          onClick={() => handleOpenComplete(route.id, stop)}
+                        >
+                          {isCompleted ? "Completed" : "Mark completed"}
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant={isMissed ? "outline" : "destructive"}
+                          disabled={isDone}
+                          onClick={() => handleOpenMissed(route.id, stop)}
+                        >
+                          {isMissed ? "Missed" : "Mark missed"}
+                        </Button>
+                      </div>
+                    </div>
+                  );
+                })}
+                {!route.stops.length && (
+                  <p className="text-sm text-muted-foreground">
+                    This route has no stops yet.
                   </p>
-                  {stop.address ? (
-                    <p className="text-xs text-muted-foreground">
-                      {stop.address}
-                    </p>
-                  ) : null}
-                  {isMissed && (
-                    <p className="mt-1 text-xs text-amber-600 dark:text-amber-500">
-                      Marked as missed
-                    </p>
-                  )}
-                </div>
-                <div className="flex gap-2">
-                  <Button
-                    size="sm"
-                    variant={isCompleted ? "outline" : "default"}
-                    disabled={isDone}
-                    onClick={() => handleOpenComplete(stop)}
-                  >
-                    {isCompleted ? "Completed" : "Mark completed"}
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant={isMissed ? "outline" : "destructive"}
-                    disabled={isDone}
-                    onClick={() => handleOpenMissed(stop)}
-                  >
-                    {isMissed ? "Missed" : "Mark missed"}
-                  </Button>
-                </div>
-              </div>
-            );
-          })}
-          {!data.stops.length && (
-            <p className="text-sm text-muted-foreground">
-              This route has no stops yet.
-            </p>
-          )}
-        </CardContent>
-      </Card>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+        );
+      })}
 
       {pendingStop && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
           <div className="w-full max-w-md rounded-lg border bg-background p-6 shadow-lg">
             <h3 className="text-lg font-semibold">Log pickup</h3>
             <p className="mt-1 text-sm text-muted-foreground">
-              #{pendingStop.sequence} {pendingStop.name ?? pendingStop.address ?? "Stop"}
+              #{pendingStop.stop.sequence}{" "}
+              {pendingStop.stop.name ??
+                pendingStop.stop.address ??
+                "Stop"}
             </p>
             <form onSubmit={handleSubmitComplete} className="mt-4 space-y-4">
               <div className="space-y-2">
@@ -289,7 +322,7 @@ export default function MyRoutePage() {
                   onChange={(e) => setNotes(e.target.value)}
                 />
               </div>
-              <div className="flex gap-2 justify-end">
+              <div className="flex justify-end gap-2">
                 <Button
                   type="button"
                   variant="outline"
@@ -315,7 +348,10 @@ export default function MyRoutePage() {
           <div className="w-full max-w-md rounded-lg border bg-background p-6 shadow-lg">
             <h3 className="text-lg font-semibold">Mark missed stop</h3>
             <p className="mt-1 text-sm text-muted-foreground">
-              #{pendingMissed.sequence} {pendingMissed.name ?? pendingMissed.address ?? "Stop"}
+              #{pendingMissed.stop.sequence}{" "}
+              {pendingMissed.stop.name ??
+                pendingMissed.stop.address ??
+                "Stop"}
             </p>
             <form onSubmit={handleSubmitMissed} className="mt-4 space-y-4">
               <div className="space-y-2">
@@ -327,7 +363,7 @@ export default function MyRoutePage() {
                   onChange={(e) => setMissedReason(e.target.value)}
                 />
               </div>
-              <div className="flex gap-2 justify-end">
+              <div className="flex justify-end gap-2">
                 <Button
                   type="button"
                   variant="outline"
@@ -349,4 +385,3 @@ export default function MyRoutePage() {
     </div>
   );
 }
-

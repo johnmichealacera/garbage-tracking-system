@@ -18,7 +18,9 @@ export default function DashboardPage() {
     fetcher,
   );
 
-  const today = data?.byDay.at(-1);
+  const utcDayKey = new Date().toISOString().slice(0, 10);
+  const todayPickups =
+    data?.byDay.find((d) => d.date === utcDayKey)?.count ?? 0;
 
   if (isLoading) {
     return (
@@ -69,9 +71,7 @@ export default function DashboardPage() {
             <CardTitle>Today&apos;s pickups</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-semibold">
-              {today?.count ?? 0}
-            </p>
+            <p className="text-3xl font-semibold">{todayPickups}</p>
           </CardContent>
         </Card>
       </div>

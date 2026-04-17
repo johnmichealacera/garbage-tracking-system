@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { ArrowLeft, Plus, Trash2 } from "lucide-react";
+import { StopLocationPicker } from "@/components/map/stop-location-picker";
 
 interface Truck {
   id: string;
@@ -241,53 +242,69 @@ export default function NewRoutePage() {
                     key={i}
                     className="flex gap-2 rounded-lg border p-3"
                   >
-                    <div className="flex-1 grid gap-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6">
-                      <Input
-                        placeholder="Name"
-                        value={stop.name}
-                        onChange={(e) => updateStop(i, "name", e.target.value)}
-                      />
-                      <Input
-                        placeholder="Address"
-                        value={stop.address}
-                        onChange={(e) => updateStop(i, "address", e.target.value)}
-                      />
-                      <select
-                        className="h-9 rounded-md border border-input bg-transparent px-3 text-sm"
-                        value={stop.type}
-                        onChange={(e) => updateStop(i, "type", e.target.value)}
-                      >
-                        <option value="RESIDENTIAL">Residential</option>
-                        <option value="COMMERCIAL">Commercial</option>
-                        <option value="MIXED">Mixed</option>
-                      </select>
-                      <Input
-                        type="number"
-                        min={0}
-                        placeholder="Expected kg"
-                        value={stop.expectedVolumeKg}
-                        onChange={(e) =>
-                          updateStop(i, "expectedVolumeKg", e.target.value)
-                        }
-                      />
-                      <Input
-                        type="number"
-                        step="any"
-                        placeholder="Latitude (e.g. 9.6)"
-                        value={stop.latitude}
-                        onChange={(e) =>
-                          updateStop(i, "latitude", e.target.value)
-                        }
-                      />
-                      <Input
-                        type="number"
-                        step="any"
-                        placeholder="Longitude (e.g. 125.9)"
-                        value={stop.longitude}
-                        onChange={(e) =>
-                          updateStop(i, "longitude", e.target.value)
-                        }
-                      />
+                    <div className="min-w-0 flex-1 space-y-2">
+                      <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6">
+                        <Input
+                          placeholder="Name"
+                          value={stop.name}
+                          onChange={(e) => updateStop(i, "name", e.target.value)}
+                        />
+                        <Input
+                          placeholder="Address"
+                          value={stop.address}
+                          onChange={(e) => updateStop(i, "address", e.target.value)}
+                        />
+                        <select
+                          className="h-9 rounded-md border border-input bg-transparent px-3 text-sm"
+                          value={stop.type}
+                          onChange={(e) => updateStop(i, "type", e.target.value)}
+                        >
+                          <option value="RESIDENTIAL">Residential</option>
+                          <option value="COMMERCIAL">Commercial</option>
+                          <option value="MIXED">Mixed</option>
+                        </select>
+                        <Input
+                          type="number"
+                          min={0}
+                          placeholder="Expected kg"
+                          value={stop.expectedVolumeKg}
+                          onChange={(e) =>
+                            updateStop(i, "expectedVolumeKg", e.target.value)
+                          }
+                        />
+                        <Input
+                          type="number"
+                          step="any"
+                          placeholder="Latitude"
+                          value={stop.latitude}
+                          onChange={(e) =>
+                            updateStop(i, "latitude", e.target.value)
+                          }
+                        />
+                        <Input
+                          type="number"
+                          step="any"
+                          placeholder="Longitude"
+                          value={stop.longitude}
+                          onChange={(e) =>
+                            updateStop(i, "longitude", e.target.value)
+                          }
+                        />
+                      </div>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <StopLocationPicker
+                          latitude={stop.latitude}
+                          longitude={stop.longitude}
+                          onChange={(lat, lng) => {
+                            updateStop(i, "latitude", lat);
+                            updateStop(i, "longitude", lng);
+                          }}
+                        />
+                        <span className="text-xs text-muted-foreground">
+                          Or type coordinates above. Map is centered on Socorro,
+                          Surigao del Norte.
+                        </span>
+                      </div>
                     </div>
                     <Button
                       type="button"

@@ -141,67 +141,86 @@ async function main() {
     // eslint-disable-next-line no-console
     console.log("  Routes for today already exist, skipping route creation.");
   } else {
-    // Create sample routes for collection barangays (today)
-    const routeNames = [
-    { barangay: "Albino Taruc", name: "Albino Taruc - Morning Route" },
-    { barangay: "Del Pilar", name: "Del Pilar - Morning Route" },
-    { barangay: "Navarro", name: "Navarro - Morning Route" },
-    { barangay: "Rizal", name: "Rizal - Morning Route" },
-    { barangay: "Songkoy", name: "Songkoy - Morning Route" },
+    /** Spread stops within Socorro municipality (demo coordinates for map view). */
+    function socorroStopLatLng(routeIdx: number, stopIndex: number) {
+      const baseLat = 9.608 + routeIdx * 0.018;
+      const baseLng = 125.945 + routeIdx * 0.014;
+      return {
+        latitude: baseLat + stopIndex * 0.006,
+        longitude: baseLng - stopIndex * 0.005,
+      };
+    }
+
+    // Three demo routes: driver1 has two (shows multi-route “My Route”), driver2 has one.
+    const routePlans = [
+      {
+        barangay: "Albino Taruc",
+        name: "Albino Taruc - Morning Route",
+        truck: truck1,
+        driver: driver1,
+        status: "IN_PROGRESS" as const,
+        seedPickup: true,
+        routeIdx: 0,
+      },
+      {
+        barangay: "Del Pilar",
+        name: "Del Pilar - Morning Route",
+        truck: truck2,
+        driver: driver2,
+        status: "PLANNED" as const,
+        seedPickup: false,
+        routeIdx: 1,
+      },
+      {
+        barangay: "Navarro",
+        name: "Navarro - Morning Route",
+        truck: truck1,
+        driver: driver1,
+        status: "PLANNED" as const,
+        seedPickup: false,
+        routeIdx: 2,
+      },
     ];
 
-    for (let i = 0; i < routeNames.length; i++) {
-      const { barangay, name } = routeNames[i];
-      const areaId = barangays[barangay]?.id;
+    for (const plan of routePlans) {
+      const areaId = barangays[plan.barangay]?.id;
       if (!areaId) continue;
 
-      const truck = i % 2 === 0 ? truck1 : truck2;
-      const driver = i % 2 === 0 ? driver1 : driver2;
+      const stopsData = [1, 2, 3].map((seq) => {
+        const { latitude, longitude } = socorroStopLatLng(plan.routeIdx, seq - 1);
+        const kind =
+          seq === 3 ? ("COMMERCIAL" as const) : ("RESIDENTIAL" as const);
+        const kg = seq === 3 ? 500 : seq === 2 ? 400 : 300;
+        return {
+          sequence: seq,
+          name: `${plan.barangay} - ${seq === 3 ? "Market Area" : seq === 2 ? "Zone B" : "Zone A"}`,
+          address: `Brgy. ${plan.barangay}, Socorro`,
+          type: kind,
+          expectedVolumeKg: kg,
+          latitude,
+          longitude,
+        };
+      });
 
       const route = await prisma.route.create({
         data: {
-          name,
+          name: plan.name,
           scheduledDate: today,
-          status: i === 0 ? "IN_PROGRESS" : "PLANNED",
-          truckId: truck.id,
+          status: plan.status,
+          truckId: plan.truck.id,
           areaId,
-          driverId: driver.id,
-          stops: {
-            create: [
-              {
-                sequence: 1,
-                name: `${barangay} - Zone A`,
-                address: `Brgy. ${barangay}, Socorro`,
-                type: "RESIDENTIAL",
-                expectedVolumeKg: 300,
-              },
-              {
-                sequence: 2,
-                name: `${barangay} - Zone B`,
-                address: `Brgy. ${barangay}, Socorro`,
-                type: "RESIDENTIAL",
-                expectedVolumeKg: 400,
-              },
-              {
-                sequence: 3,
-                name: `${barangay} - Market Area`,
-                address: `Brgy. ${barangay}, Socorro`,
-                type: "COMMERCIAL",
-                expectedVolumeKg: 500,
-              },
-            ],
-          },
+          driverId: plan.driver.id,
+          stops: { create: stopsData },
         },
         include: { stops: true },
       });
 
-      // Demo: first route has one completed pickup
-      if (i === 0 && route.stops[0]) {
+      if (plan.seedPickup && route.stops[0]) {
         await prisma.pickupLog.create({
           data: {
             routeId: route.id,
             routeStopId: route.stops[0].id,
-            completedById: driver.id,
+            completedById: plan.driver.id,
             completedAt: new Date(),
             actualVolumeKg: 280,
             notes: "Regular collection - Socorro LGU",

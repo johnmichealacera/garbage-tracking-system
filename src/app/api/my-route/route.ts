@@ -21,7 +21,7 @@ export async function GET() {
     today.getDate() + 1,
   );
 
-  const route = await db.route.findFirst({
+  const routes = await db.route.findMany({
     where: {
       driverId: userId,
       scheduledDate: {
@@ -38,18 +38,16 @@ export async function GET() {
       pickupLogs: true,
       missedStops: true,
     },
-    orderBy: {
-      scheduledDate: "asc",
-    },
+    orderBy: [{ scheduledDate: "asc" }, { name: "asc" }],
   });
 
-  if (!route) {
+  if (!routes.length) {
     return NextResponse.json(
       { message: "No route assigned for today." },
       { status: 404 },
     );
   }
 
-  return NextResponse.json(route);
+  return NextResponse.json(routes);
 }
 
