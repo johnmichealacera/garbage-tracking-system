@@ -42,16 +42,23 @@ npm run dev
 
 ### Main flows
 
-- **Home**: `/` – Sign in (staff) or view public collection schedule.
+- **Home**: `/` – Public landing page with modern LGU branding, polished CTA actions, and quick access to sign-in and schedule.
 - **Public schedule**: `/schedule` – No login. View collection routes and status by date.
-- **Auth**: `/sign-in` – Log in with Socorro LGU credentials.
-- **Dashboard**: `/dashboard` – KPIs for all roles.
-- **Routes**: `/routes` – Create, view, edit routes. Filter by date and barangay.
-- **Trucks**: `/trucks` – Manage collection trucks.
-- **Areas**: `/areas` – Manage barangays (Socorro’s 14 barangays).
-- **My Route**: `/my-route` – Drivers see today’s route, mark stops completed or missed.
-- **Pickup history**: `/pickup-history` – Recent pickups (drivers see own only).
-- **Reporting**: `/reporting` (admin) – Charts and barangay summary table.
+- **Auth**: `/sign-in` – Centered, modern sign-in card with refined public links.
+- **Dashboard**: `/dashboard` – Personalized hero, KPI cards, recent activity, and top barangays.
+- **Routes**: `/routes` – Filter by date/barangay, view progress bars and route status badges, and create routes.
+- **Trucks**: `/trucks` – Fleet registration and status-aware table.
+- **Areas**: `/areas` – Manage barangays with card-based listing and quick creation.
+- **My Route**: `/my-route` – Driver-focused workflow with progress tracking and polished complete/missed dialogs.
+- **Pickup history**: `/pickup-history` – Enhanced activity feed with route links, driver attribution, and volume indicators.
+- **Reporting**: `/reporting` – Date-filtered KPIs, modernized charts, and barangay analytics table.
+
+### UX enhancements (latest)
+
+- Unified premium visual language across public and authenticated pages (ambient gradients, glassmorphism-style cards, consistent spacing/typography).
+- Reusable dashboard UI primitives: shared page headers and status badges for consistent page hierarchy and state visibility.
+- Improved readability and scannability through stronger information architecture, progress indicators, and richer empty/loading states.
+- Responsive behavior improved for both desktop and mobile (including authenticated layout refinements).
 
 ### Seed accounts (after `npm run db:seed`)
 

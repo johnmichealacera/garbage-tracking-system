@@ -460,7 +460,7 @@ This section provides an overview of the outcomes and achievements of the Garbag
 
 ## Authentication and Access Control
 
-The sign-in page provides secure access control with role-based authentication. Only authorized personnel (administrators, dispatchers, and drivers) can access the system using their credentials. The NextAuth.js authentication ensures secure session management with JWT tokens, preventing unauthorized access and maintaining data integrity throughout the tracking process.
+The sign-in page provides secure access control with role-based authentication and a modern, centered interface designed for clarity and ease of use. Only authorized personnel (administrators, dispatchers, and drivers) can access the system using their credentials. The NextAuth.js authentication ensures secure session management with JWT tokens, preventing unauthorized access and maintaining data integrity throughout the tracking process.
 
 **Key Features:**
 - Email and password authentication.
@@ -471,11 +471,14 @@ The sign-in page provides secure access control with role-based authentication. 
 
 ## Dashboard Interface
 
-The dashboard provides high-level KPIs for all roles:
+The dashboard was enhanced with a modern, elegant visual layout and now provides both high-level and actionable operational insights for all roles:
 
 - **Total Pickups:** Aggregate count of all completed pickups.
 - **Total Volume (kg):** Sum of actual volume logged across pickups.
 - **Today's Pickups:** Number of pickups completed today.
+- **Recent Days Activity:** Quick trend view of latest pickup counts and volume.
+- **Top Barangays:** Ranked list by pickup activity with missed-stop indicators.
+- **Personalized Hero Section:** Role-aware greeting and quick actions to routes and reporting.
 
 The dashboard is accessible to Admin, Dispatcher, and Driver roles, with data tailored to their permissions.
 
@@ -483,7 +486,7 @@ The dashboard is accessible to Admin, Dispatcher, and Driver roles, with data ta
 
 The routes management interface enables dispatchers and administrators to:
 
-- **List Routes:** Filter by date and area, view status and completion counts.
+- **List Routes:** Filter by date and area, view status badges, completion counts, and visual progress bars.
 - **Create Route:** Form with name, scheduled date, truck, area, driver, and stops (add/remove, name, address, type, expected volume).
 - **View Route Detail:** Metadata, stops with completion status, pickup logs with volume and notes, map view.
 - **Edit Route:** Modify existing routes with full form support.
@@ -493,15 +496,16 @@ The routes management interface enables dispatchers and administrators to:
 The driver interface provides:
 
 - **Assigned Route:** View today's route with stops in order.
-- **Mark Completed:** Dialog with optional volume (kg) and notes.
+- **Mark Completed:** Enhanced dialog with optional volume (kg) and notes.
+- **Mark Missed:** Enhanced dialog with optional missed-stop reason.
 - **Real-Time Updates:** Refresh interval for live status updates.
-- **Completion Tracking:** Visual indication of completed vs. pending stops.
+- **Completion Tracking:** Visual indication of completed, missed, and pending stops with progress bars.
 
 ## Pickup History
 
 The pickup history page displays:
 
-- **Recent Pickups:** List of recent pickups across all routes.
+- **Recent Pickups:** Enhanced activity feed of recent pickups across all routes.
 - **Driver Attribution:** Who completed each pickup and when.
 - **Volume and Notes:** Actual volume and notes when provided.
 - **Links to Routes:** Navigate to route detail from each pickup.
@@ -521,9 +525,24 @@ The route detail page includes a map section:
 The reporting page provides:
 
 - **Date Range Filters:** From and to date selection.
-- **Pickups per Day:** Bar chart of daily pickup counts.
-- **Pickups per Area:** Bar chart of area-wise distribution.
-- **Summary Tables:** Aggregated data for analysis.
+- **KPI Summary Cards:** Total pickups, total volume, and missed stops.
+- **Pickups per Day:** Modernized bar chart of daily pickup counts.
+- **Pickups per Area:** Modernized bar chart of area-wise distribution.
+- **Summary Tables:** Aggregated barangay data for analysis.
+
+## User Interface and Experience Enhancements
+
+The system was recently upgraded to improve usability, visual consistency, and user engagement while preserving all existing functionality.
+
+**Public-facing Enhancements:**
+- Home page redesigned with a polished municipal brand presentation, clear call-to-action buttons, and improved readability.
+- Sign-in page redesigned as a single centered experience with an elegant, modern card layout and improved form clarity.
+
+**Authenticated Enhancements:**
+- Dashboard layout refined with a modern sidebar, improved hierarchy, and better responsive behavior.
+- Shared visual language applied across internal modules (Dashboard, Routes, Trucks, Areas, My Route, Pickup History, Reporting).
+- Reusable UI components introduced for consistency (page headers and semantic status badges).
+- Improved loading states, empty states, and interactive cues to reduce user confusion and speed up task completion.
 
 ## System Evaluation
 
