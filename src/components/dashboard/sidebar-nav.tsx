@@ -9,7 +9,9 @@ import {
   MapPin,
   BarChart3,
   Map,
+  Network,
   Package,
+  Users,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -20,11 +22,13 @@ const navConfig = [
   { href: "/areas", label: "Areas", icon: Map },
   { href: "/my-route", label: "My Route", icon: MapPin },
   { href: "/pickup-history", label: "Pickup history", icon: Package },
+  { href: "/users", label: "User accounts", icon: Users },
   { href: "/reporting", label: "Reporting", icon: BarChart3 },
+  { href: "/system-map", label: "System map", icon: Network },
 ] as const;
 
 const roleNavMap: Record<string, string[]> = {
-  ADMIN: ["/dashboard", "/routes", "/trucks", "/areas", "/pickup-history", "/reporting"],
+  ADMIN: ["/dashboard", "/routes", "/trucks", "/areas", "/users", "/pickup-history", "/reporting", "/system-map"],
   DISPATCHER: ["/dashboard", "/routes", "/trucks", "/areas", "/pickup-history"],
   DRIVER: ["/dashboard", "/my-route", "/pickup-history"],
 };
