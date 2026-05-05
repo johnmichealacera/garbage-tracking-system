@@ -41,13 +41,6 @@ export async function GET() {
     orderBy: [{ scheduledDate: "asc" }, { name: "asc" }],
   });
 
-  if (!routes.length) {
-    return NextResponse.json(
-      { message: "No route assigned for today." },
-      { status: 404 },
-    );
-  }
-
   return NextResponse.json(routes);
 }
 

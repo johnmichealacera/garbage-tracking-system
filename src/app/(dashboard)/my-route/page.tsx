@@ -20,6 +20,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { PageHeader } from "@/components/dashboard/page-header";
+import { RouteMap } from "@/components/map/route-map";
 
 interface Area {
   name: string;
@@ -45,6 +46,8 @@ interface Stop {
   sequence: number;
   name: string | null;
   address: string | null;
+  latitude: number | null;
+  longitude: number | null;
 }
 
 interface MyRoute {
@@ -380,6 +383,24 @@ export default function MyRoutePage() {
                     This route has no stops yet.
                   </p>
                 )}
+              </CardContent>
+            </Card>
+
+            <Card className="border-border/70 bg-card/85 shadow-lg ring-1 ring-black/5 backdrop-blur-sm dark:ring-white/10">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base font-semibold tracking-tight">
+                  Route map
+                </CardTitle>
+                <p className="text-xs text-muted-foreground">
+                  Green markers = completed · Gray markers = pending
+                </p>
+              </CardHeader>
+              <CardContent>
+                <RouteMap
+                  stops={route.stops}
+                  completedStopIds={completedIds}
+                  mapHeightPx={320}
+                />
               </CardContent>
             </Card>
           </div>
