@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getServerSession } from "next-auth";
 import { authOptions, assertRole } from "@/lib/auth";
+import { getTodayInPhilippinesYmd } from "@/lib/philippine-time";
 
 export async function GET(request: Request) {
   const session = await getServerSession(authOptions);
@@ -57,7 +58,7 @@ export async function GET(request: Request) {
   const byArea = new Map<string, { areaName: string; count: number; volumeKg: number; missedCount: number }>();
 
   for (const log of logs) {
-    const dayKey = log.completedAt.toISOString().slice(0, 10);
+    const dayKey = getTodayInPhilippinesYmd(log.completedAt);
     const volume = log.actualVolumeKg ?? 0;
 
     const day = byDay.get(dayKey) ?? { count: 0, volumeKg: 0 };

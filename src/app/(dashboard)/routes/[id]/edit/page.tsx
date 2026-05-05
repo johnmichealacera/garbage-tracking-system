@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { ArrowLeft, Plus, Trash2 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { StopLocationPicker } from "@/components/map/stop-location-picker";
+import { getTodayInPhilippinesYmd } from "@/lib/philippine-time";
 
 interface Truck {
   id: string;
@@ -98,7 +99,7 @@ export default function EditRoutePage() {
   useEffect(() => {
     if (route) {
       setName(route.name);
-      setScheduledDate(route.scheduledDate.slice(0, 10));
+      setScheduledDate(getTodayInPhilippinesYmd(new Date(route.scheduledDate)));
       setTruckId(route.truckId);
       setAreaId(route.areaId);
       setDriverId(route.driverId ?? "");

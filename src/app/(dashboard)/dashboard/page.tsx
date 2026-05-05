@@ -12,6 +12,7 @@ import {
   Sparkles,
   TrendingUp,
 } from "lucide-react";
+import { getTodayInPhilippinesYmd } from "@/lib/philippine-time";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
@@ -56,11 +57,11 @@ export default function DashboardPage() {
     fetcher,
   );
 
-  const utcDayKey = new Date().toISOString().slice(0, 10);
+  const todayYmd = getTodayInPhilippinesYmd();
   const todayPickups =
-    data?.byDay.find((d) => d.date === utcDayKey)?.count ?? 0;
+    data?.byDay.find((d) => d.date === todayYmd)?.count ?? 0;
   const todayVolume =
-    data?.byDay.find((d) => d.date === utcDayKey)?.volumeKg ?? 0;
+    data?.byDay.find((d) => d.date === todayYmd)?.volumeKg ?? 0;
 
   const recentDays = (data?.byDay ?? [])
     .slice()
