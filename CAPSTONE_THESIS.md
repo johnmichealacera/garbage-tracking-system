@@ -79,7 +79,8 @@ ACCEPTED in partial fulfillment of the degree Bachelor of Science in Information
 | Overall Assessment | 58 |
 | Recommendation | 59 |
 | Final Thoughts | 66 |
-| CURRICULUM VITAE | 68 |
+| REFERENCES | 69 |
+| CURRICULUM VITAE | 71 |
 
 ---
 
@@ -188,25 +189,29 @@ The Garbage Tracking System modernizes waste management operations, ensuring eff
 
 # REVIEW OF RELATED LITERATURE / SYSTEMS
 
-## Digital Tracking and Management Systems
+## Digital Government Technology Adoption in Local Governance
 
-Studies indicate that the integration of digital tracking systems in operations significantly improves accuracy, efficiency, and visibility. Compared to traditional manual methods, digital systems reduce human error, shorten processing time, and promote transparency.
+Local government units (LGUs) have increasingly recognized the transformative potential of digital technologies in modernizing public service delivery. David et al. (2023) conducted a PRISMA-based systematic review examining how local governments adopt digital technology strategies across multiple countries, finding that digital transformation initiatives in municipal operations significantly improve service transparency, operational efficiency, and citizen engagement. Their analysis of government technology adoption frameworks reveals that web-based systems tailored for specific local government workflows outperform generic off-the-shelf solutions, particularly when aligned with local regulatory requirements and existing administrative processes. This finding supports the design decision to build a purpose-specific Garbage Tracking System for the Municipality of Socorro rather than adapting a generic logistics platform.
 
-According to Renko and Druzijanic (2014), the use of automated systems accelerates procedures and minimizes inaccuracies that may influence operational outcomes. Their findings emphasize that instant and accurate data computation enhances the reliability of results. In a related study, Weber and Kantamneni (n.d.) noted that digital systems enable staff to focus more on core tasks rather than manual record-keeping, leading to a more effective and professional workflow.
+David et al. (2023) further note that successful digital adoption in LGUs depends on clearly defined role-based access structures, where different stakeholders interact with the system according to their specific functions. This principle is directly reflected in the Garbage Tracking System's three-tier role architecture—Administrator, Dispatcher, and Driver—each with tailored dashboards and permissions that align with actual waste management responsibilities in the municipality.
 
-Accuracy and efficiency are critical components of any tracking system. Lal et al. (2018) found that real-time digital tracking contributes to faster result generation while significantly reducing the likelihood of errors. The immediacy of automated tabulation fosters confidence among participants and stakeholders, reinforcing perceptions of fairness and professionalism in operations management.
+## Barangay-Level Management Information Systems in the Philippines
 
-Similarly, Santosa and Adhimoto (2019) explained that computerized systems eliminate subjective bias and human miscalculations, ensuring objectivity in recording and processing data. Studies on automation in similar domains support the broader principle that automation enhances data accuracy, operational efficiency, and system reliability.
+Within the Philippine context, the development of information systems at the barangay and municipal level has gained momentum as LGUs seek to improve public service delivery. Imus et al. (2018) developed and evaluated a Barangay Management Information System (BMIS) for cities and municipalities in the Philippines, demonstrating that web-based management systems can significantly reduce administrative inefficiencies at the local government level. Their study identified critical success factors including ease of use, data accuracy, real-time accessibility, and role-based data visibility—all of which are central requirements of the Garbage Tracking System.
 
-Security is a major concern in digital systems, particularly when operational data must remain confidential. Hendini (2016) highlighted that Monitoring Information Systems (MIS) improve data protection by restricting system access to authorized users only. This level of access control is essential in operations where unauthorized access or manipulation could compromise integrity.
+The BMIS developed by Imus et al. (2018) addressed challenges similar to those faced by the Municipality of Socorro: paper-based record-keeping, lack of real-time status visibility, and fragmented workflows between different departments and field personnel. Their findings validate the approach of integrating user authentication, structured data entry, and role-specific interfaces to serve diverse LGU stakeholders, from field workers to administrative officers. The parallels between barangay administrative data and garbage collection operational data are direct—both require accurate, time-stamped records accessible by multiple authorized roles.
 
-In addition, Mangmang (2018) demonstrated that security features such as password protection and role-based access prevent unauthorized data modification and ensure system reliability. The study revealed that systems equipped with these safeguards perform more efficiently than manual or less-secured alternatives.
+## E-Governance Dashboards and Decision Support Systems
 
-Beyond performance and security, user experience plays a crucial role in the adoption of digital systems. Fridayanthie (n.d.) concluded that well-designed systems allow users to resolve minor operational issues independently, reducing reliance on technical support and increasing overall user satisfaction. This is particularly important for non-technical users such as dispatchers and drivers.
+Beyond data entry and storage, the effectiveness of local government information systems depends critically on how information is surfaced for decision-making. Lacasandile et al. (2020) designed and implemented the Barangay Information Profiling System (BIPS), which automates the aggregation of barangay data into an information-based dashboard for decision support toward e-governance. Their study demonstrated that visual dashboards presenting aggregated operational data—such as service counts, infrastructure records, and area-level summaries—enable local government officials to make faster and better-informed decisions compared to reviewing raw records.
+
+This finding is directly applicable to the reporting and analytics module of the Garbage Tracking System. Rather than requiring administrators to manually tally pickup records, the system aggregates completed pickups, total waste volume (kg), and barangay-level activity into key performance indicators and bar charts. Lacasandile et al. (2020) emphasize that automation of data aggregation not only saves administrative time but also reduces transcription errors—a benefit equally valuable in the context of daily garbage collection reporting for the Municipality of Socorro. Their work further demonstrates that dashboard-driven e-governance tools foster transparency and accountability, which aligns with the system's public collection schedule module accessible to residents without requiring a login.
 
 ## Synthesis
 
-The reviewed literature is directly related to the present study as it establishes the theoretical and practical foundation for the development of a digital tracking system for operations, particularly garbage collection. The studies collectively emphasize the importance of automation in improving accuracy, efficiency, and reliability, which are core objectives of the proposed system. Findings on automated systems support the study's goal of minimizing human error and accelerating updates through digital computation. Moreover, discussions on computerized systems reinforce the relevance of automation in ensuring data accuracy and operational efficiency. Studies on security and monitoring systems further justify the inclusion of authentication, access control, and role-based protection in the proposed system. Finally, the literature on user experience relates to the present study by highlighting the need for a user-friendly interface that can be easily utilized by dispatchers and drivers with minimal technical training. Overall, these related studies provide strong support for the design, implementation, and significance of the proposed Garbage Tracking System.
+The three studies reviewed collectively establish a strong theoretical and practical foundation for the Garbage Tracking System. David et al. (2023) affirm the importance of role-aligned digital technology adoption in local governance, confirming that systems purpose-built for LGU workflows outperform generic solutions and that role-based access is essential for successful implementation. Imus et al. (2018) provide a Philippine-specific precedent for barangay-level management information systems that replace manual record-keeping with structured digital workflows, directly validating the core design of this system. Lacasandile et al. (2020) demonstrate the value of automated dashboards and decision-support tools in e-governance, supporting the inclusion of reporting and analytics modules that surface real-time collection data for administrators and dispatchers.
+
+Together, these related studies confirm that the Garbage Tracking System is grounded in established best practices for LGU digital transformation, Philippine local governance information systems, and e-governance dashboard design. The present study extends this body of work by applying these principles specifically to municipal waste management operations, addressing the gap between generic management information systems and the specialized needs of garbage collection route tracking, real-time pickup logging, and multi-role operational visibility for the Municipality of Socorro, Surigao del Norte.
 
 ---
 
@@ -845,6 +850,19 @@ While the Garbage Tracking System has successfully achieved its core objectives,
 ## Final Thoughts
 
 The Garbage Tracking System demonstrates that thoughtful application of modern web technologies can profoundly improve traditional processes. The system's success validates the chosen architecture, development methodology, and technology stack. More importantly, it proves that user-centered design combined with robust engineering creates solutions that truly serve their intended purpose. As waste management operations continue to evolve, having a flexible, scalable, and reliable system becomes increasingly important. The foundation built here supports not just current needs but positions organizations for future growth and adaptation.
+
+---
+
+## REFERENCES
+
+David, A., Yigitcanlar, T., Li, R. Y. M., Corchado, J. M., Cheong, P. H., Mossberger, K., & Mehmood, R. (2023). Understanding Local Government Digital Technology Adoption Strategies: A PRISMA Review. Sustainability, 15(12), 9645.
+Source: https://www.mdpi.com/2071-1050/15/12/9645
+
+Imus, J. K. P., Magleo, E. D., Soriano, M. A. A., & Olalia, R. L. (2018). Barangay Management Information System (BMIS) for Cities and Municipalities in the Philippines. International Journal of Computer Applications, 180(19), 1–6.
+Source: https://www.ijcaonline.org/archives/volume180/number19/29042-2018916441/
+
+Lacasandile, A., Abisado, M. B., Labanan, R. M., & Abad, L. P. (2020). Development of an Information-Based Dashboard: Automation of Barangay Information Profiling System (BIPS) for Decision Support towards e-Governance. In Proceedings of the 4th International Conference on E-Society, E-Education and E-Technology (ICSET '20) (pp. 68–75). ACM.
+Source: https://dl.acm.org/doi/10.1145/3421682.3421691
 
 ---
 
