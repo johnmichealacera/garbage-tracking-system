@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RAD Diagram — Garbage Tracking System | Municipality of Socorro</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Segoe UI", system-ui, sans-serif;
+        background: #f1f5f9;
+        padding: 32px 16px 40px;
+        color: #0f172a;
+      }
+
+      .canvas {
+        max-width: 920px;
+        margin: 0 auto;
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        padding: 28px 24px 32px;
+        box-shadow: 0 12px 36px rgba(15, 23, 42, 0.08);
+      }
+
+      h1 {
+        text-align: center;
+        font-size: 1.1rem;
+        font-weight: 700;
+        line-height: 1.35;
+        margin-bottom: 6px;
+      }
+
+      .subtitle {
+        text-align: center;
+        font-size: 0.72rem;
+        color: #64748b;
+        margin-bottom: 28px;
+        line-height: 1.45;
+      }
+
+      /* Main horizontal flow */
+      .rad-flow {
+        display: flex;
+        align-items: stretch;
+        justify-content: center;
+        gap: 0;
+        flex-wrap: wrap;
+        padding: 8px 0;
+      }
+
+      .phase {
+        flex: 1;
+        min-width: 155px;
+        max-width: 200px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        position: relative;
+      }
+
+      .phase-num {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: #0d9488;
+        color: #fff;
+        font-size: 1rem;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 8px;
+        border: 3px solid #99f6e4;
+        box-shadow: 0 4px 12px rgba(13, 148, 136, 0.35);
+        z-index: 2;
+      }
+
+      .phase:nth-child(1) .phase-num {
+        background: #0369a1;
+        border-color: #7dd3fc;
+      }
+      .phase:nth-child(3) .phase-num {
+        background: #7c3aed;
+        border-color: #c4b5fd;
+      }
+      .phase:nth-child(5) .phase-num {
+        background: #059669;
+        border-color: #6ee7b7;
+      }
+      .phase:nth-child(7) .phase-num {
+        background: #d97706;
+        border-color: #fcd34d;
+      }
+
+      .phase-icon {
+        font-size: 2rem;
+        margin-bottom: 6px;
+        line-height: 1;
+      }
+
+      .phase-card {
+        width: 100%;
+        background: #f8fafc;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 12px 10px;
+        min-height: 140px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .phase:nth-child(1) .phase-card {
+        border-color: #7dd3fc;
+        background: #f0f9ff;
+      }
+      .phase:nth-child(3) .phase-card {
+        border-color: #c4b5fd;
+        background: #faf5ff;
+      }
+      .phase:nth-child(5) .phase-card {
+        border-color: #6ee7b7;
+        background: #ecfdf5;
+      }
+      .phase:nth-child(7) .phase-card {
+        border-color: #fcd34d;
+        background: #fffbeb;
+      }
+
+      .phase-card h2 {
+        font-size: 0.68rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin-bottom: 8px;
+        color: #0f172a;
+        line-height: 1.25;
+      }
+
+      .phase-card ul {
+        list-style: none;
+        font-size: 0.58rem;
+        color: #475569;
+        line-height: 1.45;
+        text-align: left;
+        flex: 1;
+      }
+
+      .phase-card li {
+        padding: 2px 0 2px 10px;
+        position: relative;
+      }
+
+      .phase-card li::before {
+        content: "•";
+        position: absolute;
+        left: 0;
+        color: #0d9488;
+        font-weight: bold;
+      }
+
+      /* Arrow between phases */
+      .arrow-between {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        flex-shrink: 0;
+        padding-top: 52px;
+      }
+
+      .arrow-between svg {
+        width: 28px;
+        height: 20px;
+      }
+
+      /* Feedback loop */
+      .feedback-loop {
+        margin: 24px 20px 0;
+        padding: 14px 16px;
+        border: 2px dashed #0d9488;
+        border-radius: 40px;
+        background: linear-gradient(180deg, #f0fdfa, #ecfdf5);
+        text-align: center;
+        position: relative;
+      }
+
+      .feedback-loop::before {
+        content: "↺";
+        position: absolute;
+        left: 24px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1.8rem;
+        color: #0d9488;
+        font-weight: bold;
+      }
+
+      .feedback-loop::after {
+        content: "↺";
+        position: absolute;
+        right: 24px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1.8rem;
+        color: #0d9488;
+        font-weight: bold;
+      }
+
+      .feedback-loop strong {
+        display: block;
+        font-size: 0.72rem;
+        color: #0f766e;
+        margin-bottom: 4px;
+      }
+
+      .feedback-loop p {
+        font-size: 0.62rem;
+        color: #047857;
+        max-width: 520px;
+        margin: 0 auto;
+        line-height: 1.4;
+      }
+
+      /* Iterations strip */
+      .iterations {
+        margin-top: 20px;
+        padding: 14px;
+        background: #f1f5f9;
+        border-radius: 10px;
+        border: 1px solid #cbd5e1;
+      }
+
+      .iterations h3 {
+        font-size: 0.68rem;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 10px;
+        color: #334155;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+
+      .iter-row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 6px;
+      }
+
+      .iter-pill {
+        font-size: 0.55rem;
+        font-weight: 600;
+        padding: 5px 10px;
+        background: #fff;
+        border: 1px solid #94a3b8;
+        border-radius: 20px;
+        color: #475569;
+      }
+
+      .footnote {
+        text-align: center;
+        margin-top: 18px;
+        font-size: 0.58rem;
+        color: #94a3b8;
+      }
+
+      @media (max-width: 720px) {
+        .rad-flow {
+          flex-direction: column;
+          align-items: center;
+        }
+        .arrow-between {
+          padding: 4px 0;
+          transform: rotate(90deg);
+        }
+        .phase {
+          max-width: 280px;
+        }
+        .feedback-loop::before,
+        .feedback-loop::after {
+          display: none;
+        }
+      }
+
+      @media print {
+        body {
+          background: #fff;
+        }
+        .canvas {
+          box-shadow: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="canvas">
+      <h1>
+        Rapid Application Development (RAD) Model<br />
+        Garbage Collection Tracking System — Municipality of Socorro
+      </h1>
+      <p class="subtitle">
+        Iterative development with continuous user feedback, prototyping, and rapid
+        delivery of working features
+      </p>
+
+      <div class="rad-flow">
+        <!-- Phase 1 -->
+        <div class="phase">
+          <div class="phase-num">1</div>
+          <div class="phase-icon">📋</div>
+          <div class="phase-card">
+            <h2>Requirements Planning</h2>
+            <ul>
+              <li>Study garbage collection process</li>
+              <li>Interview admin, dispatcher, drivers</li>
+              <li>Identify manual tracking problems</li>
+              <li>Define system goals &amp; scope</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="arrow-between" aria-hidden="true">
+          <svg viewBox="0 0 28 20" fill="none">
+            <path
+              d="M0 10h22M18 4l6 6-6 6"
+              stroke="#64748b"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
+
+        <!-- Phase 2 -->
+        <div class="phase">
+          <div class="phase-num">2</div>
+          <div class="phase-icon">🎨</div>
+          <div class="phase-card">
+            <h2>User Design</h2>
+            <ul>
+              <li>System architecture</li>
+              <li>Database schema (Prisma)</li>
+              <li>UI layout &amp; role-based screens</li>
+              <li>Technology stack selection</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="arrow-between" aria-hidden="true">
+          <svg viewBox="0 0 28 20" fill="none">
+            <path
+              d="M0 10h22M18 4l6 6-6 6"
+              stroke="#64748b"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
+
+        <!-- Phase 3 -->
+        <div class="phase">
+          <div class="phase-num">3</div>
+          <div class="phase-icon">⚙️</div>
+          <div class="phase-card">
+            <h2>Construction</h2>
+            <ul>
+              <li>Build modules in iterations</li>
+              <li>Auth, routes, pickups, maps</li>
+              <li>Dashboard &amp; public schedule</li>
+              <li>Test &amp; refine each release</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="arrow-between" aria-hidden="true">
+          <svg viewBox="0 0 28 20" fill="none">
+            <path
+              d="M0 10h22M18 4l6 6-6 6"
+              stroke="#64748b"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
+
+        <!-- Phase 4 -->
+        <div class="phase">
+          <div class="phase-num">4</div>
+          <div class="phase-icon">🚀</div>
+          <div class="phase-card">
+            <h2>Cutover</h2>
+            <ul>
+              <li>Deploy to production (Vercel)</li>
+              <li>Seed Socorro barangay data</li>
+              <li>User training &amp; go-live</li>
+              <li>Public schedule available online</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="feedback-loop">
+        <strong>RAD feedback loop</strong>
+        <p>
+          Users review prototypes after each iteration. Findings return to earlier
+          phases so the team can adjust requirements, design, or features quickly
+          without restarting the whole project.
+        </p>
+      </div>
+
+      <div class="iterations">
+        <h3>Construction iterations (this project)</h3>
+        <div class="iter-row">
+          <span class="iter-pill">1 · Authentication</span>
+          <span class="iter-pill">2 · Dashboard &amp; operations</span>
+          <span class="iter-pill">3 · Driver workflow</span>
+          <span class="iter-pill">4 · Route management</span>
+          <span class="iter-pill">5 · Reporting &amp; maps</span>
+          <span class="iter-pill">6 · UI polish &amp; schedule</span>
+        </div>
+      </div>
+
+      <p class="footnote">
+        Figure: RAD application development model — open in browser and screenshot for
+        capstone thesis (recommended zoom 100%).
+      </p>
+    </div>
+  </body>
+</html>

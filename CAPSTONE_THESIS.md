@@ -456,93 +456,246 @@ Throughout development, we maintained high code quality standards:
 
 ## Implementation Results and System Evaluation
 
-This section provides an overview of the outcomes and achievements of the Garbage Tracking System. It aims to assess the system's effectiveness, accuracy, and efficiency in handling route and pickup tracking. This chapter highlights the key results obtained during the deployment and evaluation of the system.
+This section provides an overview of the outcomes and achievements of the Garbage Tracking System for the Municipality of Socorro, Surigao del Norte. It aims to assess the system's effectiveness, accuracy, and efficiency in handling route and pickup tracking. This chapter highlights the key modules implemented, the user interfaces delivered for each stakeholder group, and the results obtained during deployment and evaluation.
+
+The system is organized into **public modules** (no login required) and **authenticated modules** (role-based access for administrators, dispatchers, and drivers). Figures in this chapter should be screenshots taken from the deployed application, labeled according to the figure numbers below.
+
+---
+
+## Public Home Page
+
+**Figure 1. Public Home Page — Socorro Garbage Tracking System**
+
+The landing page (`/`) serves as the main entry point for residents and LGU staff. It presents the official Socorro branding, a brief description of the system's purpose, and clear navigation without requiring an account.
+
+**Key Features:**
+- Municipal logo and project title with modern, readable layout.
+- Highlights of system benefits (cleaner barangays, public schedule access).
+- **Sign in** button for authorized staff (admin, dispatcher, driver).
+- **View collection schedule** button for public access to daily routes.
+- Automatic redirect to the dashboard when an authenticated user is already signed in.
+
+This page ensures that citizens can discover the public schedule while staff can reach the secure login quickly.
+
+---
+
+## Public Collection Schedule
+
+**Figure 2. Public Collection Schedule Interface**
+
+The public schedule page (`/schedule`) allows residents to view garbage collection activity **without logging in**. Schedule dates use **Philippines timezone (Asia/Manila)** so that the selected calendar day matches local collection days even when the system is hosted on cloud servers in other regions.
+
+**Key Features:**
+- Date picker to choose any calendar day.
+- Summary totals: routes, stops, completed pickups, missed and pending stops.
+- Barangay and route selector when multiple routes exist for the chosen date.
+- Route details: truck code, plate, driver, capacity, and completion progress bar.
+- Stop list with status (done, missed, pending), type, and estimated volume.
+- Route map (OpenStreetMap via Leaflet) for stops with recorded coordinates.
+- Links to home and staff sign-in in the page footer.
+
+This module fulfills the LGU's need to publish collection information transparently to the public.
+
+---
 
 ## Authentication and Access Control
 
-The sign-in page provides secure access control with role-based authentication and a modern, centered interface designed for clarity and ease of use. Only authorized personnel (administrators, dispatchers, and drivers) can access the system using their credentials. The NextAuth.js authentication ensures secure session management with JWT tokens, preventing unauthorized access and maintaining data integrity throughout the tracking process.
+**Figure 3. System Sign-In Interface**
+
+The sign-in page (`/sign-in`) provides secure access control with role-based authentication and a modern, centered interface designed for clarity and ease of use. Only authorized personnel (administrators, dispatchers, and drivers) can access the system using their credentials. NextAuth.js ensures secure session management with JWT tokens, preventing unauthorized access and maintaining data integrity throughout the tracking process.
 
 **Key Features:**
 - Email and password authentication.
 - Role-based access control (Admin, Dispatcher, Driver).
-- Secure session management.
-- Automatic role-based redirect after login.
-- Sign-out functionality with redirect to sign-in page.
+- Secure session management and password hashing (bcrypt).
+- Automatic redirect to the dashboard after successful login.
+- Sign-out from the sidebar with return to the sign-in page.
+- Public links to home and collection schedule for non-staff users.
+
+**Demo / seed credentials (after `npm run db:seed`):**
+
+| Role       | Email                       | Password    |
+|-----------|-----------------------------|-------------|
+| Admin     | admin@socorro.gov.ph        | password123 |
+| Dispatcher| dispatcher@socorro.gov.ph   | password123 |
+| Driver    | driver1@socorro.gov.ph      | password123 |
+| Driver    | driver2@socorro.gov.ph      | password123 |
+
+Each role sees only the menu items permitted for that role (for example, drivers do not access trucks, areas, or user management).
+
+---
 
 ## Dashboard Interface
 
-The dashboard was enhanced with a modern, elegant visual layout and now provides both high-level and actionable operational insights for all roles:
+**Figure 4. Dashboard Interface — Operational Overview**
 
+The dashboard (`/dashboard`) was enhanced with a modern visual layout and provides both high-level and actionable operational insights. It is accessible to Admin, Dispatcher, and Driver roles; reporting and user management remain restricted by role.
+
+**Key Features:**
 - **Total Pickups:** Aggregate count of all completed pickups.
 - **Total Volume (kg):** Sum of actual volume logged across pickups.
-- **Today's Pickups:** Number of pickups completed today.
-- **Recent Days Activity:** Quick trend view of latest pickup counts and volume.
+- **Today's Pickups:** Number of pickups completed for the current day (Philippines date).
+- **Recent Days Activity:** Trend view of latest pickup counts and volume with progress bars.
 - **Top Barangays:** Ranked list by pickup activity with missed-stop indicators.
-- **Personalized Hero Section:** Role-aware greeting and quick actions to routes and reporting.
+- **Personalized hero section:** Time-based greeting, user name, role, and quick actions (view routes, open reporting).
 
-The dashboard is accessible to Admin, Dispatcher, and Driver roles, with data tailored to their permissions.
+---
+
+## Trucks Management
+
+**Figure 5. Trucks Management Interface**
+
+The trucks module (`/trucks`) allows administrators and dispatchers to register and monitor the collection fleet. Trucks are required when creating routes.
+
+**Key Features:**
+- **Add truck:** Form for code, plate number, and capacity (kg).
+- **Fleet table:** Lists all trucks with code, plate, capacity, and status.
+- **Status badges:** Visual indicators (e.g., active, maintenance) for quick scanning.
+- Empty state guidance when no trucks have been added yet.
+
+This module supports accurate assignment of vehicles to daily collection routes.
+
+---
+
+## Areas (Barangays) Management
+
+**Figure 6. Barangays (Areas) Management Interface**
+
+The areas module (`/areas`) manages the geographic barangays covered by the Municipality of Socorro. The seed data includes all 14 barangays of Socorro; dispatchers use these records when planning routes.
+
+**Key Features:**
+- **Add barangay:** Name and optional description.
+- **Card grid:** Readable list of registered barangays with descriptions.
+- Integration with route planning and public schedule (barangay name shown per route).
+
+Proper area setup is a prerequisite for organizing collection by barangay.
+
+---
+
+## User Accounts Management
+
+**Figure 7. User Accounts Management Interface**
+
+The user accounts module (`/users`) is available to **administrators only**. It supports onboarding and maintaining LGU staff who use the system.
+
+**Key Features:**
+- **Create account:** Name, email, role (Admin, Dispatcher, Driver), and password.
+- **User list:** Table with name, email, role badge, active status, and join date.
+- **Activate / deactivate:** Toggle whether a user can sign in (cannot deactivate own account).
+- Role-based badges for quick identification of administrators, dispatchers, and drivers.
+
+This module replaces informal account sharing and enforces accountability per role.
+
+---
 
 ## Routes Management
 
-The routes management interface enables dispatchers and administrators to:
+**Figure 8. Routes Management Interface**
 
-- **List Routes:** Filter by date and area, view status badges, completion counts, and visual progress bars.
-- **Create Route:** Form with name, scheduled date, truck, area, driver, and stops (add/remove, name, address, type, expected volume).
-- **View Route Detail:** Metadata, stops with completion status, pickup logs with volume and notes, map view.
-- **Edit Route:** Modify existing routes with full form support.
+The routes module (`/routes`) enables dispatchers and administrators to plan and monitor collection runs.
+
+**Key Features:**
+- **List routes:** Filter by date and barangay; view status badges, completion counts, and progress bars.
+- **Create route** (`/routes/new`): Name, scheduled date, truck, area, optional driver, and ordered stops (name, address, type, expected volume, map coordinates via picker).
+- **View route detail** (`/routes/[id]`): Metadata, stop list with pickup/missed logs, and map.
+- **Edit route** (`/routes/[id]/edit`): Update existing route configuration.
+
+Route status follows the lifecycle: PLANNED → IN_PROGRESS → COMPLETED (and CANCELLED when applicable).
+
+---
+
+## Route Detail and Map View
+
+**Figure 9. Route Detail and Map View**
+
+The route detail screen combines operational data with spatial context for a single collection route.
+
+**Key Features:**
+- Route header: date, barangay, truck, driver, and status.
+- **Stops and pickups:** Each stop shows completion, missed reason, volume, notes, and who logged the pickup.
+- **Map view:** Stop markers color-coded (green = completed, gray = pending; amber for missed where applicable).
+- **OpenStreetMap** tiles via Leaflet; popups on marker click.
+- Fallback message when stops lack latitude/longitude coordinates.
+- Auto-refresh for near real-time updates during active collection.
+
+---
 
 ## Driver "My Route" Interface
 
-The driver interface provides:
+**Figure 10. Driver My Route Interface**
 
-- **Assigned Route:** View today's route with stops in order.
-- **Mark Completed:** Enhanced dialog with optional volume (kg) and notes.
-- **Mark Missed:** Enhanced dialog with optional missed-stop reason.
-- **Real-Time Updates:** Refresh interval for live status updates.
-- **Completion Tracking:** Visual indication of completed, missed, and pending stops with progress bars.
+The My Route page (`/my-route`) is tailored for **drivers** (garbage collectors). It shows only routes assigned to the signed-in driver for the current period.
+
+**Key Features:**
+- **Assigned route(s):** Name, date, barangay, truck code, and overall progress bar.
+- **Stop list:** Ordered stops with completed, missed, or pending state.
+- **Mark completed:** Dialog to log pickup with optional volume (kg) and notes.
+- **Mark missed:** Dialog with optional reason (e.g., road blocked, no access).
+- **Real-time updates:** Periodic refresh so dispatchers and drivers see current progress.
+
+This interface replaces paper checklists and supports field data entry from mobile or desktop browsers.
+
+---
 
 ## Pickup History
 
-The pickup history page displays:
+**Figure 11. Pickup History Interface**
 
-- **Recent Pickups:** Enhanced activity feed of recent pickups across all routes.
-- **Driver Attribution:** Who completed each pickup and when.
-- **Volume and Notes:** Actual volume and notes when provided.
-- **Links to Routes:** Navigate to route detail from each pickup.
-- **Role Filtering:** Drivers see only their own pickups.
+The pickup history page (`/pickup-history`) provides an activity feed of completed collections across the system.
 
-## Map View
+**Key Features:**
+- **Recent pickups:** Card-style feed with stop name, route, barangay, timestamp, and driver name.
+- **Volume display:** Badge showing actual volume (kg) when recorded.
+- **Notes:** Optional driver notes shown when provided.
+- **Link to route:** Navigate to full route detail from each entry.
+- **Role filtering:** Drivers see only their own pickups; admin and dispatcher see broader history.
 
-The route detail page includes a map section:
+---
 
-- **Stop Markers:** Color-coded (green = completed, gray = pending).
-- **Popups:** Stop details on marker click.
-- **OpenStreetMap:** Free map tiles.
-- **Fallback:** Message when stops have no coordinates.
+## Reporting and Analytics
 
-## Reporting
+**Figure 12. Reporting and Analytics Interface**
 
-The reporting page provides:
+The reporting module (`/reporting`) is available to **administrators** and supports data-driven review of collection performance.
 
-- **Date Range Filters:** From and to date selection.
-- **KPI Summary Cards:** Total pickups, total volume, and missed stops.
-- **Pickups per Day:** Modernized bar chart of daily pickup counts.
-- **Pickups per Area:** Modernized bar chart of area-wise distribution.
-- **Summary Tables:** Aggregated barangay data for analysis.
+**Key Features:**
+- **Date range filters:** From and to dates for custom reporting periods.
+- **KPI summary cards:** Total pickups, total volume (kg), and missed stops.
+- **Pickups per day:** Bar chart of daily activity.
+- **Pickups per barangay:** Bar chart of distribution by area.
+- **Barangay summary table:** Pickups, volume, and missed counts per barangay.
+
+Charts are rendered with Recharts and align with the modern dashboard visual style.
+
+---
+
+## Authenticated Layout and Navigation
+
+**Figure 13. Authenticated Workspace Layout (Sidebar Navigation)**
+
+All signed-in modules share a consistent workspace: glass-style sidebar with Socorro branding, signed-in user name and role, role-filtered menu, and sign-out control. Mobile layout provides a compact top bar.
+
+**Menu access by role:**
+
+| Module          | Admin | Dispatcher | Driver |
+|----------------|:-----:|:----------:|:------:|
+| Dashboard      | Yes   | Yes        | Yes    |
+| Routes         | Yes   | Yes        | No     |
+| Trucks         | Yes   | Yes        | No     |
+| Areas          | Yes   | Yes        | No     |
+| User accounts  | Yes   | No         | No     |
+| My Route       | No    | No         | Yes    |
+| Pickup history | Yes   | Yes        | Yes    |
+| Reporting      | Yes   | No         | No     |
+
+---
 
 ## User Interface and Experience Enhancements
 
-The system was recently upgraded to improve usability, visual consistency, and user engagement while preserving all existing functionality.
+Across public and authenticated pages, the system uses a unified design language: ambient gradients, elevated cards, shared page headers, semantic status badges, skeleton loading states, and helpful empty states. These enhancements improve trust and usability for LGU staff and residents without changing core business rules.
 
-**Public-facing Enhancements:**
-- Home page redesigned with a polished municipal brand presentation, clear call-to-action buttons, and improved readability.
-- Sign-in page redesigned as a single centered experience with an elegant, modern card layout and improved form clarity.
-
-**Authenticated Enhancements:**
-- Dashboard layout refined with a modern sidebar, improved hierarchy, and better responsive behavior.
-- Shared visual language applied across internal modules (Dashboard, Routes, Trucks, Areas, My Route, Pickup History, Reporting).
-- Reusable UI components introduced for consistency (page headers and semantic status badges).
-- Improved loading states, empty states, and interactive cues to reduce user confusion and speed up task completion.
+**Public-facing:** Home page, sign-in page, and public schedule.  
+**Staff-facing:** Dashboard, fleet and barangay setup, user accounts, routes, driver workflow, pickup history, and reporting.
 
 ## System Evaluation
 
