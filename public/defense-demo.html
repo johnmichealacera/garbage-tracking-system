@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Defense Demo — Garbage Tracking System · Municipality of Socorro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & BASE ── */
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --void:#ffffff;
+  --deep:#f8fafc;
+  --ink:#0d1f3c;
+  --t90:rgba(13,31,60,0.90);
+  --t70:rgba(13,31,60,0.65);
+  --t45:rgba(13,31,60,0.40);
+  --t20:rgba(13,31,60,0.14);
+  --t08:rgba(13,31,60,0.07);
+
+  /* Role palette */
+  --admin:#dc2626;
+  --admin-bg:#fef2f2;
+  --admin-border:#fecaca;
+  --dispatcher:#2563eb;
+  --dispatcher-bg:#eff6ff;
+  --dispatcher-border:#bfdbfe;
+  --driver:#059669;
+  --driver-bg:#ecfdf5;
+  --driver-border:#a7f3d0;
+  --public:#6b7280;
+  --public-bg:#f9fafb;
+  --public-border:#e5e7eb;
+}
+
+html{scroll-behavior:smooth;font-size:16px;}
+body{
+  font-family:'Inter',sans-serif;
+  background:#ffffff;
+  color:var(--ink);
+  overflow-x:hidden;
+}
+
+/* ── PROGRESS NAV ── */
+#progress-bar{
+  position:fixed;top:0;left:0;
+  height:3px;width:0%;
+  background:linear-gradient(90deg,#059669,#10b981,#2563eb);
+  z-index:1000;
+  transition:width 0.2s ease;
+}
+#nav{
+  position:fixed;top:3px;left:0;right:0;
+  height:52px;
+  background:rgba(255,255,255,0.92);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(13,31,60,0.07);
+  box-shadow:0 1px 12px rgba(13,31,60,0.05);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;
+  z-index:999;
+}
+.nav-brand{font-size:13px;font-weight:600;color:#64748b;}
+.nav-brand b{color:#059669;}
+.nav-dots{display:flex;align-items:center;gap:6px;}
+.nav-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:rgba(13,31,60,0.14);
+  cursor:pointer;
+  transition:all 0.25s;
+  border:none;
+  padding:0;
+}
+.nav-dot.active{width:20px;border-radius:4px;background:#059669;}
+.nav-dot:hover:not(.active){background:rgba(5,150,105,0.35);}
+.nav-kbd{
+  font-size:11px;color:var(--t45);
+  display:flex;align-items:center;gap:6px;
+}
+.kbd{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:22px;height:18px;
+  background:#f1f5f9;border:1px solid #e2e8f0;border-radius:4px;
+  font-size:10px;font-weight:600;color:#475569;
+}
+
+/* ── SECTIONS ── */
+.slide{
+  min-height:100vh;
+  padding:80px 48px 60px;
+  display:flex;flex-direction:column;justify-content:center;
+  position:relative;
+  overflow:hidden;
+}
+.slide-inner{max-width:1060px;margin:0 auto;width:100%;}
+
+/* ── TITLE SLIDE ── */
+#s0{background:linear-gradient(160deg,#ecfdf5 0%,#ffffff 55%,#eff6ff 100%);}
+#s0::before{
+  content:'';position:absolute;inset:0;
+  background-image:radial-gradient(#a7f3d0 1px,transparent 1px);
+  background-size:30px 30px;
+  opacity:0.25;
+  pointer-events:none;
+}
+.title-badge{
+  display:inline-flex;align-items:center;gap:7px;
+  background:#ffffff;border:1px solid #a7f3d0;border-radius:24px;
+  padding:5px 14px;
+  font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;
+  color:#059669;margin-bottom:22px;
+}
+.hero-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(32px,5vw,60px);
+  line-height:1.1;color:#0d1f3c;
+  margin-bottom:16px;
+}
+.hero-title span{
+  background:linear-gradient(135deg,#059669,#10b981,#2563eb);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-sub{font-size:17px;color:var(--t70);max-width:580px;line-height:1.6;margin-bottom:40px;}
+.stat-row{display:flex;flex-wrap:wrap;gap:16px;}
+.stat-pill{
+  background:#ffffff;border:1px solid #d1fae5;border-radius:10px;
+  padding:14px 22px;
+  text-align:center;
+}
+.stat-num{font-size:28px;font-weight:700;color:#059669;line-height:1;}
+.stat-lbl{font-size:11px;color:var(--t70);margin-top:4px;letter-spacing:0.04em;}
+
+/* ── ACCOUNTS SLIDE ── */
+#s1{background:var(--deep);}
+.accounts-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+  gap:12px;
+  margin-top:24px;
+}
+.account-card{
+  background:#ffffff;border-radius:10px;
+  padding:14px 16px;
+  border-left:4px solid var(--role-color,#059669);
+  border-top:1px solid rgba(13,31,60,0.07);
+  border-right:1px solid rgba(13,31,60,0.07);
+  border-bottom:1px solid rgba(13,31,60,0.07);
+}
+.account-role{
+  font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--role-color,#059669);margin-bottom:5px;
+}
+.account-name{font-size:14px;font-weight:600;color:#1e293b;}
+.account-login{font-size:11px;color:var(--t45);font-family:monospace;margin-top:3px;}
+.account-pass{font-size:11px;color:var(--t45);font-family:monospace;}
+.account-scope{
+  display:inline-block;margin-top:7px;
+  font-size:10px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;
+  background:rgba(13,31,60,0.06);border-radius:4px;padding:2px 7px;color:var(--t70);
+}
+
+/* ── SCENE SLIDES ── */
+.scene-slide{background:#ffffff;}
+.scene-slide:nth-child(odd){background:var(--deep);}
+.scene-num{
+  font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--t45);margin-bottom:12px;
+}
+.scene-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(22px,3.5vw,36px);
+  color:#0d1f3c;line-height:1.2;
+  margin-bottom:20px;
+}
+.scene-body{
+  display:grid;
+  grid-template-columns:1fr 1.6fr;
+  gap:28px;
+  align-items:start;
+}
+@media(max-width:768px){.scene-body{grid-template-columns:1fr;}}
+
+/* Role badge block */
+.role-block{
+  background:var(--role-bg,#ecfdf5);
+  border:1px solid var(--role-border,#a7f3d0);
+  border-radius:14px;
+  padding:20px;
+  display:flex;flex-direction:column;gap:10px;
+}
+.role-avatar{
+  width:52px;height:52px;border-radius:14px;
+  background:var(--role-color,#059669);
+  display:flex;align-items:center;justify-content:center;
+  color:#ffffff;font-size:20px;font-weight:700;
+  font-family:'Playfair Display',serif;
+  flex-shrink:0;
+}
+.role-name{font-size:16px;font-weight:700;color:#1e293b;}
+.role-title{font-size:12px;color:var(--t70);}
+.role-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  background:var(--role-color,#059669);
+  color:#ffffff;
+  border-radius:6px;padding:3px 10px;
+  font-size:11px;font-weight:700;letter-spacing:0.04em;
+  width:fit-content;
+}
+.role-module{
+  font-size:12px;color:var(--t70);
+  display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap;
+}
+.role-module span{
+  background:rgba(13,31,60,0.06);border-radius:5px;
+  padding:2px 8px;font-size:11px;font-weight:600;color:#334155;
+}
+
+/* Actions block */
+.actions-block{display:flex;flex-direction:column;gap:12px;}
+.action-list{
+  background:#ffffff;border:1px solid rgba(13,31,60,0.08);
+  border-radius:12px;overflow:hidden;
+}
+.action-list-head{
+  background:linear-gradient(90deg,var(--role-bg,#ecfdf5),#f8fafc);
+  border-bottom:1px solid rgba(13,31,60,0.07);
+  padding:10px 16px;
+  font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;
+  color:var(--t70);
+}
+.action-item{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:10px 16px;
+  border-bottom:1px solid rgba(13,31,60,0.05);
+  font-size:13px;color:var(--t90);
+  line-height:1.5;
+}
+.action-item:last-child{border-bottom:none;}
+.action-num{
+  width:22px;height:22px;border-radius:50%;
+  background:var(--role-color,#059669);
+  color:#ffffff;
+  font-size:10px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;margin-top:1px;
+}
+.action-text strong{color:#1e293b;}
+
+/* RBAC callout */
+.rbac-callout{
+  background:linear-gradient(135deg,var(--role-bg,#ecfdf5),#f8fafc);
+  border:1px solid var(--role-border,#a7f3d0);
+  border-left:4px solid var(--role-color,#059669);
+  border-radius:10px;
+  padding:14px 16px;
+  font-size:13px;color:#334155;line-height:1.6;
+}
+.rbac-callout-label{
+  font-size:10px;font-weight:700;letter-spacing:0.09em;text-transform:uppercase;
+  color:var(--role-color,#059669);margin-bottom:6px;
+}
+
+/* Handoff arrow */
+.handoff{
+  display:flex;align-items:center;justify-content:center;
+  gap:12px;margin:14px 0;
+  font-size:12px;color:var(--t45);
+}
+.handoff-line{flex:1;height:1px;background:var(--t20);}
+.handoff-icon{font-size:18px;}
+
+/* Section labels */
+.section-label{
+  font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  color:#059669;margin-bottom:18px;
+}
+
+/* ── SUMMARY SLIDE ── */
+#s_end{background:linear-gradient(160deg,#ecfdf5 0%,#f8fafc 50%,#eff6ff 100%);}
+.summary-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  gap:14px;margin-top:28px;
+}
+.summary-card{
+  background:#ffffff;border:1px solid #d1fae5;border-radius:12px;
+  padding:16px;text-align:center;
+}
+.summary-icon{font-size:24px;margin-bottom:8px;}
+.summary-title{font-size:13px;font-weight:700;color:#1e293b;margin-bottom:4px;}
+.summary-desc{font-size:11px;color:var(--t70);line-height:1.5;}
+
+/* ── ANIMATIONS ── */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity 0.5s ease,transform 0.5s ease;}
+.reveal.visible{opacity:1;transform:none;}
+
+@media print{
+  #nav,#progress-bar{display:none!important;}
+  .slide{min-height:auto;padding:40px;page-break-after:always;}
+  .reveal{opacity:1!important;transform:none!important;}
+}
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<!-- ── NAV ── -->
+<nav id="nav">
+  <div class="nav-brand"><b>Socorro GTS</b> · Defense Demo</div>
+  <div class="nav-dots" id="nav-dots"></div>
+  <div class="nav-kbd">
+    <span class="kbd">◀</span><span class="kbd">▶</span>
+    <span style="margin-left:4px;">navigate</span>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════════════════ TITLE ══ -->
+<section class="slide" id="s0" data-title="Overview">
+  <div class="slide-inner">
+    <div class="reveal">
+      <div class="title-badge">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        Capstone Defense · May 2026
+      </div>
+      <h1 class="hero-title">
+        Garbage Tracking System<br>
+        <span>Municipality of Socorro</span>
+      </h1>
+      <p class="hero-sub">
+        A complete garbage collection day — from admin setup and route dispatch to real-time driver pickup logging and public schedule transparency. Three roles, nine scenes, every action enforced by the system.
+      </p>
+      <div class="stat-row">
+        <div class="stat-pill"><div class="stat-num">9</div><div class="stat-lbl">Scenes</div></div>
+        <div class="stat-pill"><div class="stat-num">3</div><div class="stat-lbl">Staff Roles</div></div>
+        <div class="stat-pill"><div class="stat-num">14</div><div class="stat-lbl">Barangays Covered</div></div>
+        <div class="stat-pill"><div class="stat-num" style="color:#2563eb;">4.79</div><div class="stat-lbl">ISO 9126 Grand Mean</div></div>
+      </div>
+      <p style="font-size:12px;color:var(--t45);margin-top:16px;">
+        Note: The public collection schedule is accessible by any resident without logging in.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════ ACCOUNTS ══ -->
+<section class="slide" id="s1" data-title="Accounts">
+  <div class="slide-inner">
+    <div class="reveal">
+      <div class="section-label">Demo Accounts</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:clamp(20px,3vw,32px);color:#0d1f3c;margin-bottom:8px;">Cast of Characters</h2>
+      <p style="font-size:14px;color:var(--t70);margin-bottom:4px;">Each login is locked to exactly what their role permits — nothing more.</p>
+    </div>
+    <div class="accounts-grid reveal">
+
+      <div class="account-card" style="--role-color:var(--admin)">
+        <div class="account-role">Administrator</div>
+        <div class="account-name">LGU System Admin</div>
+        <div class="account-login">admin@socorro.gov.ph</div>
+        <div class="account-pass">password: password123</div>
+        <div class="account-scope">Full access</div>
+      </div>
+
+      <div class="account-card" style="--role-color:var(--dispatcher)">
+        <div class="account-role">Dispatcher</div>
+        <div class="account-name">Route Dispatcher</div>
+        <div class="account-login">dispatcher@socorro.gov.ph</div>
+        <div class="account-pass">password: password123</div>
+        <div class="account-scope">Routes · Trucks · Areas</div>
+      </div>
+
+      <div class="account-card" style="--role-color:var(--driver)">
+        <div class="account-role">Driver</div>
+        <div class="account-name">Driver 1</div>
+        <div class="account-login">driver1@socorro.gov.ph</div>
+        <div class="account-pass">password: password123</div>
+        <div class="account-scope">My Route only</div>
+      </div>
+
+      <div class="account-card" style="--role-color:var(--driver)">
+        <div class="account-role">Driver</div>
+        <div class="account-name">Driver 2</div>
+        <div class="account-login">driver2@socorro.gov.ph</div>
+        <div class="account-pass">password: password123</div>
+        <div class="account-scope">My Route only</div>
+      </div>
+
+      <div class="account-card" style="--role-color:var(--public)">
+        <div class="account-role">Public (No Login)</div>
+        <div class="account-name">Any Socorro Resident</div>
+        <div class="account-login">/schedule</div>
+        <div class="account-pass">no credentials needed</div>
+        <div class="account-scope">View-only schedule</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════ SCENE 0 — PUBLIC SCHEDULE ══ -->
+<section class="slide scene-slide" id="sc0" data-title="Public Schedule" style="background:var(--public-bg);">
+  <div class="slide-inner">
+    <div class="reveal">
+      <div class="scene-num">Scene 0 · No Login Required</div>
+      <h2 class="scene-title">Resident Views the Collection Schedule</h2>
+    </div>
+    <div class="scene-body reveal" style="--role-color:var(--public);--role-bg:var(--public-bg);--role-border:var(--public-border);">
+      <div class="role-block">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div class="role-avatar" style="background:var(--public);font-size:24px;">🏠</div>
+          <div>
+            <div class="role-name">Socorro Resident</div>
+            <div class="role-title">No account required</div>
+          </div>
+        </div>
+        <div class="role-badge" style="background:var(--public);">public</div>
+        <div class="role-module">Page: <span>/schedule</span></div>
+        <div style="font-size:12px;color:var(--t70);margin-top:6px;line-height:1.5;">
+          Any citizen can see the garbage collection schedule for their barangay without creating an account. Transparency is built in.
+        </div>
+      </div>
+      <div class="actions-block">
+        <div class="action-list">
+          <div class="action-list-head">Actions</div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--public);">1</div>
+            <div class="action-text">Go to <strong>/schedule</strong> — no login prompt appears</div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--public);">2</div>
+            <div class="action-text">Pick a date using the <strong>date picker</strong> — defaults to today (Philippines time)</div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--public);">3</div>
+            <div class="action-text">View summary totals: <strong>routes, stops, completed pickups, missed and pending</strong></div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--public);">4</div>
+            <div class="action-text">Select a barangay route — see truck code, driver, capacity, and <strong>stop-by-stop status</strong></div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--public);">5</div>
+            <div class="action-text">View the <strong>interactive map</strong> (OpenStreetMap) with color-coded stop markers</div>
+          </div>
+        </div>
+        <div class="rbac-callout">
+          <div class="rbac-callout-label">Transparency by design</div>
+          Residents can track whether their barangay was serviced today without calling the municipal hall. The date is always resolved in <strong>Philippines timezone (Asia/Manila)</strong> — never UTC — so the correct collection day is always shown.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════ SCENE 1 — ADMIN SETUP ══ -->
+<section class="slide scene-slide" id="sc1b" data-title="Admin Setup">
+  <div class="slide-inner">
+    <div class="reveal">
+      <div class="scene-num">Scene 1 · System Setup</div>
+      <h2 class="scene-title">Admin Registers Trucks &amp; Barangays</h2>
+    </div>
+    <div class="scene-body reveal" style="--role-color:var(--admin);--role-bg:var(--admin-bg);--role-border:var(--admin-border);">
+      <div class="role-block">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div class="role-avatar" style="background:var(--admin);">A</div>
+          <div>
+            <div class="role-name">LGU System Admin</div>
+            <div class="role-title">Administrator · Full Access</div>
+          </div>
+        </div>
+        <div class="role-badge" style="background:var(--admin);">admin</div>
+        <div class="role-module">Modules: <span>Trucks</span><span>Areas</span><span>User Accounts</span></div>
+        <div style="font-size:12px;color:var(--t70);margin-top:6px;line-height:1.5;">
+          Before any route can be dispatched, the fleet and barangay list must exist in the system. This is a one-time setup that persists.
+        </div>
+      </div>
+      <div class="actions-block">
+        <div class="action-list">
+          <div class="action-list-head">Actions</div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--admin);">1</div>
+            <div class="action-text"><strong>Trucks → Add Truck</strong> — enter truck code, plate number, capacity (kg) → Save</div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--admin);">2</div>
+            <div class="action-text">Fleet table now shows the registered truck with its status badge</div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--admin);">3</div>
+            <div class="action-text"><strong>Areas → Add Barangay</strong> — enter barangay name and optional description</div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--admin);">4</div>
+            <div class="action-text">Card grid updates — all 14 barangays of Socorro can be registered here</div>
+          </div>
+        </div>
+        <div class="rbac-callout">
+          <div class="rbac-callout-label">RBAC in action</div>
+          Dispatchers can view trucks and areas to plan routes, but only the <strong>Admin</strong> can add or modify fleet records and barangay entries. A dispatcher who tries to access Trucks sees no "Add" button.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════ SCENE 2 — USER ACCOUNTS ══ -->
+<section class="slide scene-slide" id="sc2" data-title="User Accounts" style="background:var(--deep);">
+  <div class="slide-inner">
+    <div class="reveal">
+      <div class="scene-num">Scene 2 · Onboarding</div>
+      <h2 class="scene-title">Admin Creates Staff Accounts</h2>
+    </div>
+    <div class="scene-body reveal" style="--role-color:var(--admin);--role-bg:var(--admin-bg);--role-border:var(--admin-border);">
+      <div class="role-block">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div class="role-avatar" style="background:var(--admin);">A</div>
+          <div>
+            <div class="role-name">LGU System Admin</div>
+            <div class="role-title">Administrator · Full Access</div>
+          </div>
+        </div>
+        <div class="role-badge" style="background:var(--admin);">admin</div>
+        <div class="role-module">Module: <span>User Accounts</span></div>
+        <div style="font-size:12px;color:var(--t70);margin-top:6px;line-height:1.5;">
+          The Admin is the only role that can create, view, and deactivate staff accounts. No shared passwords — each person gets their own login.
+        </div>
+      </div>
+      <div class="actions-block">
+        <div class="action-list">
+          <div class="action-list-head">Actions</div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--admin);">1</div>
+            <div class="action-text"><strong>User Accounts → Create Account</strong> — modal opens</div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--admin);">2</div>
+            <div class="action-text">Enter name, email, select role: <strong>Driver / Dispatcher / Admin</strong>, set password</div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--admin);">3</div>
+            <div class="action-text">User appears in the table with their <strong>role badge</strong> and active status</div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--admin);">4</div>
+            <div class="action-text">Demonstrate <strong>Deactivate</strong> — the account cannot sign in while inactive (Admin cannot deactivate their own account)</div>
+          </div>
+        </div>
+        <div class="rbac-callout">
+          <div class="rbac-callout-label">RBAC in action</div>
+          Dispatchers and Drivers have no access to the User Accounts module at all — the menu item does not appear in their sidebar. Account management is strictly an Admin responsibility.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════ SCENE 3 — ROUTE CREATION ══ -->
+<section class="slide scene-slide" id="sc3" data-title="Create Route">
+  <div class="slide-inner">
+    <div class="reveal">
+      <div class="scene-num">Scene 3 · Morning Dispatch</div>
+      <h2 class="scene-title">Dispatcher Plans Today's Route</h2>
+    </div>
+    <div class="scene-body reveal" style="--role-color:var(--dispatcher);--role-bg:var(--dispatcher-bg);--role-border:var(--dispatcher-border);">
+      <div class="role-block">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div class="role-avatar" style="background:var(--dispatcher);">D</div>
+          <div>
+            <div class="role-name">Route Dispatcher</div>
+            <div class="role-title">Dispatcher · Socorro</div>
+          </div>
+        </div>
+        <div class="role-badge" style="background:var(--dispatcher);">dispatcher</div>
+        <div class="role-module">Module: <span>Routes</span></div>
+        <div style="font-size:12px;color:var(--t70);margin-top:6px;line-height:1.5;">
+          The dispatcher builds the collection plan for the day — assigning the truck, barangay, and driver, then listing every stop in order.
+        </div>
+      </div>
+      <div class="actions-block">
+        <div class="action-list">
+          <div class="action-list-head">Actions</div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--dispatcher);">1</div>
+            <div class="action-text"><strong>Routes → New Route</strong> — enter route name (e.g. <em>Barangay Poblacion AM</em>)</div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--dispatcher);">2</div>
+            <div class="action-text">Set <strong>scheduled date</strong>, pick a <strong>truck</strong> from the fleet dropdown</div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--dispatcher);">3</div>
+            <div class="action-text">Select <strong>barangay</strong> (area) and assign <strong>Driver 1</strong></div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--dispatcher);">4</div>
+            <div class="action-text">Add stops: name, address, type (Residential / Commercial / Mixed), expected volume (kg), and optional map coordinates via the <strong>coordinate picker</strong></div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--dispatcher);">5</div>
+            <div class="action-text">Save → route status is <em>PLANNED</em> — visible to the assigned driver immediately</div>
+          </div>
+        </div>
+        <div class="rbac-callout">
+          <div class="rbac-callout-label">RBAC in action</div>
+          Dispatchers create and edit routes. They cannot access User Accounts, Reporting, or System Map. Drivers cannot see this screen — they only see their assigned route on the My Route page.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════ SCENE 4 — DRIVER MY ROUTE ══ -->
+<section class="slide scene-slide" id="sc4" data-title="My Route" style="background:var(--deep);">
+  <div class="slide-inner">
+    <div class="reveal">
+      <div class="scene-num">Scene 4 · Field</div>
+      <h2 class="scene-title">Driver Views Today's Assigned Route</h2>
+    </div>
+    <div class="scene-body reveal" style="--role-color:var(--driver);--role-bg:var(--driver-bg);--role-border:var(--driver-border);">
+      <div class="role-block">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div class="role-avatar" style="background:var(--driver);">D1</div>
+          <div>
+            <div class="role-name">Driver 1</div>
+            <div class="role-title">Garbage Collector · Socorro</div>
+          </div>
+        </div>
+        <div class="role-badge" style="background:var(--driver);">driver</div>
+        <div class="role-module">Page: <span>My Route</span></div>
+        <div style="font-size:12px;color:var(--t70);margin-top:6px;line-height:1.5;">
+          The driver's entire interface is the My Route page. No routes, no trucks, no user management — only the work assigned to them for today.
+        </div>
+      </div>
+      <div class="actions-block">
+        <div class="action-list">
+          <div class="action-list-head">Actions</div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--driver);">1</div>
+            <div class="action-text">Log in as <strong>driver1@socorro.gov.ph</strong> → lands on <strong>My Route</strong> automatically</div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--driver);">2</div>
+            <div class="action-text">See today's route: name, barangay, truck code, and overall <strong>progress bar</strong></div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--driver);">3</div>
+            <div class="action-text">Ordered <strong>stop list</strong> — each stop shows its type, expected volume, and current status (pending)</div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--driver);">4</div>
+            <div class="action-text">Scroll down — <strong>route map</strong> shows all stops as gray markers (pending) on OpenStreetMap</div>
+          </div>
+        </div>
+        <div class="rbac-callout">
+          <div class="rbac-callout-label">RBAC in action</div>
+          The driver's sidebar shows only: <strong>Dashboard · My Route · Pickup History.</strong> Routes management, trucks, areas, and user accounts are completely invisible — the buttons and menu items do not exist for this role.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════ SCENE 5 — PICKUP LOG ══ -->
+<section class="slide scene-slide" id="sc5" data-title="Log Pickup">
+  <div class="slide-inner">
+    <div class="reveal">
+      <div class="scene-num">Scene 5 · Field</div>
+      <h2 class="scene-title">Driver Logs a Completed Pickup</h2>
+    </div>
+    <div class="scene-body reveal" style="--role-color:var(--driver);--role-bg:var(--driver-bg);--role-border:var(--driver-border);">
+      <div class="role-block">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div class="role-avatar" style="background:var(--driver);">D1</div>
+          <div>
+            <div class="role-name">Driver 1</div>
+            <div class="role-title">Garbage Collector · Socorro</div>
+          </div>
+        </div>
+        <div class="role-badge" style="background:var(--driver);">driver</div>
+        <div class="role-module">Action: <span>Mark Completed</span></div>
+        <div style="margin-top:10px;background:#ffffff;border:1px solid var(--driver-border);border-radius:8px;padding:10px 12px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--driver);margin-bottom:4px;">Before this action</div>
+          <div style="font-size:13px;font-weight:600;color:#1e293b;">Route status: PLANNED</div>
+          <div style="font-size:11px;color:var(--t70);">First pickup completion auto-starts the route</div>
+        </div>
+      </div>
+      <div class="actions-block">
+        <div class="action-list">
+          <div class="action-list-head">Actions</div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--driver);">1</div>
+            <div class="action-text">Click <strong>Mark Completed</strong> on the first stop — dialog opens</div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--driver);">2</div>
+            <div class="action-text">Enter actual volume collected: <strong>e.g. 120 kg</strong> (optional but encouraged)</div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--driver);">3</div>
+            <div class="action-text">Add a note if needed: <em>"Extra bags left by gate"</em> → click <strong>Confirm</strong></div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--driver);">4</div>
+            <div class="action-text">Stop turns <strong>green ✓</strong> — progress bar advances — route status becomes <em>IN_PROGRESS</em></div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--driver);">5</div>
+            <div class="action-text">Map marker for that stop turns <strong>green</strong> in real time</div>
+          </div>
+        </div>
+        <div class="rbac-callout">
+          <div class="rbac-callout-label">Status lifecycle</div>
+          <strong>PLANNED → IN_PROGRESS → COMPLETED</strong> is automatic. The first pickup transitions to IN_PROGRESS; the last pickup transitions to COMPLETED. No manual status change required — no human error possible.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════ SCENE 6 — MISSED STOP ══ -->
+<section class="slide scene-slide" id="sc6" data-title="Missed Stop" style="background:var(--deep);">
+  <div class="slide-inner">
+    <div class="reveal">
+      <div class="scene-num">Scene 6 · Field</div>
+      <h2 class="scene-title">Driver Marks a Stop as Missed</h2>
+    </div>
+    <div class="scene-body reveal" style="--role-color:var(--driver);--role-bg:var(--driver-bg);--role-border:var(--driver-border);">
+      <div class="role-block">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div class="role-avatar" style="background:var(--driver);">D1</div>
+          <div>
+            <div class="role-name">Driver 1</div>
+            <div class="role-title">Garbage Collector · Socorro</div>
+          </div>
+        </div>
+        <div class="role-badge" style="background:var(--driver);">driver</div>
+        <div class="role-module">Action: <span>Mark Missed</span></div>
+        <div style="font-size:12px;color:var(--t70);margin-top:6px;line-height:1.5;">
+          When a stop cannot be serviced — blocked road, no access, gate locked — the driver logs it as missed with a reason. The record is never lost.
+        </div>
+      </div>
+      <div class="actions-block">
+        <div class="action-list">
+          <div class="action-list-head">Actions</div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--driver);">1</div>
+            <div class="action-text">Click <strong>Mark Missed</strong> on a pending stop — dialog opens</div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--driver);">2</div>
+            <div class="action-text">Enter reason: <strong>e.g. "Road blocked — construction"</strong> (optional) → click <strong>Confirm</strong></div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--driver);">3</div>
+            <div class="action-text">Stop shows a <strong>missed indicator</strong> with the reason logged alongside the timestamp</div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--driver);">4</div>
+            <div class="action-text">Now switch to the <strong>Public Schedule</strong> — the missed stop is already visible to residents</div>
+          </div>
+        </div>
+        <div class="rbac-callout">
+          <div class="rbac-callout-label">Accountability built in</div>
+          Missed stops are tracked with a reason and a driver attribution. Dispatchers and administrators can see exactly which stops were skipped, by whom, and why — replacing the informal verbal report of manual operations.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════ SCENE 7 — DASHBOARD ══ -->
+<section class="slide scene-slide" id="sc7" data-title="Dashboard">
+  <div class="slide-inner">
+    <div class="reveal">
+      <div class="scene-num">Scene 7 · Command View</div>
+      <h2 class="scene-title">Dispatcher Monitors Operations Live</h2>
+    </div>
+    <div class="scene-body reveal" style="--role-color:var(--dispatcher);--role-bg:var(--dispatcher-bg);--role-border:var(--dispatcher-border);">
+      <div class="role-block">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div class="role-avatar" style="background:var(--dispatcher);">D</div>
+          <div>
+            <div class="role-name">Route Dispatcher</div>
+            <div class="role-title">Dispatcher · Socorro</div>
+          </div>
+        </div>
+        <div class="role-badge" style="background:var(--dispatcher);">dispatcher</div>
+        <div class="role-module">Modules: <span>Dashboard</span><span>Routes</span><span>Pickup History</span></div>
+      </div>
+      <div class="actions-block">
+        <div class="action-list">
+          <div class="action-list-head">Actions</div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--dispatcher);">1</div>
+            <div class="action-text"><strong>Dashboard</strong> — KPI cards: Total Pickups · Total Volume (kg) · Today's Pickups</div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--dispatcher);">2</div>
+            <div class="action-text"><strong>Recent Days Activity</strong> — trend view of pickup counts and volume with progress bars</div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--dispatcher);">3</div>
+            <div class="action-text"><strong>Top Barangays</strong> — ranked list by pickup activity with missed-stop indicators</div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--dispatcher);">4</div>
+            <div class="action-text"><strong>Routes list</strong> — filter by date, see real-time status badge and completion progress bar per route</div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--dispatcher);">5</div>
+            <div class="action-text"><strong>Route Detail</strong> — click a route, see stop-by-stop log, map, and pickup notes from the driver</div>
+          </div>
+        </div>
+        <div class="rbac-callout">
+          <div class="rbac-callout-label">Real-time visibility</div>
+          Every pickup the driver logs appears here within seconds — no end-of-day report needed. The dispatcher can see progress in the field without leaving the office or calling the driver.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════ SCENE 8 — REPORTING ══ -->
+<section class="slide scene-slide" id="sc8" data-title="Reporting" style="background:var(--admin-bg);">
+  <div class="slide-inner">
+    <div class="reveal">
+      <div class="scene-num">Scene 8 · End of Day</div>
+      <h2 class="scene-title">Admin Reviews Analytics &amp; Reporting</h2>
+    </div>
+    <div class="scene-body reveal" style="--role-color:var(--admin);--role-bg:var(--admin-bg);--role-border:var(--admin-border);">
+      <div class="role-block">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div class="role-avatar" style="background:var(--admin);">A</div>
+          <div>
+            <div class="role-name">LGU System Admin</div>
+            <div class="role-title">Administrator · Full Access</div>
+          </div>
+        </div>
+        <div class="role-badge" style="background:var(--admin);">admin</div>
+        <div class="role-module">Module: <span>Reporting</span></div>
+        <div style="font-size:12px;color:var(--t70);margin-top:6px;line-height:1.5;">
+          The Reporting module is restricted to Administrators — it provides date-range analytics for LGU decision-making and records accountability.
+        </div>
+      </div>
+      <div class="actions-block">
+        <div class="action-list">
+          <div class="action-list-head">Actions</div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--admin);">1</div>
+            <div class="action-text"><strong>Reporting</strong> — set a <strong>date range</strong> (e.g. this week) → apply filter</div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--admin);">2</div>
+            <div class="action-text">KPI summary: <strong>total pickups · total volume (kg) · missed stops</strong> for the period</div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--admin);">3</div>
+            <div class="action-text"><strong>Pickups per day</strong> bar chart — spot any collection gaps quickly</div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--admin);">4</div>
+            <div class="action-text"><strong>Pickups per barangay</strong> bar chart — see which barangays get the most service</div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--admin);">5</div>
+            <div class="action-text"><strong>Barangay summary table</strong> — pickups, volume, and missed count per barangay</div>
+          </div>
+        </div>
+        <div class="rbac-callout">
+          <div class="rbac-callout-label">RBAC in action</div>
+          Dispatchers and Drivers do not see the Reporting menu at all. The Admin uses this data for LGU operational reviews, budget justification, and accountability records — no manual Excel consolidation required.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════ SCENE 9 — AUDIT TRAIL ══ -->
+<section class="slide scene-slide" id="sc9" data-title="Full Trail">
+  <div class="slide-inner">
+    <div class="reveal">
+      <div class="scene-num">Scene 9 · Closing</div>
+      <h2 class="scene-title">The Complete Operational Trail</h2>
+    </div>
+    <div class="scene-body reveal" style="--role-color:var(--admin);--role-bg:var(--admin-bg);--role-border:var(--admin-border);">
+      <div class="role-block">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div class="role-avatar" style="background:var(--admin);">A</div>
+          <div>
+            <div class="role-name">LGU System Admin</div>
+            <div class="role-title">Administrator · Full Access</div>
+          </div>
+        </div>
+        <div class="role-badge" style="background:var(--admin);">admin</div>
+        <div class="role-module">Module: <span>Pickup History</span></div>
+      </div>
+      <div class="actions-block">
+        <div class="action-list">
+          <div class="action-list-head">Everything that happened today — all in one view</div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--public);">✓</div>
+            <div class="action-text"><strong>Resident</strong> checked the public schedule — saw today's barangay routes</div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--admin);">✓</div>
+            <div class="action-text"><strong>Admin</strong> registered trucks, barangays, and staff accounts</div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--dispatcher);">✓</div>
+            <div class="action-text"><strong>Dispatcher</strong> created the route — assigned truck, barangay, driver, and all stops</div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--driver);">✓</div>
+            <div class="action-text"><strong>Driver 1</strong> logged pickups stop by stop — volumes and notes recorded in real time</div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--driver);">✓</div>
+            <div class="action-text"><strong>Driver 1</strong> marked one stop missed — reason logged with timestamp</div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--dispatcher);">✓</div>
+            <div class="action-text"><strong>Dispatcher</strong> monitored progress live on the dashboard — no phone calls needed</div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--admin);">✓</div>
+            <div class="action-text"><strong>Admin</strong> reviewed analytics — total volume, barangay breakdown, missed stops</div>
+          </div>
+        </div>
+        <div class="rbac-callout">
+          <div class="rbac-callout-label">The governance promise</div>
+          Every action carries: <strong>who did it · what role · when · on which stop.</strong> The LGU can trace any pickup — or any missed collection — back to the person responsible. No paper, no guesswork.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════ END SLIDE ══ -->
+<section class="slide" id="s_end" data-title="Summary">
+  <div class="slide-inner">
+    <div class="reveal">
+      <div class="section-label">What You Just Saw</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:clamp(24px,4vw,42px);color:#0d1f3c;margin-bottom:10px;">
+        One Day. Three Roles.<br><span style="background:linear-gradient(135deg,#059669,#10b981);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Zero Paper. Zero Guesswork.</span>
+      </h2>
+      <p style="font-size:15px;color:var(--t70);max-width:560px;margin-bottom:32px;line-height:1.6;">
+        Every step — from dispatch to pickup to public reporting — was enforced by the system. Each staff member did exactly what their role permits. Nothing more.
+      </p>
+    </div>
+    <div class="summary-grid reveal">
+      <div class="summary-card">
+        <div class="summary-icon">🔐</div>
+        <div class="summary-title">Role Enforcement</div>
+        <div class="summary-desc">Admin, Dispatcher, and Driver each see only their own modules. No accidental access, no workarounds.</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-icon">🗺️</div>
+        <div class="summary-title">Live Map View</div>
+        <div class="summary-desc">Stop markers turn green as pickups are logged — dispatchers see field progress without calling the driver.</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-icon">🌐</div>
+        <div class="summary-title">Public Transparency</div>
+        <div class="summary-desc">Residents check their barangay's schedule and real-time status without any account or login.</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-icon">⚡</div>
+        <div class="summary-title">Auto Status Lifecycle</div>
+        <div class="summary-desc">PLANNED → IN_PROGRESS → COMPLETED transitions happen automatically — no manual updates needed.</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-icon">📊</div>
+        <div class="summary-title">Real-time Analytics</div>
+        <div class="summary-desc">Volume, barangay breakdown, and missed stops are always current — no end-of-day data entry.</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-icon">🛡️</div>
+        <div class="summary-title">Full Audit Trail</div>
+        <div class="summary-desc">Every pickup and missed stop is timestamped and tied to the driver who logged it. Nothing hidden.</div>
+      </div>
+    </div>
+    <p style="font-size:12px;color:var(--t45);margin-top:28px;text-align:center;">
+      Garbage Tracking System · Municipality of Socorro, Surigao del Norte · ISO 9126 Grand Mean 4.79 / 5.00
+    </p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════ SCRIPTS ══ -->
+<script>
+const slides = Array.from(document.querySelectorAll('.slide'))
+const dotsContainer = document.getElementById('nav-dots')
+const progressBar = document.getElementById('progress-bar')
+
+// Build nav dots
+slides.forEach((slide, i) => {
+  const dot = document.createElement('button')
+  dot.className = 'nav-dot'
+  dot.title = slide.dataset.title || `Slide ${i+1}`
+  dot.addEventListener('click', () => {
+    slide.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  })
+  dotsContainer.appendChild(dot)
+})
+
+const dots = Array.from(dotsContainer.querySelectorAll('.nav-dot'))
+
+let activeDot = 0
+function updateNav() {
+  const scrollY = window.scrollY
+  const totalH = document.body.scrollHeight - window.innerHeight
+  const pct = totalH > 0 ? (scrollY / totalH) * 100 : 0
+  progressBar.style.width = pct + '%'
+
+  let found = 0
+  slides.forEach((slide, i) => {
+    const rect = slide.getBoundingClientRect()
+    if (rect.top <= window.innerHeight * 0.4) found = i
+  })
+  if (found !== activeDot) {
+    dots[activeDot]?.classList.remove('active')
+    dots[found]?.classList.add('active')
+    activeDot = found
+  }
+}
+
+window.addEventListener('scroll', updateNav, { passive: true })
+updateNav()
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+    const next = Math.min(activeDot + 1, slides.length - 1)
+    slides[next].scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+    const prev = Math.max(activeDot - 1, 0)
+    slides[prev].scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+})
+
+// IntersectionObserver reveals
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible')
+    }
+  })
+}, { threshold: 0.12 })
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el))
+</script>
+</body>
+</html>

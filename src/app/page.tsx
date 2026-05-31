@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/auth";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { CalendarDays, Leaf, LogIn, MapPin } from "lucide-react";
+import { CalendarDays, Leaf, LogIn, MapPin, MonitorPlay } from "lucide-react";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
@@ -143,6 +143,18 @@ export default async function Home() {
                 </span>
                 .
               </p>
+
+              <div className="mt-3 flex justify-center border-t border-border/50 pt-3">
+                <a
+                  href="/defense-demo.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs text-muted-foreground/60 transition-colors hover:bg-muted/50 hover:text-muted-foreground"
+                >
+                  <MonitorPlay className="size-3.5" />
+                  Demo guide
+                </a>
+              </div>
             </div>
           </div>
         </div>
