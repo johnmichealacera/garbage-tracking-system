@@ -393,7 +393,8 @@ export const ModelName = {
   Route: 'Route',
   RouteStop: 'RouteStop',
   MissedStop: 'MissedStop',
-  PickupLog: 'PickupLog'
+  PickupLog: 'PickupLog',
+  DriverLocation: 'DriverLocation'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -409,7 +410,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "account" | "session" | "verificationToken" | "area" | "truck" | "route" | "routeStop" | "missedStop" | "pickupLog"
+    modelProps: "user" | "account" | "session" | "verificationToken" | "area" | "truck" | "route" | "routeStop" | "missedStop" | "pickupLog" | "driverLocation"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1153,6 +1154,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    DriverLocation: {
+      payload: Prisma.$DriverLocationPayload<ExtArgs>
+      fields: Prisma.DriverLocationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DriverLocationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverLocationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DriverLocationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverLocationPayload>
+        }
+        findFirst: {
+          args: Prisma.DriverLocationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverLocationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DriverLocationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverLocationPayload>
+        }
+        findMany: {
+          args: Prisma.DriverLocationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverLocationPayload>[]
+        }
+        create: {
+          args: Prisma.DriverLocationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverLocationPayload>
+        }
+        createMany: {
+          args: Prisma.DriverLocationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DriverLocationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverLocationPayload>[]
+        }
+        delete: {
+          args: Prisma.DriverLocationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverLocationPayload>
+        }
+        update: {
+          args: Prisma.DriverLocationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverLocationPayload>
+        }
+        deleteMany: {
+          args: Prisma.DriverLocationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DriverLocationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DriverLocationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverLocationPayload>[]
+        }
+        upsert: {
+          args: Prisma.DriverLocationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverLocationPayload>
+        }
+        aggregate: {
+          args: Prisma.DriverLocationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDriverLocation>
+        }
+        groupBy: {
+          args: Prisma.DriverLocationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DriverLocationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DriverLocationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DriverLocationCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1327,6 +1402,18 @@ export const PickupLogScalarFieldEnum = {
 } as const
 
 export type PickupLogScalarFieldEnum = (typeof PickupLogScalarFieldEnum)[keyof typeof PickupLogScalarFieldEnum]
+
+
+export const DriverLocationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  routeId: 'routeId',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DriverLocationScalarFieldEnum = (typeof DriverLocationScalarFieldEnum)[keyof typeof DriverLocationScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1582,6 +1669,7 @@ export type GlobalOmitConfig = {
   routeStop?: Prisma.RouteStopOmit
   missedStop?: Prisma.MissedStopOmit
   pickupLog?: Prisma.PickupLogOmit
+  driverLocation?: Prisma.DriverLocationOmit
 }
 
 /* Types for Logging */

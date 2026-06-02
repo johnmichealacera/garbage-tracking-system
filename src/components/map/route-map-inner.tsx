@@ -19,15 +19,30 @@ interface StopWithCoords {
   type?: string;
 }
 
+export interface DriverLocation {
+  latitude: number;
+  longitude: number;
+  updatedAt: string;
+}
+
 interface RouteMapInnerProps {
   stops: StopWithCoords[];
   completedStopIds: Set<string>;
+  driverLocation?: DriverLocation | null;
   mapHeightPx?: number;
+}
+
+function formatAgo(iso: string): string {
+  const secs = Math.floor((Date.now() - new Date(iso).getTime()) / 1000);
+  if (secs < 10) return "Just now";
+  if (secs < 60) return `${secs}s ago`;
+  return `${Math.floor(secs / 60)}m ago`;
 }
 
 export function RouteMapInner({
   stops,
   completedStopIds,
+  driverLocation,
   mapHeightPx = 400,
 }: RouteMapInnerProps) {
   const stopsWithCoords = stops.filter(
@@ -43,7 +58,9 @@ export function RouteMapInner({
           stopsWithCoords.reduce((a, s) => a + s.longitude, 0) /
             stopsWithCoords.length,
         ]
-      : MAP_CENTER;
+      : driverLocation
+        ? [driverLocation.latitude, driverLocation.longitude]
+        : MAP_CENTER;
 
   return (
     <MapContainer
@@ -56,6 +73,7 @@ export function RouteMapInner({
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
+
       {stopsWithCoords.map((stop) => {
         const isCompleted = completedStopIds.has(stop.id);
         return (
@@ -83,8 +101,8 @@ export function RouteMapInner({
                 <span
                   className={`inline-block rounded-full px-2 py-0.5 text-xs font-medium ${
                     isCompleted
-                      ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
-                      : "bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400"
+                      ? "bg-green-100 text-green-800"
+                      : "bg-gray-100 text-gray-600"
                   }`}
                 >
                   {isCompleted ? "Completed" : "Pending"}
@@ -94,6 +112,42 @@ export function RouteMapInner({
           </CircleMarker>
         );
       })}
+
+      {driverLocation && (
+        <>
+          {/* Outer halo ring */}
+          <CircleMarker
+            center={[driverLocation.latitude, driverLocation.longitude]}
+            radius={20}
+            pathOptions={{
+              color: "#2563eb",
+              fillColor: "#2563eb",
+              fillOpacity: 0.12,
+              weight: 1.5,
+            }}
+          />
+          {/* Inner dot */}
+          <CircleMarker
+            center={[driverLocation.latitude, driverLocation.longitude]}
+            radius={9}
+            pathOptions={{
+              color: "#ffffff",
+              fillColor: "#2563eb",
+              fillOpacity: 0.95,
+              weight: 2.5,
+            }}
+          >
+            <Popup>
+              <div className="min-w-[160px] space-y-1 p-1">
+                <p className="font-semibold text-blue-700">📍 Driver location</p>
+                <p className="text-xs text-gray-500">
+                  Last updated: {formatAgo(driverLocation.updatedAt)}
+                </p>
+              </div>
+            </Popup>
+          </CircleMarker>
+        </>
+      )}
     </MapContainer>
   );
 }

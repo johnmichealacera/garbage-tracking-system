@@ -211,6 +211,7 @@ export type UserWhereInput = {
   pickupLogs?: Prisma.PickupLogListRelationFilter
   missedStops?: Prisma.MissedStopListRelationFilter
   driverRoutes?: Prisma.RouteListRelationFilter
+  driverLocation?: Prisma.XOR<Prisma.DriverLocationNullableScalarRelationFilter, Prisma.DriverLocationWhereInput> | null
 }
 
 export type UserOrderByWithRelationInput = {
@@ -227,6 +228,7 @@ export type UserOrderByWithRelationInput = {
   pickupLogs?: Prisma.PickupLogOrderByRelationAggregateInput
   missedStops?: Prisma.MissedStopOrderByRelationAggregateInput
   driverRoutes?: Prisma.RouteOrderByRelationAggregateInput
+  driverLocation?: Prisma.DriverLocationOrderByWithRelationInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -246,6 +248,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   pickupLogs?: Prisma.PickupLogListRelationFilter
   missedStops?: Prisma.MissedStopListRelationFilter
   driverRoutes?: Prisma.RouteListRelationFilter
+  driverLocation?: Prisma.XOR<Prisma.DriverLocationNullableScalarRelationFilter, Prisma.DriverLocationWhereInput> | null
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -290,6 +293,7 @@ export type UserCreateInput = {
   pickupLogs?: Prisma.PickupLogCreateNestedManyWithoutCompletedByInput
   missedStops?: Prisma.MissedStopCreateNestedManyWithoutReportedByInput
   driverRoutes?: Prisma.RouteCreateNestedManyWithoutDriverInput
+  driverLocation?: Prisma.DriverLocationCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -306,6 +310,7 @@ export type UserUncheckedCreateInput = {
   pickupLogs?: Prisma.PickupLogUncheckedCreateNestedManyWithoutCompletedByInput
   missedStops?: Prisma.MissedStopUncheckedCreateNestedManyWithoutReportedByInput
   driverRoutes?: Prisma.RouteUncheckedCreateNestedManyWithoutDriverInput
+  driverLocation?: Prisma.DriverLocationUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -322,6 +327,7 @@ export type UserUpdateInput = {
   pickupLogs?: Prisma.PickupLogUpdateManyWithoutCompletedByNestedInput
   missedStops?: Prisma.MissedStopUpdateManyWithoutReportedByNestedInput
   driverRoutes?: Prisma.RouteUpdateManyWithoutDriverNestedInput
+  driverLocation?: Prisma.DriverLocationUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -338,6 +344,7 @@ export type UserUncheckedUpdateInput = {
   pickupLogs?: Prisma.PickupLogUncheckedUpdateManyWithoutCompletedByNestedInput
   missedStops?: Prisma.MissedStopUncheckedUpdateManyWithoutReportedByNestedInput
   driverRoutes?: Prisma.RouteUncheckedUpdateManyWithoutDriverNestedInput
+  driverLocation?: Prisma.DriverLocationUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -504,6 +511,20 @@ export type UserUpdateOneRequiredWithoutPickupLogsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPickupLogsInput, Prisma.UserUpdateWithoutPickupLogsInput>, Prisma.UserUncheckedUpdateWithoutPickupLogsInput>
 }
 
+export type UserCreateNestedOneWithoutDriverLocationInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDriverLocationInput, Prisma.UserUncheckedCreateWithoutDriverLocationInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDriverLocationInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutDriverLocationNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDriverLocationInput, Prisma.UserUncheckedCreateWithoutDriverLocationInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDriverLocationInput
+  upsert?: Prisma.UserUpsertWithoutDriverLocationInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDriverLocationInput, Prisma.UserUpdateWithoutDriverLocationInput>, Prisma.UserUncheckedUpdateWithoutDriverLocationInput>
+}
+
 export type UserCreateWithoutAccountsInput = {
   id?: string
   email: string
@@ -517,6 +538,7 @@ export type UserCreateWithoutAccountsInput = {
   pickupLogs?: Prisma.PickupLogCreateNestedManyWithoutCompletedByInput
   missedStops?: Prisma.MissedStopCreateNestedManyWithoutReportedByInput
   driverRoutes?: Prisma.RouteCreateNestedManyWithoutDriverInput
+  driverLocation?: Prisma.DriverLocationCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -532,6 +554,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   pickupLogs?: Prisma.PickupLogUncheckedCreateNestedManyWithoutCompletedByInput
   missedStops?: Prisma.MissedStopUncheckedCreateNestedManyWithoutReportedByInput
   driverRoutes?: Prisma.RouteUncheckedCreateNestedManyWithoutDriverInput
+  driverLocation?: Prisma.DriverLocationUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -563,6 +586,7 @@ export type UserUpdateWithoutAccountsInput = {
   pickupLogs?: Prisma.PickupLogUpdateManyWithoutCompletedByNestedInput
   missedStops?: Prisma.MissedStopUpdateManyWithoutReportedByNestedInput
   driverRoutes?: Prisma.RouteUpdateManyWithoutDriverNestedInput
+  driverLocation?: Prisma.DriverLocationUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -578,6 +602,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   pickupLogs?: Prisma.PickupLogUncheckedUpdateManyWithoutCompletedByNestedInput
   missedStops?: Prisma.MissedStopUncheckedUpdateManyWithoutReportedByNestedInput
   driverRoutes?: Prisma.RouteUncheckedUpdateManyWithoutDriverNestedInput
+  driverLocation?: Prisma.DriverLocationUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -593,6 +618,7 @@ export type UserCreateWithoutSessionsInput = {
   pickupLogs?: Prisma.PickupLogCreateNestedManyWithoutCompletedByInput
   missedStops?: Prisma.MissedStopCreateNestedManyWithoutReportedByInput
   driverRoutes?: Prisma.RouteCreateNestedManyWithoutDriverInput
+  driverLocation?: Prisma.DriverLocationCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -608,6 +634,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   pickupLogs?: Prisma.PickupLogUncheckedCreateNestedManyWithoutCompletedByInput
   missedStops?: Prisma.MissedStopUncheckedCreateNestedManyWithoutReportedByInput
   driverRoutes?: Prisma.RouteUncheckedCreateNestedManyWithoutDriverInput
+  driverLocation?: Prisma.DriverLocationUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -639,6 +666,7 @@ export type UserUpdateWithoutSessionsInput = {
   pickupLogs?: Prisma.PickupLogUpdateManyWithoutCompletedByNestedInput
   missedStops?: Prisma.MissedStopUpdateManyWithoutReportedByNestedInput
   driverRoutes?: Prisma.RouteUpdateManyWithoutDriverNestedInput
+  driverLocation?: Prisma.DriverLocationUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -654,6 +682,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   pickupLogs?: Prisma.PickupLogUncheckedUpdateManyWithoutCompletedByNestedInput
   missedStops?: Prisma.MissedStopUncheckedUpdateManyWithoutReportedByNestedInput
   driverRoutes?: Prisma.RouteUncheckedUpdateManyWithoutDriverNestedInput
+  driverLocation?: Prisma.DriverLocationUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutDriverRoutesInput = {
@@ -669,6 +698,7 @@ export type UserCreateWithoutDriverRoutesInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   pickupLogs?: Prisma.PickupLogCreateNestedManyWithoutCompletedByInput
   missedStops?: Prisma.MissedStopCreateNestedManyWithoutReportedByInput
+  driverLocation?: Prisma.DriverLocationCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutDriverRoutesInput = {
@@ -684,6 +714,7 @@ export type UserUncheckedCreateWithoutDriverRoutesInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   pickupLogs?: Prisma.PickupLogUncheckedCreateNestedManyWithoutCompletedByInput
   missedStops?: Prisma.MissedStopUncheckedCreateNestedManyWithoutReportedByInput
+  driverLocation?: Prisma.DriverLocationUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutDriverRoutesInput = {
@@ -715,6 +746,7 @@ export type UserUpdateWithoutDriverRoutesInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   pickupLogs?: Prisma.PickupLogUpdateManyWithoutCompletedByNestedInput
   missedStops?: Prisma.MissedStopUpdateManyWithoutReportedByNestedInput
+  driverLocation?: Prisma.DriverLocationUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDriverRoutesInput = {
@@ -730,6 +762,7 @@ export type UserUncheckedUpdateWithoutDriverRoutesInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   pickupLogs?: Prisma.PickupLogUncheckedUpdateManyWithoutCompletedByNestedInput
   missedStops?: Prisma.MissedStopUncheckedUpdateManyWithoutReportedByNestedInput
+  driverLocation?: Prisma.DriverLocationUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutMissedStopsInput = {
@@ -745,6 +778,7 @@ export type UserCreateWithoutMissedStopsInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   pickupLogs?: Prisma.PickupLogCreateNestedManyWithoutCompletedByInput
   driverRoutes?: Prisma.RouteCreateNestedManyWithoutDriverInput
+  driverLocation?: Prisma.DriverLocationCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutMissedStopsInput = {
@@ -760,6 +794,7 @@ export type UserUncheckedCreateWithoutMissedStopsInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   pickupLogs?: Prisma.PickupLogUncheckedCreateNestedManyWithoutCompletedByInput
   driverRoutes?: Prisma.RouteUncheckedCreateNestedManyWithoutDriverInput
+  driverLocation?: Prisma.DriverLocationUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutMissedStopsInput = {
@@ -791,6 +826,7 @@ export type UserUpdateWithoutMissedStopsInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   pickupLogs?: Prisma.PickupLogUpdateManyWithoutCompletedByNestedInput
   driverRoutes?: Prisma.RouteUpdateManyWithoutDriverNestedInput
+  driverLocation?: Prisma.DriverLocationUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMissedStopsInput = {
@@ -806,6 +842,7 @@ export type UserUncheckedUpdateWithoutMissedStopsInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   pickupLogs?: Prisma.PickupLogUncheckedUpdateManyWithoutCompletedByNestedInput
   driverRoutes?: Prisma.RouteUncheckedUpdateManyWithoutDriverNestedInput
+  driverLocation?: Prisma.DriverLocationUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPickupLogsInput = {
@@ -821,6 +858,7 @@ export type UserCreateWithoutPickupLogsInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   missedStops?: Prisma.MissedStopCreateNestedManyWithoutReportedByInput
   driverRoutes?: Prisma.RouteCreateNestedManyWithoutDriverInput
+  driverLocation?: Prisma.DriverLocationCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPickupLogsInput = {
@@ -836,6 +874,7 @@ export type UserUncheckedCreateWithoutPickupLogsInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   missedStops?: Prisma.MissedStopUncheckedCreateNestedManyWithoutReportedByInput
   driverRoutes?: Prisma.RouteUncheckedCreateNestedManyWithoutDriverInput
+  driverLocation?: Prisma.DriverLocationUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPickupLogsInput = {
@@ -867,6 +906,7 @@ export type UserUpdateWithoutPickupLogsInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   missedStops?: Prisma.MissedStopUpdateManyWithoutReportedByNestedInput
   driverRoutes?: Prisma.RouteUpdateManyWithoutDriverNestedInput
+  driverLocation?: Prisma.DriverLocationUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPickupLogsInput = {
@@ -880,6 +920,87 @@ export type UserUncheckedUpdateWithoutPickupLogsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  missedStops?: Prisma.MissedStopUncheckedUpdateManyWithoutReportedByNestedInput
+  driverRoutes?: Prisma.RouteUncheckedUpdateManyWithoutDriverNestedInput
+  driverLocation?: Prisma.DriverLocationUncheckedUpdateOneWithoutUserNestedInput
+}
+
+export type UserCreateWithoutDriverLocationInput = {
+  id?: string
+  email: string
+  name: string
+  password: string
+  role?: $Enums.UserRole
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  pickupLogs?: Prisma.PickupLogCreateNestedManyWithoutCompletedByInput
+  missedStops?: Prisma.MissedStopCreateNestedManyWithoutReportedByInput
+  driverRoutes?: Prisma.RouteCreateNestedManyWithoutDriverInput
+}
+
+export type UserUncheckedCreateWithoutDriverLocationInput = {
+  id?: string
+  email: string
+  name: string
+  password: string
+  role?: $Enums.UserRole
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  pickupLogs?: Prisma.PickupLogUncheckedCreateNestedManyWithoutCompletedByInput
+  missedStops?: Prisma.MissedStopUncheckedCreateNestedManyWithoutReportedByInput
+  driverRoutes?: Prisma.RouteUncheckedCreateNestedManyWithoutDriverInput
+}
+
+export type UserCreateOrConnectWithoutDriverLocationInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutDriverLocationInput, Prisma.UserUncheckedCreateWithoutDriverLocationInput>
+}
+
+export type UserUpsertWithoutDriverLocationInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutDriverLocationInput, Prisma.UserUncheckedUpdateWithoutDriverLocationInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutDriverLocationInput, Prisma.UserUncheckedCreateWithoutDriverLocationInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutDriverLocationInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutDriverLocationInput, Prisma.UserUncheckedUpdateWithoutDriverLocationInput>
+}
+
+export type UserUpdateWithoutDriverLocationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  pickupLogs?: Prisma.PickupLogUpdateManyWithoutCompletedByNestedInput
+  missedStops?: Prisma.MissedStopUpdateManyWithoutReportedByNestedInput
+  driverRoutes?: Prisma.RouteUpdateManyWithoutDriverNestedInput
+}
+
+export type UserUncheckedUpdateWithoutDriverLocationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  pickupLogs?: Prisma.PickupLogUncheckedUpdateManyWithoutCompletedByNestedInput
   missedStops?: Prisma.MissedStopUncheckedUpdateManyWithoutReportedByNestedInput
   driverRoutes?: Prisma.RouteUncheckedUpdateManyWithoutDriverNestedInput
 }
@@ -965,6 +1086,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   pickupLogs?: boolean | Prisma.User$pickupLogsArgs<ExtArgs>
   missedStops?: boolean | Prisma.User$missedStopsArgs<ExtArgs>
   driverRoutes?: boolean | Prisma.User$driverRoutesArgs<ExtArgs>
+  driverLocation?: boolean | Prisma.User$driverLocationArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1008,6 +1130,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   pickupLogs?: boolean | Prisma.User$pickupLogsArgs<ExtArgs>
   missedStops?: boolean | Prisma.User$missedStopsArgs<ExtArgs>
   driverRoutes?: boolean | Prisma.User$driverRoutesArgs<ExtArgs>
+  driverLocation?: boolean | Prisma.User$driverLocationArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1021,6 +1144,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     pickupLogs: Prisma.$PickupLogPayload<ExtArgs>[]
     missedStops: Prisma.$MissedStopPayload<ExtArgs>[]
     driverRoutes: Prisma.$RoutePayload<ExtArgs>[]
+    driverLocation: Prisma.$DriverLocationPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1430,6 +1554,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   pickupLogs<T extends Prisma.User$pickupLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$pickupLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PickupLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   missedStops<T extends Prisma.User$missedStopsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$missedStopsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MissedStopPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   driverRoutes<T extends Prisma.User$driverRoutesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$driverRoutesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RoutePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  driverLocation<T extends Prisma.User$driverLocationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$driverLocationArgs<ExtArgs>>): Prisma.Prisma__DriverLocationClient<runtime.Types.Result.GetResult<Prisma.$DriverLocationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1972,6 +2097,25 @@ export type User$driverRoutesArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   distinct?: Prisma.RouteScalarFieldEnum | Prisma.RouteScalarFieldEnum[]
+}
+
+/**
+ * User.driverLocation
+ */
+export type User$driverLocationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DriverLocation
+   */
+  select?: Prisma.DriverLocationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DriverLocation
+   */
+  omit?: Prisma.DriverLocationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DriverLocationInclude<ExtArgs> | null
+  where?: Prisma.DriverLocationWhereInput
 }
 
 /**

@@ -60,7 +60,8 @@ export const ModelName = {
   Route: 'Route',
   RouteStop: 'RouteStop',
   MissedStop: 'MissedStop',
-  PickupLog: 'PickupLog'
+  PickupLog: 'PickupLog',
+  DriverLocation: 'DriverLocation'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -214,6 +215,18 @@ export const PickupLogScalarFieldEnum = {
 } as const
 
 export type PickupLogScalarFieldEnum = (typeof PickupLogScalarFieldEnum)[keyof typeof PickupLogScalarFieldEnum]
+
+
+export const DriverLocationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  routeId: 'routeId',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DriverLocationScalarFieldEnum = (typeof DriverLocationScalarFieldEnum)[keyof typeof DriverLocationScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -53,9 +53,10 @@ model User {
   accounts Account[]
   sessions Session[]
 
-  pickupLogs   PickupLog[]  @relation("CompletedBy")
-  missedStops  MissedStop[]
-  driverRoutes Route[]      @relation("Driver")
+  pickupLogs     PickupLog[]    @relation("CompletedBy")
+  missedStops    MissedStop[]
+  driverRoutes   Route[]        @relation("Driver")
+  driverLocation DriverLocation?
 
   @@map("users")
 }
@@ -227,5 +228,17 @@ model PickupLog {
   @@index([completedById])
   @@index([completedAt])
   @@map("pickup_logs")
+}
+
+model DriverLocation {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  routeId   String?
+  latitude  Float
+  longitude Float
+  updatedAt DateTime @updatedAt
+
+  @@map("driver_locations")
 }
 

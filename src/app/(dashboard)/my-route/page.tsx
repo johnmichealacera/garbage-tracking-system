@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import useSWR, { mutate } from "swr";
 import {
   CalendarDays,
   CheckCircle2,
   Circle,
+  LocateFixed,
+  LocateOff,
   MapPin,
   Navigation,
   Scale,
@@ -54,6 +56,7 @@ interface MyRoute {
   id: string;
   name: string;
   scheduledDate: string;
+  status: string;
   area: Area;
   truck: Truck;
   stops: Stop[];
@@ -83,6 +86,44 @@ export default function MyRoutePage() {
   const [notes, setNotes] = useState("");
   const [missedReason, setMissedReason] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [gpsStatus, setGpsStatus] = useState<"idle" | "active" | "denied" | "unavailable">("idle");
+  const lastPostRef = useRef<number>(0);
+
+  // GPS location sharing — starts automatically when driver has routes
+  useEffect(() => {
+    if (!data?.length) return;
+    if (!("geolocation" in navigator)) {
+      setGpsStatus("unavailable");
+      return;
+    }
+
+    const activeRoute =
+      data.find((r) => r.status === "IN_PROGRESS") ?? data[0]!;
+
+    const watchId = navigator.geolocation.watchPosition(
+      (pos) => {
+        const now = Date.now();
+        if (now - lastPostRef.current < 10_000) return; // throttle: 1 POST per 10 s
+        lastPostRef.current = now;
+        setGpsStatus("active");
+        fetch("/api/location", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            latitude: pos.coords.latitude,
+            longitude: pos.coords.longitude,
+            routeId: activeRoute.id,
+          }),
+        }).catch(() => {});
+      },
+      (err) => {
+        setGpsStatus(err.code === 1 ? "denied" : "unavailable");
+      },
+      { enableHighAccuracy: true, timeout: 15_000, maximumAge: 10_000 },
+    );
+
+    return () => navigator.geolocation.clearWatch(watchId);
+  }, [data]);
 
   async function completeStop(
     routeId: string,
@@ -223,6 +264,36 @@ export default function MyRoutePage() {
             : "No routes assigned to you yet."
         }
       />
+
+      {/* GPS sharing status badge */}
+      {gpsStatus === "active" && (
+        <div className="flex items-center gap-2 rounded-lg border border-emerald-500/25 bg-emerald-500/8 px-3 py-2 text-xs text-emerald-700 dark:text-emerald-400">
+          <span className="relative flex size-2">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+            <span className="relative inline-flex size-2 rounded-full bg-emerald-500" />
+          </span>
+          <LocateFixed className="size-3.5" />
+          <span className="font-medium">Sharing your location</span>
+          <span className="text-emerald-600/70 dark:text-emerald-500/70">
+            — residents can see you on the public map
+          </span>
+        </div>
+      )}
+      {gpsStatus === "denied" && (
+        <div className="flex items-center gap-2 rounded-lg border border-amber-500/25 bg-amber-500/8 px-3 py-2 text-xs text-amber-700 dark:text-amber-400">
+          <LocateOff className="size-3.5 shrink-0" />
+          <span>
+            <span className="font-medium">Location permission denied.</span>{" "}
+            Enable location access in your browser settings so residents can track the truck.
+          </span>
+        </div>
+      )}
+      {gpsStatus === "unavailable" && (
+        <div className="flex items-center gap-2 rounded-lg border border-muted bg-muted/40 px-3 py-2 text-xs text-muted-foreground">
+          <LocateOff className="size-3.5 shrink-0" />
+          <span>GPS not available on this device — live location sharing is disabled.</span>
+        </div>
+      )}
 
       {data.length === 0 ? (
         <Card className="border-border/70 bg-card/85 shadow-lg ring-1 ring-black/5 backdrop-blur-sm dark:ring-white/10">

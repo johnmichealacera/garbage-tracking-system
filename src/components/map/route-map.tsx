@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { MAP_CENTER, MAP_DEFAULT_ZOOM } from "@/lib/constants";
+import type { DriverLocation } from "./route-map-inner";
 
 interface StopWithCoords {
   id: string;
@@ -16,6 +16,7 @@ interface StopWithCoords {
 interface RouteMapProps {
   stops: StopWithCoords[];
   completedStopIds: Set<string>;
+  driverLocation?: DriverLocation | null;
   /** Override helper text when no coordinates (e.g. public schedule vs staff). */
   emptyMessage?: string;
   /** Map height in pixels (default 400). */
@@ -23,8 +24,7 @@ interface RouteMapProps {
 }
 
 const RouteMapInner = dynamic(
-  () =>
-    import("./route-map-inner").then((mod) => mod.RouteMapInner),
+  () => import("./route-map-inner").then((mod) => mod.RouteMapInner),
   {
     ssr: false,
     loading: () => (
@@ -36,12 +36,13 @@ const RouteMapInner = dynamic(
 );
 
 export function RouteMap(props: RouteMapProps) {
-  const { emptyMessage, mapHeightPx, ...rest } = props;
+  const { emptyMessage, mapHeightPx, driverLocation, ...rest } = props;
   const stopsWithCoords = props.stops.filter(
     (s) => s.latitude != null && s.longitude != null,
   );
 
-  if (stopsWithCoords.length === 0) {
+  // Show placeholder only when there's no stop coords AND no live driver location
+  if (stopsWithCoords.length === 0 && !driverLocation) {
     return (
       <div
         className="flex items-center justify-center rounded-lg border bg-muted/30 px-4 text-center"
@@ -57,7 +58,7 @@ export function RouteMap(props: RouteMapProps) {
 
   return (
     <div className="overflow-hidden rounded-lg border">
-      <RouteMapInner {...rest} mapHeightPx={mapHeightPx} />
+      <RouteMapInner {...rest} mapHeightPx={mapHeightPx} driverLocation={driverLocation} />
     </div>
   );
 }

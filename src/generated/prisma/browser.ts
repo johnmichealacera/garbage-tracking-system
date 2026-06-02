@@ -67,3 +67,8 @@ export type MissedStop = Prisma.MissedStopModel
  * 
  */
 export type PickupLog = Prisma.PickupLogModel
+/**
+ * Model DriverLocation
+ * 
+ */
+export type DriverLocation = Prisma.DriverLocationModel

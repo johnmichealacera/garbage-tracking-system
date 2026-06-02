@@ -127,6 +127,12 @@ export default function PublicSchedulePage() {
     [data, resolvedRouteId],
   );
 
+  const { data: driverLocation } = useSWR(
+    resolvedRouteId ? `/api/routes/${resolvedRouteId}/location` : null,
+    fetcher,
+    { refreshInterval: 15_000 },
+  );
+
   const selectedRouteProgress = useMemo(() => {
     if (!selectedRoute) return null;
     const completedIds = new Set(
@@ -435,18 +441,29 @@ export default function PublicSchedulePage() {
                       </div>
 
                       <div className="min-w-0 space-y-3 rounded-xl border border-primary/25 bg-background p-3 shadow-sm">
-                        <h3 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-primary">
-                          <MapPin className="size-4" />
-                          Route map (Socorro)
-                        </h3>
+                        <div className="flex flex-wrap items-center justify-between gap-2">
+                          <h3 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-primary">
+                            <MapPin className="size-4" />
+                            Route map (Socorro)
+                          </h3>
+                          {driverLocation && (
+                            <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-500/10 px-2 py-0.5 text-[10px] font-medium text-blue-700 dark:text-blue-400">
+                              <span className="relative flex size-1.5">
+                                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-75" />
+                                <span className="relative inline-flex size-1.5 rounded-full bg-blue-500" />
+                              </span>
+                              Truck is live
+                            </span>
+                          )}
+                        </div>
                         <p className="text-xs text-muted-foreground">
-                          Stops with coordinates appear on the map (green =
-                          collected, gray = still pending). Approximate locations
-                          within the municipality.
+                          Green = collected · Gray = pending
+                          {driverLocation ? " · Blue = truck location" : ""}.
                         </p>
                         <RouteMap
                           stops={selectedRoute.stops}
                           completedStopIds={selectedRouteProgress.completedIds}
+                          driverLocation={driverLocation ?? null}
                           mapHeightPx={280}
                           emptyMessage="Stop locations for this route are not on the map yet. The LGU adds map points when coordinates are recorded for each stop."
                         />
