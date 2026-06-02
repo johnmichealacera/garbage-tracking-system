@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/auth";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { CalendarDays, Leaf, LogIn, MapPin, MonitorPlay } from "lucide-react";
+import { CalendarDays, Leaf, LogIn, MapPin, MonitorPlay, ScrollText } from "lucide-react";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
@@ -89,6 +89,49 @@ export default async function Home() {
                 </span>
               </li>
             </ul>
+
+            {/* Waste Disposal Guidelines */}
+            <div className="mt-5 w-full max-w-md rounded-xl border border-primary/15 bg-primary/4 px-4 py-3 text-left lg:mx-0">
+              <p className="mb-2.5 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider text-primary">
+                <ScrollText className="size-3.5 shrink-0" />
+                Waste Disposal Guidelines
+              </p>
+              <ol className="space-y-1.5 text-xs leading-relaxed text-muted-foreground">
+                <li className="flex gap-2">
+                  <span className="mt-px font-semibold text-primary/70 shrink-0">1.</span>
+                  <span>
+                    <span className="font-medium text-foreground/80">Segregate your waste</span> before collection day. Separate biodegradable, non-biodegradable, and recyclable materials and place them in clearly labelled bags or bins.
+                  </span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="mt-px font-semibold text-primary/70 shrink-0">2.</span>
+                  <span>
+                    <span className="font-medium text-foreground/80">Set out waste on schedule.</span> Place properly sealed bags or covered bins at your designated collection point before the scheduled pickup time. Do not leave waste out overnight.
+                  </span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="mt-px font-semibold text-primary/70 shrink-0">3.</span>
+                  <span>
+                    <span className="font-medium text-foreground/80">Dispose responsibly.</span> Never throw garbage in waterways, roads, vacant lots, or any public space. Littering is a violation of Republic Act No. 9003 (Ecological Solid Waste Management Act).
+                  </span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="mt-px font-semibold text-primary/70 shrink-0">4.</span>
+                  <span>
+                    <span className="font-medium text-foreground/80">No open burning.</span> Burning of household waste is strictly prohibited. It poses serious health and environmental hazards to the community.
+                  </span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="mt-px font-semibold text-primary/70 shrink-0">5.</span>
+                  <span>
+                    <span className="font-medium text-foreground/80">Handle hazardous waste separately.</span> Batteries, chemicals, medicines, and electronic waste must not be mixed with regular household garbage. Contact the LGU for proper disposal guidance.
+                  </span>
+                </li>
+              </ol>
+              <p className="mt-2.5 text-[10px] text-muted-foreground/60">
+                In accordance with R.A. 9003 · Municipality of Socorro, Surigao del Norte
+              </p>
+            </div>
           </div>
 
           <div className="flex w-full flex-col justify-center lg:h-full">
@@ -107,8 +150,7 @@ export default async function Home() {
               <div
                 className="mt-4 min-h-28 flex-1 rounded-xl border border-primary/20 bg-cover bg-center shadow-inner sm:min-h-32 lg:min-h-0"
                 style={{
-                  backgroundImage:
-                    "url('https://res.cloudinary.com/dofpspduc/image/upload/f_webp/v1776392930/lucid-origin_futuristic_smart_city_waste_management_system_glowing_digital_dashboard_interfac-0_eynr1k.jpg')",
+                  backgroundImage: "url('/socorro-homepage.jpg')",
                 }}
                 aria-hidden
               />

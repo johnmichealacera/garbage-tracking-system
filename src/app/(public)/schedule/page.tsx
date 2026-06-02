@@ -367,25 +367,19 @@ export default function PublicSchedulePage() {
                       </div>
                     </CardHeader>
 
-                    <CardContent className="grid gap-2 p-1 pt-1 lg:grid-cols-2">
-                      <div className="min-w-0 space-y-3 rounded-xl border border-primary/25 bg-background p-3 shadow-sm">
-                        <h3 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-primary">
-                          <ClipboardList className="size-4" />
+                    <CardContent className="grid gap-2 p-1 pt-1 lg:grid-cols-3">
+                      <div className="min-w-0 space-y-2 rounded-xl border border-primary/25 bg-background p-2 shadow-sm lg:col-span-1">
+                        <h3 className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-primary">
+                          <ClipboardList className="size-3.5" />
                           Stop list
                         </h3>
-                        <div className="overflow-x-auto rounded-lg border">
-                          <table className="w-full min-w-[320px] text-left text-sm">
+                        <div className="rounded-lg border">
+                          <table className="w-full text-left">
                             <thead>
-                              <tr className="border-b bg-muted/50 text-xs uppercase tracking-wide text-muted-foreground">
-                                <th className="px-3 py-2.5">#</th>
-                                <th className="px-3 py-2.5">Status</th>
-                                <th className="px-3 py-2.5">Stop</th>
-                                <th className="hidden px-3 py-2.5 sm:table-cell">
-                                  Type
-                                </th>
-                                <th className="hidden px-3 py-2.5 md:table-cell">
-                                  Est. kg
-                                </th>
+                              <tr className="border-b bg-muted/50 text-[10px] uppercase tracking-wide text-muted-foreground">
+                                <th className="px-2 py-1.5">#</th>
+                                <th className="px-2 py-1.5">Status</th>
+                                <th className="px-2 py-1.5">Stop</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -394,44 +388,36 @@ export default function PublicSchedulePage() {
                                   key={stop.id}
                                   className="border-b border-border/60 last:border-0"
                                 >
-                                  <td className="px-3 py-3 align-top font-mono text-muted-foreground">
+                                  <td className="px-2 py-2 align-top font-mono text-[10px] text-muted-foreground">
                                     {stop.sequence}
                                   </td>
-                                  <td className="px-3 py-3 align-top">
+                                  <td className="px-2 py-2 align-top">
                                     {stop.isCompleted ? (
-                                      <span className="inline-flex items-center gap-1 text-green-600 dark:text-green-500">
-                                        <CheckCircle2 className="size-4" />
+                                      <span className="inline-flex items-center gap-1 text-[10px] text-green-600 dark:text-green-500">
+                                        <CheckCircle2 className="size-3" />
                                         Done
                                       </span>
                                     ) : stop.isMissed ? (
-                                      <span className="inline-flex items-center gap-1 text-amber-600 dark:text-amber-500">
-                                        <XCircle className="size-4" />
+                                      <span className="inline-flex items-center gap-1 text-[10px] text-amber-600 dark:text-amber-500">
+                                        <XCircle className="size-3" />
                                         Missed
                                       </span>
                                     ) : (
-                                      <span className="inline-flex items-center gap-1 text-muted-foreground">
-                                        <Circle className="size-4" />
+                                      <span className="inline-flex items-center gap-1 text-[10px] text-muted-foreground">
+                                        <Circle className="size-3" />
                                         Pending
                                       </span>
                                     )}
                                   </td>
-                                  <td className="px-3 py-3 align-top">
-                                    <p className="font-medium leading-snug">
+                                  <td className="px-2 py-2 align-top">
+                                    <p className="text-[11px] font-medium leading-snug">
                                       {stop.name ?? "Stop"}
                                     </p>
                                     {stop.address ? (
-                                      <p className="mt-0.5 text-xs text-muted-foreground">
+                                      <p className="mt-0.5 text-[10px] leading-tight text-muted-foreground">
                                         {stop.address}
                                       </p>
                                     ) : null}
-                                  </td>
-                                  <td className="hidden px-3 py-3 align-top capitalize sm:table-cell">
-                                    {stopTypeLabel(stop.type)}
-                                  </td>
-                                  <td className="hidden px-3 py-3 align-top text-muted-foreground md:table-cell">
-                                    {stop.expectedVolumeKg != null
-                                      ? stop.expectedVolumeKg.toLocaleString()
-                                      : "—"}
                                   </td>
                                 </tr>
                               ))}
@@ -440,7 +426,7 @@ export default function PublicSchedulePage() {
                         </div>
                       </div>
 
-                      <div className="min-w-0 space-y-3 rounded-xl border border-primary/25 bg-background p-3 shadow-sm">
+                      <div className="min-w-0 space-y-3 rounded-xl border border-primary/25 bg-background p-3 shadow-sm lg:col-span-2">
                         <div className="flex flex-wrap items-center justify-between gap-2">
                           <h3 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-primary">
                             <MapPin className="size-4" />
@@ -464,7 +450,7 @@ export default function PublicSchedulePage() {
                           stops={selectedRoute.stops}
                           completedStopIds={selectedRouteProgress.completedIds}
                           driverLocation={driverLocation ?? null}
-                          mapHeightPx={280}
+                          mapHeightPx={420}
                           emptyMessage="Stop locations for this route are not on the map yet. The LGU adds map points when coordinates are recorded for each stop."
                         />
                       </div>
