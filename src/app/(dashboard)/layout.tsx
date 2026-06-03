@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/auth";
 import { SidebarNav } from "@/components/dashboard/sidebar-nav";
 import { SignOutButton } from "@/components/dashboard/sign-out-button";
+import { MobileNav } from "@/components/dashboard/mobile-nav";
 
 export default async function DashboardLayout({
   children,
@@ -95,20 +96,27 @@ export default async function DashboardLayout({
         </aside>
 
         <main className="relative flex-1 min-w-0">
-          <div className="md:hidden sticky top-0 z-30 flex items-center justify-between gap-3 border-b border-border/70 bg-background/80 px-4 py-3 backdrop-blur">
-            <Link href="/dashboard" className="flex items-center gap-2">
-              <Image
-                src="/socorro_logo.png"
-                alt="Municipality of Socorro"
-                width={28}
-                height={28}
-                className="h-7 w-7 object-contain"
-              />
-              <span className="text-sm font-semibold tracking-tight">
-                Garbage Tracking
-              </span>
+          <div className="md:hidden sticky top-0 z-30 flex items-center justify-between gap-3 border-b border-border bg-card px-4 py-3 shadow-sm">
+            <Link href="/dashboard" className="flex items-center gap-2.5">
+              <div className="rounded-lg border border-border bg-background p-1 shadow-sm">
+                <Image
+                  src="/socorro_logo.png"
+                  alt="Municipality of Socorro"
+                  width={28}
+                  height={28}
+                  className="h-6 w-6 object-contain"
+                />
+              </div>
+              <div className="min-w-0">
+                <p className="truncate text-[10px] font-medium uppercase tracking-wider text-muted-foreground leading-none">
+                  Socorro LGU
+                </p>
+                <p className="truncate text-sm font-bold tracking-tight leading-snug">
+                  Garbage Tracking
+                </p>
+              </div>
             </Link>
-            <SignOutButton />
+            <MobileNav role={role} displayName={displayName} initials={initials} />
           </div>
 
           <div className="px-4 py-6 sm:px-6 lg:px-8">{children}</div>
