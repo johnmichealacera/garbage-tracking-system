@@ -884,6 +884,25 @@ Source: https://www.ijcaonline.org/archives/volume180/number19/29042-2018916441/
 Lacasandile, A., Abisado, M. B., Labanan, R. M., & Abad, L. P. (2020). Development of an Information-Based Dashboard: Automation of Barangay Information Profiling System (BIPS) for Decision Support towards e-Governance. In Proceedings of the 4th International Conference on E-Society, E-Education and E-Technology (ICSET '20) (pp. 68–75). ACM.
 Source: https://dl.acm.org/doi/10.1145/3421682.3421691
 
+Republic of the Philippines. (2001). Republic Act No. 9003: Ecological Solid Waste Management Act of 2000. Manila: Official Gazette of the Republic of the Philippines.
+Source: https://www.officialgazette.gov.ph/2001/01/26/republic-act-no-9003/
+
+International Organization for Standardization. (2001). ISO/IEC 9126-1:2001 — Software Engineering: Product Quality — Part 1: Quality Model. Geneva: ISO/IEC.
+Source: https://www.iso.org/standard/22749.html
+
+Martin, J. (1991). Rapid Application Development. New York: Macmillan Publishing Company.
+
+Vercel Inc. (2024). Next.js Documentation — The React Framework for the Web. Vercel.
+Source: https://nextjs.org/docs
+
+Prisma. (2024). Prisma Documentation — Next-Generation Node.js and TypeScript ORM. Prisma Data, Inc.
+Source: https://www.prisma.io/docs
+
+NextAuth.js Contributors. (2024). NextAuth.js Documentation — Authentication for Next.js. Open Source.
+Source: https://next-auth.js.org
+
+*Note to researchers: The references above cover the laws cited (R.A. 9003), the evaluation framework (ISO/IEC 9126), the development methodology (RAD), and the core technology stack. To meet the minimum reference requirement of 15–20 sources expected for a capstone defense, search Google Scholar for the following additional topics: "solid waste management information system Philippines", "web-based route management system LGU", "real-time tracking system municipal services", "e-governance local government Philippines", and "role-based access control web application". Add any peer-reviewed papers found from those searches to this section in APA format before final submission.*
+
 ---
 
 ## CURRICULUM VITAE
