@@ -8,6 +8,7 @@ import {
   EyeOff,
   Plus,
   ShieldCheck,
+  Trash2,
   UserCog,
   Users,
 } from "lucide-react";
@@ -66,6 +67,8 @@ export default function UsersPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [togglingId, setTogglingId] = useState<string | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<UserRow | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   function resetForm() {
     setName("");
@@ -132,6 +135,26 @@ export default function UsersPage() {
       );
     } finally {
       setTogglingId(null);
+    }
+  }
+
+  async function handleDelete() {
+    if (!deleteTarget) return;
+    setIsDeleting(true);
+    try {
+      const res = await fetch(`/api/users/${deleteTarget.id}`, {
+        method: "DELETE",
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        toast.error(json.message ?? "Failed to delete account.");
+        return;
+      }
+      mutate("/api/users");
+      toast.success(`${deleteTarget.name}'s account has been deleted.`);
+      setDeleteTarget(null);
+    } finally {
+      setIsDeleting(false);
     }
   }
 
@@ -274,22 +297,34 @@ export default function UsersPage() {
                           })}
                         </td>
                         <td className="px-4 py-3 text-right align-middle">
-                          <Button
-                            size="sm"
-                            variant={user.isActive ? "outline" : "default"}
-                            disabled={
-                              togglingId === user.id ||
-                              user.id === currentUserId
-                            }
-                            onClick={() => toggleActive(user)}
-                            className="text-xs"
-                          >
-                            {togglingId === user.id
-                              ? "Saving…"
-                              : user.isActive
-                                ? "Deactivate"
-                                : "Activate"}
-                          </Button>
+                          <div className="flex items-center justify-end gap-2">
+                            <Button
+                              size="sm"
+                              variant={user.isActive ? "outline" : "default"}
+                              disabled={
+                                togglingId === user.id ||
+                                user.id === currentUserId
+                              }
+                              onClick={() => toggleActive(user)}
+                              className="text-xs"
+                            >
+                              {togglingId === user.id
+                                ? "Saving…"
+                                : user.isActive
+                                  ? "Deactivate"
+                                  : "Activate"}
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              disabled={user.id === currentUserId}
+                              onClick={() => setDeleteTarget(user)}
+                              className="size-8 p-0 text-destructive hover:border-destructive/40 hover:bg-destructive/5 hover:text-destructive"
+                              aria-label={`Delete ${user.name}`}
+                            >
+                              <Trash2 className="size-3.5" />
+                            </Button>
+                          </div>
                         </td>
                       </tr>
                     ))}
@@ -300,6 +335,54 @@ export default function UsersPage() {
           )}
         </CardContent>
       </Card>
+
+      {/* Delete confirmation modal */}
+      {deleteTarget && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm">
+          <div className="w-full max-w-sm rounded-2xl border border-border/70 bg-card/95 p-6 shadow-2xl ring-1 ring-black/5 backdrop-blur-md dark:ring-white/10">
+            <div className="flex items-start gap-3">
+              <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-destructive/10 text-destructive ring-1 ring-inset ring-destructive/20">
+                <Trash2 className="size-5" />
+              </div>
+              <div>
+                <h3 className="text-base font-semibold tracking-tight">
+                  Delete account
+                </h3>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Are you sure you want to permanently delete{" "}
+                  <span className="font-medium text-foreground">
+                    {deleteTarget.name}
+                  </span>
+                  ? This action cannot be undone.
+                </p>
+              </div>
+            </div>
+            <div className="mt-5 rounded-lg border border-amber-500/25 bg-amber-500/8 px-3 py-2 text-xs text-amber-700 dark:text-amber-400">
+              Accounts with existing pickup logs cannot be deleted. Use
+              <span className="font-semibold"> Deactivate </span>
+              instead to block sign-in while preserving records.
+            </div>
+            <div className="mt-5 flex justify-end gap-2">
+              <Button
+                variant="outline"
+                onClick={() => setDeleteTarget(null)}
+                disabled={isDeleting}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="destructive"
+                onClick={handleDelete}
+                disabled={isDeleting}
+                className="gap-2"
+              >
+                <Trash2 className="size-4" />
+                {isDeleting ? "Deleting…" : "Delete account"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Create account modal */}
       {showModal && (

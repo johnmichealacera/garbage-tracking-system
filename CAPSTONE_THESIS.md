@@ -104,84 +104,104 @@ Thank you all for being part of this meaningful journey.
 
 # INTRODUCTION
 
-Efficient garbage collection management is essential for maintaining clean, healthy communities. However, many municipalities and waste management organizations still rely on manual record-keeping, paper-based route tracking, and disconnected communication between dispatchers, drivers, and administrators. This traditional approach leads to delays in result visibility, inconsistent pickup tracking, and limited transparency in operations. The Garbage Tracking System addresses these challenges by automating route management, pickup logging, and reporting. The system enables dispatchers to create and assign routes, drivers to log pickups with volume and notes in real time, and administrators to view comprehensive dashboards and analytics. By streamlining the tracking process, the system enhances efficiency, accountability, and visibility for waste management operations, benefiting dispatchers, drivers, administrators, and the communities they serve.
+Efficient waste management is essential for maintaining sanitation, public health, and environmental sustainability in any community. Traditional waste collection methods — relying on manual schedules, bulletin announcements, and printed calendars — often result in missed pickups, delayed waste disposal, and deteriorating environmental conditions. As populations grow and urbanization accelerates, these limitations become increasingly pronounced, highlighting the critical need for automated digital systems capable of improving collection efficiency, optimizing routes, and promoting community compliance.
+
+Waste management is one of the most pressing issues facing communities today. The proper collection, handling, and disposal of waste are fundamental to maintaining a clean environment, protecting public health, and improving the quality of life for residents. When waste is not managed properly, it leads to environmental pollution, the spread of communicable diseases, and damage to surrounding ecosystems. Communities that lack systematic waste management solutions face recurring cycles of unhygienic conditions that are difficult to resolve without structured, technology-driven interventions.
+
+The Municipality of Socorro, composed of several barangays with diverse populations and varying community needs, faces ongoing challenges in waste collection operations. Limited resources — including available vehicles, manpower, and time — make it difficult for barangay officials and municipal authorities to coordinate consistent and timely garbage collection. The absence of a structured scheduling and tracking system results in inefficiency, missed pickups, and unhygienic conditions that directly affect the health and well-being of residents throughout the municipality.
+
+To address these challenges, this study presents the development of a Garbage Tracking System for the Municipality of Socorro — a web-based platform designed to automate and organize waste collection operations. The system enables dispatchers to plan and assign collection routes, drivers to log pickups in real time, and administrators to monitor operations through comprehensive dashboards and analytics. By implementing this system, the municipality can ensure that garbage is collected on time, resources are used efficiently, and residents benefit from a cleaner, healthier, and more organized community environment. The system not only improves the operational process of waste management but also encourages community participation in maintaining the cleanliness of the barangays.
 
 ## PROJECT CONTEXT
 
-In many waste management operations, manual tracking of garbage collection routes leads to problems such as delayed status updates, incomplete pickup records, and limited visibility into daily operations. The increasing demand for efficient, transparent, and data-driven waste management has led to the adoption of digital solutions in various municipalities and organizations. However, many existing systems are either too expensive, lack role-based access control, or are not tailored for garbage collection workflows. The Garbage Tracking System is designed to fill this gap by providing a customized web-based solution that integrates route management, real-time pickup logging, and role-based dashboards. The system operates on a secure platform where dispatchers create routes and assign drivers, drivers log pickups with volume and notes, and administrators view reports and analytics. This reduces the risk of data loss, unauthorized access, and delays in operational visibility.
+Managing waste effectively is a fundamental responsibility of local government units, particularly in municipalities like Socorro where barangay-level operations must serve diverse communities with limited resources. Currently, the municipality relies on manual and traditional methods of waste collection scheduling, which frequently result in delays, missed pickups, and inefficient use of trucks and personnel. Without a proper digital system, barangay staff find it difficult to organize collection routes, monitor progress, and ensure that garbage is collected on time across all covered areas. Garbage that is not collected promptly can pile up in streets, cause foul odors, block drainage systems, and pose serious health risks to residents.
 
-By replacing manual tracking with automated digital workflows, the system enhances the efficiency and professionalism of waste management operations. Drivers can focus on their routes, dispatchers can plan and monitor effectively, and administrators can make data-driven decisions.
+The increasing demand for efficient, transparent, and data-driven waste management has led to the adoption of digital solutions in various municipalities and organizations across the country. However, many existing systems are either too expensive, lack role-based access control, or are not tailored for the specific workflows of local government garbage collection operations. The Garbage Tracking System is designed to fill this gap by providing a customized web-based solution that integrates route management, real-time pickup logging, and role-based dashboards for administrators, dispatchers, and drivers. The system operates on a secure platform that reduces the risk of data loss, unauthorized access, and delays in operational visibility.
+
+By replacing manual tracking with automated digital workflows, the system enhances the efficiency and professionalism of waste management operations in the Municipality of Socorro. Drivers can focus on their assigned routes, dispatchers can plan and monitor operations effectively, and administrators can make data-driven decisions that improve overall service delivery to the community.
 
 ## PURPOSE AND DESCRIPTION
 
-The main goal of the Garbage Tracking System is to provide an efficient, accurate, and transparent method of tracking garbage collection routes and pickups. By automating route management and pickup logging, the system minimizes human errors, speeds up status updates, and ensures visibility across all roles.
+The primary purpose of the Garbage Tracking System is to provide an efficient, accurate, and transparent method of organizing and tracking garbage collection routes and pickups for the Municipality of Socorro. By automating route management and pickup logging, the system minimizes human errors, speeds up status updates, and ensures operational visibility across all roles. Specifically, the system is designed to:
+
+- Plan when and where garbage will be collected, organized by barangay and scheduled date.
+- Assign collection routes for trucks and workers, ensuring a structured and repeatable workflow.
+- Track collection progress in real time and help barangay staff manage resources effectively.
+- Make waste collection faster, more organized, and fully accountable to the LGU.
 
 **Key Features:**
 
-- **Route Management:** Dispatchers create routes with stops, assign trucks and drivers, and manage areas.
+- **Route Management:** Dispatchers create routes with stops, assign trucks and drivers, and manage barangay areas.
 - **Real-Time Pickup Logging:** Drivers mark stops as completed with optional volume (kg) and notes.
 - **Route Status Lifecycle:** Automatic status transitions (PLANNED → IN_PROGRESS → COMPLETED).
 - **User Authentication:** Secure login with role-based access (Admin, Dispatcher, Driver).
 - **Dashboard and Reporting:** KPIs, charts by day and area, and pickup history for all roles.
-- **Map View:** Visual display of route stops on a map with color-coded completion status.
+- **Map View:** Visual display of route stops on a map with color-coded completion status and live driver location.
 - **Pickup History:** Activity feed of recent pickups across routes with driver and volume details.
+- **Public Collection Schedule:** Residents can view daily collection schedules per barangay without requiring an account.
 
 ## RESEARCH OBJECTIVES
 
 **General Objective:**
 
-To develop and implement a web-based garbage tracking system that ensures accurate, secure, and efficient route and pickup management.
+To develop and implement a web-based Garbage Tracking System for the Municipality of Socorro that schedules, organizes, and monitors waste collection operations to improve efficiency and promote proper waste management.
 
 **Specific Objectives:**
 
-1. To create a system that allows real-time route creation and pickup logging.
-2. To integrate security features such as user authentication and role-based access control.
-3. To eliminate manual errors by automating route status and pickup tracking.
-4. To provide a user-friendly interface for dispatchers, drivers, and administrators.
-5. To generate dashboards and reports for transparency and operational visibility.
+1. To organize and plan waste collection schedules by barangay, assigning dates, routes, and personnel in a structured and systematic manner.
+2. To create a system that allows real-time route creation, pickup logging, and collection status tracking.
+3. To integrate security features such as user authentication and role-based access control for administrators, dispatchers, and drivers.
+4. To eliminate manual errors by automating route status transitions and pickup documentation throughout the collection lifecycle.
+5. To provide a user-friendly interface that enables barangay staff to manage resources, reduce delays, and minimize missed pickups.
+6. To generate dashboards and reports that support transparency, accountability, and data-driven decision-making in waste management operations.
 
 ## SCOPE AND LIMITATIONS OF THE STUDY
 
 **Scope:**
 
-This study focuses on designing and implementing the Garbage Tracking System, covering:
+This study focuses on designing and implementing the Garbage Tracking System for the Municipality of Socorro, covering the following aspects:
 
-- Digital route creation and management by dispatchers.
-- Real-time pickup logging by drivers with volume and notes.
-- Secure authentication and role-based access control.
-- Dashboard and reporting for administrators and all roles.
-- Map view for route visualization with stop coordinates.
-- Pickup history and activity feed.
+- **Barangay Coverage:** The system is implemented for the barangays of the Municipality of Socorro, supporting all 14 registered barangays.
+- **Scheduling Management:** The system manages waste collection schedules, including assigning dates, routes, and collection times per barangay.
+- **Route Management:** Digital route creation and management by dispatchers, including stop sequencing, truck assignment, and driver assignment.
+- **Real-Time Pickup Logging:** Drivers log completed stops with optional actual volume (kg) and field notes.
+- **Secure Authentication and Role-Based Access Control:** System access is restricted according to user role — Administrator, Dispatcher, or Driver.
+- **Dashboard and Reporting:** Key performance indicators, bar charts by day and area, and pickup history for administrators and all roles.
+- **Map View:** Route visualization with stop coordinates, color-coded completion markers, and live driver location tracking.
+- **Public Collection Schedule:** A publicly accessible schedule page that allows residents to view daily routes and collection status without an account.
 
 **Limitations:**
 
-- The system is designed for garbage collection operations and may require adaptation for other logistics domains.
-- Map view requires latitude/longitude coordinates for stops; addresses without coordinates show a placeholder message.
-- Initial setup and training may be needed for dispatchers and drivers.
+- **Internet Dependence:** A stable internet connection is required for the system to function effectively, including real-time pickup logging and live map tracking.
+- **Map View Coordinates:** The map view requires latitude/longitude coordinates for stops; addresses without coordinates display a placeholder message and will not appear on the map.
+- **User Accessibility:** Some personnel and residents may require initial training or orientation to operate the system effectively.
+- **Data Accuracy:** The system relies on accurate input from authorized personnel; errors in data entry may affect scheduling and reporting accuracy.
+- **External Factors:** Weather conditions, road problems, or vehicle availability may affect actual collection schedules regardless of system planning.
+- **System Scope:** The system is designed specifically for garbage collection operations and may require significant adaptation for other logistics or municipal service domains.
 
 ## SIGNIFICANCE OF THE STUDY
 
-**Dispatchers:**
+**Environment:**
 
-This system provides an easy-to-use platform for creating routes, assigning drivers, and monitoring progress in real time.
+Proper scheduling and tracking of garbage collection will prevent pollution, protect waterways and drainage systems, and maintain clean and safe barangays throughout the municipality. The system supports long-term environmental sustainability in the Municipality of Socorro by ensuring that waste is collected consistently, responsibly, and in accordance with established routes and schedules.
 
-**Drivers:**
+**Municipality Government:**
 
-Drivers can view their assigned route, log pickups with volume and notes, and track completion status without manual paperwork.
+The local government will benefit from improved efficiency in waste management service delivery. The system reduces operational costs through optimized route planning and resource allocation, while providing administrators with real-time data, dashboards, and reports for better decision-making and public accountability.
 
-**Administrators:**
+**Barangay Officials:**
 
-Automating tracking and reporting reduces workload, eliminates errors, and ensures data-driven decision-making for waste management operations.
+The system simplifies the management of garbage collection schedules and route assignments. Barangay officials can organize trucks, workers, and resources more efficiently, reducing the time and effort required to coordinate daily collection operations and ensuring that all areas within their jurisdiction are serviced on time.
 
-**Communities:**
+**Residents:**
 
-A transparent and efficient tracking system improves service reliability and accountability, benefiting the communities served.
+Residents will enjoy cleaner streets and surroundings as garbage is collected on time and missed pickups are minimized. The reduction in accumulated waste lowers health risks, prevents foul odors, and encourages the community to actively participate in maintaining the cleanliness of their barangays. The public schedule feature further empowers residents by giving them direct access to daily collection information without requiring any account or login.
 
 **Future Researchers:**
 
-This study serves as a reference for future improvements in waste management and logistics tracking systems, offering insights into system design, implementation, and impact.
+This study provides a functional model and technical reference for future researchers working on waste management systems, local government digital solutions, and logistics tracking platforms. It offers insights into system design, role-based access control, real-time data handling, Philippine timezone management, and community-oriented software development that can be applied or extended to other municipalities and local government units.
 
-The Garbage Tracking System modernizes waste management operations, ensuring efficiency, transparency, and accountability. With real-time logging, role-based access, and comprehensive reporting, it sets a new standard for garbage collection tracking.
+The Garbage Tracking System modernizes waste management operations in the Municipality of Socorro, ensuring efficiency, transparency, and accountability. With real-time pickup logging, role-based access, route optimization, live driver tracking, and comprehensive reporting, it establishes a new standard for organized and responsive garbage collection that benefits the entire community.
 
 ---
 
