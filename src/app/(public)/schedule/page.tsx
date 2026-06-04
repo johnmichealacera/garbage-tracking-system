@@ -19,6 +19,7 @@ import {
   ClipboardList,
   AlertCircle,
 } from "lucide-react";
+import { BASURAHAN } from "@/lib/terminology";
 
 interface ScheduleStop {
   id: string;
@@ -184,7 +185,7 @@ export default function PublicSchedulePage() {
             <span className="hidden text-muted-foreground/60 sm:inline">•</span>
             <p className="text-[10px]">
               Municipality of Socorro, Surigao del Norte — official day-by-day
-              route and stop progress.
+              route and basurahan progress.
             </p>
           </div>
         </header>
@@ -196,7 +197,8 @@ export default function PublicSchedulePage() {
                 <CardTitle className="inline text-[11px] font-semibold text-foreground">
                   Choose a date
                 </CardTitle>{" "}
-                • Select any calendar day to see routes and stops scheduled for that day.
+                • Select any calendar day to see routes and {BASURAHAN.many}{" "}
+                {BASURAHAN.scheduledForDay}.
               </div>
               <div className="flex shrink-0 items-center gap-1">
                 <Calendar className="size-3.5 text-muted-foreground max-sm:hidden" />
@@ -233,7 +235,10 @@ export default function PublicSchedulePage() {
                   </p>
                   <p className="inline-flex items-center gap-1 text-muted-foreground/90">
                     <span className="size-1.5 rounded-full bg-cyan-500/70" />
-                    Total stops: <span className="font-medium text-foreground">{totals.stops}</span>
+                    {BASURAHAN.total}:{" "}
+                    <span className="font-medium text-foreground">
+                      {totals.stops}
+                    </span>
                   </p>
                   <p className="inline-flex items-center gap-1 text-muted-foreground/90">
                     <span className="size-1.5 rounded-full bg-emerald-500/70" />
@@ -267,7 +272,7 @@ export default function PublicSchedulePage() {
                       Barangay / area &amp; route
                     </Label>
                     <p className="text-[10px] text-muted-foreground/90">
-                      Choose one barangay to view route, stops, and map.
+                      {BASURAHAN.viewWithMap}
                     </p>
                     <select
                       id="route-area"
@@ -371,7 +376,7 @@ export default function PublicSchedulePage() {
                       <div className="min-w-0 space-y-2 rounded-xl border border-primary/25 bg-background p-2 shadow-sm lg:col-span-1">
                         <h3 className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-primary">
                           <ClipboardList className="size-3.5" />
-                          Stop list
+                          {BASURAHAN.list}
                         </h3>
                         <div className="rounded-lg border">
                           <table className="w-full text-left">
@@ -379,7 +384,7 @@ export default function PublicSchedulePage() {
                               <tr className="border-b bg-muted/50 text-[10px] uppercase tracking-wide text-muted-foreground">
                                 <th className="px-2 py-1.5">#</th>
                                 <th className="px-2 py-1.5">Status</th>
-                                <th className="px-2 py-1.5">Stop</th>
+                                <th className="px-2 py-1.5">{BASURAHAN.one}</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -411,7 +416,7 @@ export default function PublicSchedulePage() {
                                   </td>
                                   <td className="px-2 py-2 align-top">
                                     <p className="text-[11px] font-medium leading-snug">
-                                      {stop.name ?? "Stop"}
+                                      {stop.name ?? BASURAHAN.unnamed}
                                     </p>
                                     {stop.address ? (
                                       <p className="mt-0.5 text-[10px] leading-tight text-muted-foreground">
@@ -451,7 +456,7 @@ export default function PublicSchedulePage() {
                           completedStopIds={selectedRouteProgress.completedIds}
                           driverLocation={driverLocation ?? null}
                           mapHeightPx={420}
-                          emptyMessage="Stop locations for this route are not on the map yet. The LGU adds map points when coordinates are recorded for each stop."
+                          emptyMessage={BASURAHAN.emptyPublicMap}
                         />
                       </div>
                     </CardContent>

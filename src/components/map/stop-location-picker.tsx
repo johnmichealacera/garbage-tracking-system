@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { MapPin } from "lucide-react";
+import { BASURAHAN } from "@/lib/terminology";
 
 const StopLocationMapInner = dynamic(
   () =>
@@ -61,10 +62,10 @@ export function StopLocationPicker({
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="flex max-h-[90vh] w-full max-w-lg flex-col overflow-hidden rounded-lg border bg-background shadow-lg">
             <div className="border-b px-4 py-3">
-              <h3 className="font-semibold">Set stop location</h3>
+              <h3 className="font-semibold">{BASURAHAN.setLocationDialogTitle}</h3>
               <p className="text-sm text-muted-foreground">
-                Map of Socorro, Surigao del Norte. Click the map to place the
-                garbage pickup point. You can still edit the numbers below.
+                Map of Socorro, Surigao del Norte. Click the map to place this{" "}
+                {BASURAHAN.helper}. You can still edit the coordinates below.
               </p>
             </div>
             <div className="min-h-0 flex-1 overflow-y-auto">

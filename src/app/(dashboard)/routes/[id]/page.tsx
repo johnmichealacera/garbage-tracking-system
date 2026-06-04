@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { RouteMap } from "@/components/map/route-map";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowLeft, CheckCircle2, Circle, Pencil, XCircle } from "lucide-react";
+import { BASURAHAN } from "@/lib/terminology";
 
 interface CompletedBy {
   id: string;
@@ -165,7 +166,7 @@ export default function RouteDetailPage() {
         <CardHeader>
           <CardTitle>Map</CardTitle>
           <p className="text-sm text-muted-foreground">
-            Route stops on map (green = completed, gray = pending)
+            {BASURAHAN.mapLegend}
           </p>
         </CardHeader>
         <CardContent>
@@ -175,9 +176,9 @@ export default function RouteDetailPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Stops & pickups</CardTitle>
+          <CardTitle>{BASURAHAN.andPickups}</CardTitle>
           <p className="text-sm text-muted-foreground">
-            {data.pickupLogs.length} of {data.stops.length} stops completed
+            {BASURAHAN.completedOf(data.pickupLogs.length, data.stops.length)}
           </p>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -202,7 +203,8 @@ export default function RouteDetailPage() {
                   )}
                   <div className="flex-1 min-w-0">
                     <p className="font-medium">
-                      #{stop.sequence} {stop.name ?? stop.address ?? "Stop"}
+                      #{stop.sequence}{" "}
+                      {stop.name ?? stop.address ?? BASURAHAN.unnamed}
                     </p>
                     {stop.address && (
                       <p className="text-sm text-muted-foreground">
@@ -250,7 +252,7 @@ export default function RouteDetailPage() {
           })}
           {!data.stops.length && (
             <p className="text-sm text-muted-foreground">
-              This route has no stops.
+              {BASURAHAN.emptyOnRoute}
             </p>
           )}
         </CardContent>

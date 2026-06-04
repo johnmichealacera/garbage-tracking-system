@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import type { DriverLocation } from "./route-map-inner";
+import { BASURAHAN } from "@/lib/terminology";
 
 interface StopWithCoords {
   id: string;
@@ -50,7 +51,7 @@ export function RouteMap(props: RouteMapProps) {
       >
         <p className="text-sm text-muted-foreground">
           {emptyMessage ??
-            "No stop coordinates available. Add latitude/longitude to stops to see them on the map."}
+            BASURAHAN.emptyCoordinates}
         </p>
       </div>
     );

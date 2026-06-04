@@ -17,6 +17,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { PageHeader } from "@/components/dashboard/page-header";
+import { BASURAHAN } from "@/lib/terminology";
 import React from "react";
 
 interface SummaryResponse {
@@ -64,7 +65,7 @@ export default function ReportingPage() {
         eyebrow="Insights"
         icon={<BarChart3 className="size-5" />}
         title="Reporting"
-        description="Barangay-level pickup and missed stop analytics for the Municipality of Socorro."
+        description={`Barangay-level pickup and ${BASURAHAN.missedStopsAnalytics} analytics for the Municipality of Socorro.`}
       />
 
       <Card className="border-border/70 bg-card/85 shadow-lg ring-1 ring-black/5 backdrop-blur-sm dark:ring-white/10">
@@ -137,7 +138,7 @@ export default function ReportingPage() {
           accent="from-teal-500/15 to-teal-500/0 text-teal-600 dark:text-teal-400"
         />
         <SummaryCard
-          label="Missed stops"
+          label={BASURAHAN.missedCount}
           value={isLoading ? undefined : formatNumber(totalMissed)}
           icon={<AlertTriangle className="size-5" />}
           accent="from-amber-500/15 to-amber-500/0 text-amber-600 dark:text-amber-400"
@@ -291,7 +292,7 @@ export default function ReportingPage() {
               Barangay summary
             </CardTitle>
             <p className="mt-0.5 text-xs text-muted-foreground">
-              Pickups and missed stops by barangay
+              Pickups and {BASURAHAN.missedStopsAnalytics} by barangay
             </p>
           </div>
         </CardHeader>

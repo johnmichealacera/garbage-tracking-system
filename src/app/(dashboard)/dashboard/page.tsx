@@ -16,6 +16,7 @@ import { getTodayInPhilippinesYmd } from "@/lib/philippine-time";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
+import { BASURAHAN } from "@/lib/terminology";
 
 interface SummaryResponse {
   totalPickups: number;
@@ -283,7 +284,7 @@ export default function DashboardPage() {
                             {area.missedCount} missed
                           </span>
                         ) : (
-                          "no missed stops"
+                          `no ${BASURAHAN.missedStopsAnalytics}`
                         )}
                       </p>
                     </div>

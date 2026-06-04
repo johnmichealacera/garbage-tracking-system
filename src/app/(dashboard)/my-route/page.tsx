@@ -22,6 +22,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { PageHeader } from "@/components/dashboard/page-header";
+import { BASURAHAN } from "@/lib/terminology";
 import { RouteMap } from "@/components/map/route-map";
 
 interface Area {
@@ -171,15 +172,15 @@ export default function MyRoutePage() {
         },
       );
       if (!res.ok) {
-        toast.error("Failed to log missed stop");
+        toast.error(`Failed to log missed ${BASURAHAN.one.toLowerCase()}`);
         return;
       }
       mutate("/api/my-route");
-      toast.success("Missed stop logged");
+      toast.success(`Missed ${BASURAHAN.one.toLowerCase()} logged`);
       setPendingMissed(null);
       setMissedReason("");
     } catch {
-      toast.error("Failed to log missed stop");
+      toast.error(`Failed to log missed ${BASURAHAN.one.toLowerCase()}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -258,7 +259,7 @@ export default function MyRoutePage() {
           data.length
             ? `You have ${data.length} route${
                 data.length === 1 ? "" : "s"
-              } scheduled today — ${totalCompleted}/${totalStops} stops completed${
+              } scheduled today — ${BASURAHAN.progress(totalCompleted, totalStops)}${
                 totalMissed > 0 ? `, ${totalMissed} missed` : ""
               }.`
             : "No routes assigned to you yet."
@@ -369,10 +370,10 @@ export default function MyRoutePage() {
             <Card className="border-border/70 bg-card/85 shadow-lg ring-1 ring-black/5 backdrop-blur-sm dark:ring-white/10">
               <CardHeader className="pb-3">
                 <CardTitle className="text-base font-semibold tracking-tight">
-                  Stops
+                  {BASURAHAN.many}
                 </CardTitle>
                 <p className="text-xs text-muted-foreground">
-                  Tap a stop to mark it as completed or missed.
+                  {BASURAHAN.tapToLog}
                 </p>
               </CardHeader>
               <CardContent className="space-y-2">
@@ -405,7 +406,7 @@ export default function MyRoutePage() {
                             <span className="mr-1 text-muted-foreground">
                               #{stop.sequence}
                             </span>
-                            {stop.name ?? stop.address ?? "Stop"}
+                            {stop.name ?? stop.address ?? BASURAHAN.unnamed}
                           </p>
                           {stop.address ? (
                             <p className="text-xs text-muted-foreground">
@@ -451,7 +452,7 @@ export default function MyRoutePage() {
                 })}
                 {!route.stops.length && (
                   <p className="rounded-xl border border-dashed border-border/70 bg-muted/20 px-4 py-6 text-center text-sm text-muted-foreground">
-                    This route has no stops yet.
+                    {BASURAHAN.emptyOnRoute}
                   </p>
                 )}
               </CardContent>
@@ -493,7 +494,7 @@ export default function MyRoutePage() {
                   #{pendingStop.stop.sequence}{" "}
                   {pendingStop.stop.name ??
                     pendingStop.stop.address ??
-                    "Stop"}
+                    BASURAHAN.unnamed}
                 </p>
               </div>
             </div>
@@ -558,13 +559,13 @@ export default function MyRoutePage() {
               </div>
               <div className="min-w-0">
                 <h3 className="text-lg font-semibold tracking-tight">
-                  Mark missed stop
+                  {BASURAHAN.markMissedTitle}
                 </h3>
                 <p className="mt-0.5 text-sm text-muted-foreground">
                   #{pendingMissed.stop.sequence}{" "}
                   {pendingMissed.stop.name ??
                     pendingMissed.stop.address ??
-                    "Stop"}
+                    BASURAHAN.unnamed}
                 </p>
               </div>
             </div>

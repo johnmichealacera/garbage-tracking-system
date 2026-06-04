@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { ArrowLeft, Plus, Trash2 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { StopLocationPicker } from "@/components/map/stop-location-picker";
+import { BASURAHAN } from "@/lib/terminology";
 import { getTodayInPhilippinesYmd } from "@/lib/philippine-time";
 
 interface Truck {
@@ -328,10 +329,10 @@ export default function EditRoutePage() {
 
             <div>
               <div className="flex items-center justify-between">
-                <Label>Stops</Label>
+                <Label>{BASURAHAN.many}</Label>
                 <Button type="button" variant="outline" size="sm" onClick={addStop}>
                   <Plus className="mr-1 size-4" />
-                  Add stop
+                  {BASURAHAN.add}
                 </Button>
               </div>
               <div className="mt-2 space-y-3">
@@ -340,7 +341,7 @@ export default function EditRoutePage() {
                     <div className="min-w-0 flex-1 space-y-2">
                       <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6">
                         <Input
-                          placeholder="Name"
+                          placeholder="Basurahan name"
                           value={stop.name}
                           onChange={(e) => updateStop(i, "name", e.target.value)}
                         />

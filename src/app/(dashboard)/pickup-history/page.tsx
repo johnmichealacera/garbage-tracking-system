@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowUpRight, MapPin, Package, Scale, User } from "lucide-react";
 import { PageHeader } from "@/components/dashboard/page-header";
+import { BASURAHAN } from "@/lib/terminology";
 
 interface PickupLogItem {
   id: string;
@@ -95,7 +96,7 @@ export default function PickupHistoryPage() {
                 const stopLabel =
                   log.routeStop.name ??
                   log.routeStop.address ??
-                  `Stop #${log.routeStop.sequence}`;
+                  BASURAHAN.withNumber(log.routeStop.sequence);
                 return (
                   <li key={log.id}>
                     <Link

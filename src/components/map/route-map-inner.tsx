@@ -8,6 +8,7 @@ import {
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { MAP_CENTER, MAP_DEFAULT_ZOOM } from "@/lib/constants";
+import { BASURAHAN } from "@/lib/terminology";
 
 interface StopWithCoords {
   id: string;
@@ -91,7 +92,8 @@ export function RouteMapInner({
             <Popup>
               <div className="min-w-[180px] space-y-1 p-1">
                 <p className="font-semibold">
-                  #{stop.sequence} {stop.name ?? stop.address ?? "Stop"}
+                  #{stop.sequence}{" "}
+                  {stop.name ?? stop.address ?? BASURAHAN.unnamed}
                 </p>
                 {stop.address && (
                   <p className="text-sm text-muted-foreground">

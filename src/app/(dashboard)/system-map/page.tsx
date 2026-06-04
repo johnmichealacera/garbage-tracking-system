@@ -40,7 +40,7 @@ const CHART_SVG = `
   <line x1="314" y1="158" x2="314" y2="306" stroke="#bbf7d0" stroke-width="1.5" stroke-dasharray="4,3"/>
   <text x="328" y="172" font-family="'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#14532d">DISPATCHER</text>
   <text x="328" y="190" font-family="'Segoe UI',sans-serif" font-size="10.5" fill="#166534">▸  Create routes (name, date, barangay area)</text>
-  <text x="328" y="207" font-family="'Segoe UI',sans-serif" font-size="10.5" fill="#166534">▸  Add stops (address, type, expected kg)</text>
+  <text x="328" y="207" font-family="'Segoe UI',sans-serif" font-size="10.5" fill="#166534">▸  Add basurahan (address, type, expected kg)</text>
   <text x="328" y="224" font-family="'Segoe UI',sans-serif" font-size="10.5" fill="#166534">▸  Assign truck + driver to each route</text>
   <text x="328" y="241" font-family="'Segoe UI',sans-serif" font-size="10.5" fill="#166534">▸  Monitor route status and completion</text>
   <text x="328" y="258" font-family="'Segoe UI',sans-serif" font-size="10.5" fill="#166534">▸  Edit or update existing routes</text>
@@ -60,8 +60,8 @@ const CHART_SVG = `
   <rect x="56" y="371" width="72" height="18" rx="9" fill="rgba(255,255,255,0.18)"/>
   <text x="92" y="383.5" font-family="'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">ROLE: FIELD</text>
   <text x="64" y="422" font-family="'Segoe UI',sans-serif" font-size="10.5" fill="#134e4a">▸  Opens <tspan font-weight="700">My Route</tspan> page — data auto-refreshes every <tspan font-weight="700">10 seconds</tspan> via SWR polling</text>
-  <text x="64" y="440" font-family="'Segoe UI',sans-serif" font-size="10.5" fill="#134e4a">▸  Views ordered stop list: barangay area, truck code, scheduled date, and stop sequence</text>
-  <text x="64" y="458" font-family="'Segoe UI',sans-serif" font-size="10.5" fill="#134e4a">▸  Taps each stop to log its outcome:</text>
+  <text x="64" y="440" font-family="'Segoe UI',sans-serif" font-size="10.5" fill="#134e4a">▸  Views ordered basurahan list: barangay, truck, date, sequence</text>
+  <text x="64" y="458" font-family="'Segoe UI',sans-serif" font-size="10.5" fill="#134e4a">▸  Taps each basurahan to log its outcome:</text>
   <rect x="200" y="466" width="180" height="36" rx="8" fill="#d1fae5" stroke="#34d399" stroke-width="1.5"/>
   <text x="290" y="481" font-family="'Segoe UI',sans-serif" font-size="10.5" font-weight="700" fill="#065f46" text-anchor="middle">✓  MARK COMPLETED</text>
   <text x="290" y="496" font-family="'Segoe UI',sans-serif" font-size="10" fill="#047857" text-anchor="middle">Log volume (kg) + notes</text>
@@ -111,13 +111,13 @@ const CHART_SVG = `
   <text x="304" y="797" font-family="'Segoe UI',sans-serif" font-size="10.5" fill="#1e40af">▸  Pickups per day (bar chart)</text>
   <text x="304" y="813" font-family="'Segoe UI',sans-serif" font-size="10.5" fill="#1e40af">▸  Pickups per barangay (bar chart)</text>
   <text x="304" y="829" font-family="'Segoe UI',sans-serif" font-size="10.5" fill="#1e40af">▸  Barangay summary table</text>
-  <text x="304" y="845" font-family="'Segoe UI',sans-serif" font-size="10.5" fill="#1e40af">▸  Missed stops per barangay</text>
+  <text x="304" y="845" font-family="'Segoe UI',sans-serif" font-size="10.5" fill="#1e40af">▸  Missed basurahan per barangay</text>
   <text x="304" y="861" font-family="'Segoe UI',sans-serif" font-size="10.5" fill="#1e40af">▸  Date-range filterable</text>
   <line x1="536" y1="768" x2="536" y2="894" stroke="#bfdbfe" stroke-width="1.5" stroke-dasharray="4,3"/>
   <text x="550" y="780" font-family="'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#1e3a8a">TOP BARANGAYS</text>
   <text x="550" y="797" font-family="'Segoe UI',sans-serif" font-size="10.5" fill="#1e40af">▸  Ranked by pickup count</text>
   <text x="550" y="813" font-family="'Segoe UI',sans-serif" font-size="10.5" fill="#1e40af">▸  Volume per barangay</text>
-  <text x="550" y="829" font-family="'Segoe UI',sans-serif" font-size="10.5" fill="#1e40af">▸  Missed-stop indicators</text>
+  <text x="550" y="829" font-family="'Segoe UI',sans-serif" font-size="10.5" fill="#1e40af">▸  Missed basurahan indicators</text>
   <text x="550" y="845" font-family="'Segoe UI',sans-serif" font-size="10.5" fill="#1e40af">▸  Pickup history activity feed</text>
   <rect x="56" y="876" width="668" height="36" rx="7" fill="#dbeafe" stroke="#93c5fd" stroke-width="1.5"/>
   <text x="390" y="890" font-family="'Segoe UI',sans-serif" font-size="10.5" font-weight="700" fill="#1e3a8a" text-anchor="middle">Role-scoped access:</text>
@@ -125,7 +125,7 @@ const CHART_SVG = `
 
   <line x1="390" y1="926" x2="390" y2="960" stroke="#7c3aed" stroke-width="2.5" marker-end="url(#arr-purple)"/>
   <rect x="226" y="932" width="328" height="22" rx="7" fill="#f3e8ff" stroke="#7c3aed" stroke-width="1.5"/>
-  <text x="390" y="946.5" font-family="'Segoe UI',sans-serif" font-size="10.5" font-weight="600" fill="#6d28d9" text-anchor="middle">Route &amp; stop status exposed to the public</text>
+  <text x="390" y="946.5" font-family="'Segoe UI',sans-serif" font-size="10.5" font-weight="600" fill="#6d28d9" text-anchor="middle">Route &amp; basurahan status — public schedule</text>
 
   <!-- PUBLIC SCHEDULE -->
   <rect x="40" y="962" width="700" height="178" rx="12" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
@@ -136,8 +136,8 @@ const CHART_SVG = `
   <text x="91" y="985.5" font-family="'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">PUBLIC</text>
   <text x="64" y="1028" font-family="'Segoe UI',sans-serif" font-size="10.5" fill="#4c1d95">▸  Any resident can visit /schedule — no account, no login needed</text>
   <text x="64" y="1045" font-family="'Segoe UI',sans-serif" font-size="10.5" fill="#4c1d95">▸  Select any calendar date to view all scheduled routes by barangay</text>
-  <text x="64" y="1062" font-family="'Segoe UI',sans-serif" font-size="10.5" fill="#4c1d95">▸  Per-stop live status:  ✓ Completed  ·  ✗ Missed  ·  ○ Pending  — updates as drivers log</text>
-  <text x="64" y="1079" font-family="'Segoe UI',sans-serif" font-size="10.5" fill="#4c1d95">▸  Interactive Leaflet map with color-coded stop markers (green = done, gray = pending)</text>
+  <text x="64" y="1062" font-family="'Segoe UI',sans-serif" font-size="10.5" fill="#4c1d95">▸  Per-basurahan live status:  ✓ Completed  ·  ✗ Missed  ·  ○ Pending</text>
+  <text x="64" y="1079" font-family="'Segoe UI',sans-serif" font-size="10.5" fill="#4c1d95">▸  Leaflet map — basurahan markers (green = done, gray = pending)</text>
   <text x="64" y="1096" font-family="'Segoe UI',sans-serif" font-size="10.5" fill="#4c1d95">▸  Shows truck, plate number, assigned driver, and route progress per barangay</text>
   <rect x="56" y="1110" width="668" height="18" rx="6" fill="#ede9fe" stroke="#c4b5fd" stroke-width="1"/>
   <text x="390" y="1122.5" font-family="'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#5b21b6" text-anchor="middle">LGU accountability layer — community transparency without requiring any staff action</text>

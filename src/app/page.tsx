@@ -61,7 +61,7 @@ export default async function Home() {
 
             <p className="mx-auto mt-3 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground lg:mx-0">
               A digital service for the Local Government Unit: plan collection
-              routes across barangays, track pickups and missed stops, and keep
+              routes across barangays, track pickups and missed basurahan, and keep
               residents informed—clearly and in one place.
             </p>
 
