@@ -322,23 +322,23 @@ body{
     <div class="reveal">
       <div class="title-badge">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-        Capstone Defense · May 2026
+        Capstone Defense · June 2026
       </div>
       <h1 class="hero-title">
         Garbage Tracking System<br>
         <span>Municipality of Socorro</span>
       </h1>
       <p class="hero-sub">
-        A complete garbage collection day — from admin setup and route dispatch to real-time driver pickup logging and public schedule transparency. Three roles, nine scenes, every action enforced by the system.
+        A complete garbage collection day — from LGU setup and route dispatch to field pickup logging, live truck tracking, and public transparency. Staff use <strong>basurahan</strong> (Visayan for collection points) instead of generic “stops.” Every action is enforced by role.
       </p>
       <div class="stat-row">
-        <div class="stat-pill"><div class="stat-num">9</div><div class="stat-lbl">Scenes</div></div>
+        <div class="stat-pill"><div class="stat-num">12</div><div class="stat-lbl">Demo Scenes</div></div>
         <div class="stat-pill"><div class="stat-num">3</div><div class="stat-lbl">Staff Roles</div></div>
-        <div class="stat-pill"><div class="stat-num">14</div><div class="stat-lbl">Barangays Covered</div></div>
-        <div class="stat-pill"><div class="stat-num" style="color:#2563eb;">4.79</div><div class="stat-lbl">ISO 9126 Grand Mean</div></div>
+        <div class="stat-pill"><div class="stat-num">14</div><div class="stat-lbl">Barangays</div></div>
+        <div class="stat-pill"><div class="stat-num" style="color:#2563eb;">4.79</div><div class="stat-lbl">ISO 9126 Mean</div></div>
       </div>
       <p style="font-size:12px;color:var(--t45);margin-top:16px;">
-        Note: The public collection schedule is accessible by any resident without logging in.
+        Public pages: <strong>/</strong> (home) and <strong>/schedule</strong> — no login. Open this guide anytime from the home page footer (“Demo guide”).
       </p>
     </div>
   </div>
@@ -359,7 +359,7 @@ body{
         <div class="account-name">LGU System Admin</div>
         <div class="account-login">admin@socorro.gov.ph</div>
         <div class="account-pass">password: password123</div>
-        <div class="account-scope">Full access</div>
+        <div class="account-scope">All modules · Users · Reporting · System Map</div>
       </div>
 
       <div class="account-card" style="--role-color:var(--dispatcher)">
@@ -367,7 +367,7 @@ body{
         <div class="account-name">Route Dispatcher</div>
         <div class="account-login">dispatcher@socorro.gov.ph</div>
         <div class="account-pass">password: password123</div>
-        <div class="account-scope">Routes · Trucks · Areas</div>
+        <div class="account-scope">Routes · Trucks · Areas · Pickup History</div>
       </div>
 
       <div class="account-card" style="--role-color:var(--driver)">
@@ -375,7 +375,7 @@ body{
         <div class="account-name">Driver 1</div>
         <div class="account-login">driver1@socorro.gov.ph</div>
         <div class="account-pass">password: password123</div>
-        <div class="account-scope">My Route only</div>
+        <div class="account-scope">Dashboard · My Route · History</div>
       </div>
 
       <div class="account-card" style="--role-color:var(--driver)">
@@ -383,27 +383,81 @@ body{
         <div class="account-name">Driver 2</div>
         <div class="account-login">driver2@socorro.gov.ph</div>
         <div class="account-pass">password: password123</div>
-        <div class="account-scope">My Route only</div>
+        <div class="account-scope">Dashboard · My Route · History</div>
       </div>
 
       <div class="account-card" style="--role-color:var(--public)">
         <div class="account-role">Public (No Login)</div>
         <div class="account-name">Any Socorro Resident</div>
-        <div class="account-login">/schedule</div>
+        <div class="account-login">/  and  /schedule</div>
         <div class="account-pass">no credentials needed</div>
-        <div class="account-scope">View-only schedule</div>
+        <div class="account-scope">Home · Live schedule</div>
       </div>
 
+    </div>
+    <div class="reveal" style="margin-top:20px;background:#fff;border:1px solid rgba(13,31,60,0.08);border-radius:10px;padding:14px 16px;font-size:12px;color:var(--t70);line-height:1.55;">
+      <strong style="color:#1e293b;">Sidebar by role</strong> — Admin: all modules including User Accounts, Reporting, System Map. Dispatcher: Dashboard, Routes, Trucks, Areas, Pickup History (no Users / Reporting / System Map). Driver: Dashboard, My Route, Pickup History only.
     </div>
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════════ SCENE 0 — PUBLIC SCHEDULE ══ -->
+<!-- ══════════════════════════════════════════════ SCENE 0a — PUBLIC HOME ══ -->
+<section class="slide scene-slide" id="sc0a" data-title="Public Home" style="background:#f0f9ff;">
+  <div class="slide-inner">
+    <div class="reveal">
+      <div class="scene-num">Scene 0a · No Login Required</div>
+      <h2 class="scene-title">Resident Lands on the Public Home Page</h2>
+    </div>
+    <div class="scene-body reveal" style="--role-color:var(--public);--role-bg:#f0f9ff;--role-border:#bae6fd;">
+      <div class="role-block">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div class="role-avatar" style="background:var(--public);font-size:24px;">🏠</div>
+          <div>
+            <div class="role-name">Socorro Resident</div>
+            <div class="role-title">Entry point for citizens</div>
+          </div>
+        </div>
+        <div class="role-badge" style="background:var(--public);">public</div>
+        <div class="role-module">Page: <span>/</span> (home)</div>
+        <div style="font-size:12px;color:var(--t70);margin-top:6px;line-height:1.5;">
+          Modern LGU landing page with municipal branding, waste disposal guidelines (R.A. 9003), and clear paths to schedule or staff sign-in.
+        </div>
+      </div>
+      <div class="actions-block">
+        <div class="action-list">
+          <div class="action-list-head">Actions</div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--public);">1</div>
+            <div class="action-text">Open <strong>/</strong> — see Socorro logo, system purpose, and benefits</div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--public);">2</div>
+            <div class="action-text">Read <strong>Waste Disposal Guidelines</strong> (segregation, schedule, no burning, hazardous waste)</div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--public);">3</div>
+            <div class="action-text">Click <strong>View collection schedule</strong> → goes to <strong>/schedule</strong></div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--public);">4</div>
+            <div class="action-text">Staff use <strong>Sign in</strong> — modern centered login at <strong>/sign-in</strong></div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--public);">5</div>
+            <div class="action-text">Footer link <strong>Demo guide</strong> opens this presentation</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════ SCENE 0b — PUBLIC SCHEDULE ══ -->
 <section class="slide scene-slide" id="sc0" data-title="Public Schedule" style="background:var(--public-bg);">
   <div class="slide-inner">
     <div class="reveal">
-      <div class="scene-num">Scene 0 · No Login Required</div>
-      <h2 class="scene-title">Resident Views the Collection Schedule</h2>
+      <div class="scene-num">Scene 0b · No Login Required</div>
+      <h2 class="scene-title">Resident Views the Live Collection Schedule</h2>
     </div>
     <div class="scene-body reveal" style="--role-color:var(--public);--role-bg:var(--public-bg);--role-border:var(--public-border);">
       <div class="role-block">
@@ -433,20 +487,20 @@ body{
           </div>
           <div class="action-item">
             <div class="action-num" style="background:var(--public);">3</div>
-            <div class="action-text">View summary totals: <strong>routes, stops, completed pickups, missed and pending</strong></div>
+            <div class="action-text">View summary totals: <strong>routes, basurahan (collection points), completed, missed, and pending</strong></div>
           </div>
           <div class="action-item">
             <div class="action-num" style="background:var(--public);">4</div>
-            <div class="action-text">Select a barangay route — see truck code, driver, capacity, and <strong>stop-by-stop status</strong></div>
+            <div class="action-text">Select a barangay route — truck, driver, capacity, and <strong>basurahan list</strong> (done / missed / pending)</div>
           </div>
           <div class="action-item">
             <div class="action-num" style="background:var(--public);">5</div>
-            <div class="action-text">View the <strong>interactive map</strong> (OpenStreetMap) with color-coded stop markers</div>
+            <div class="action-text"><strong>Route map</strong> — green = collected basurahan, gray = pending; <strong>blue marker = live truck</strong> when driver shares GPS</div>
           </div>
         </div>
         <div class="rbac-callout">
           <div class="rbac-callout-label">Transparency by design</div>
-          Residents can track whether their barangay was serviced today without calling the municipal hall. The date is always resolved in <strong>Philippines timezone (Asia/Manila)</strong> — never UTC — so the correct collection day is always shown.
+          Residents see real collection progress without calling the municipal hall. Dates use <strong>Philippines time (Asia/Manila)</strong> on Vercel and any server. Missed basurahan and reasons appear as drivers log them.
         </div>
       </div>
     </div>
@@ -496,8 +550,8 @@ body{
           </div>
         </div>
         <div class="rbac-callout">
-          <div class="rbac-callout-label">RBAC in action</div>
-          Dispatchers can view trucks and areas to plan routes, but only the <strong>Admin</strong> can add or modify fleet records and barangay entries. A dispatcher who tries to access Trucks sees no "Add" button.
+          <div class="rbac-callout-label">Who can set this up?</div>
+          <strong>Admin and Dispatcher</strong> can register trucks and barangays. Only <strong>Admin</strong> manages user accounts, reporting, and the System Map. Dispatchers never see those menu items.
         </div>
       </div>
     </div>
@@ -574,7 +628,7 @@ body{
         <div class="role-badge" style="background:var(--dispatcher);">dispatcher</div>
         <div class="role-module">Module: <span>Routes</span></div>
         <div style="font-size:12px;color:var(--t70);margin-top:6px;line-height:1.5;">
-          The dispatcher builds the collection plan for the day — assigning the truck, barangay, and driver, then listing every stop in order.
+          The dispatcher builds today’s plan — truck, barangay, driver, and an ordered list of <strong>basurahan</strong> (garbage collection points).
         </div>
       </div>
       <div class="actions-block">
@@ -594,7 +648,7 @@ body{
           </div>
           <div class="action-item">
             <div class="action-num" style="background:var(--dispatcher);">4</div>
-            <div class="action-text">Add stops: name, address, type (Residential / Commercial / Mixed), expected volume (kg), and optional map coordinates via the <strong>coordinate picker</strong></div>
+            <div class="action-text"><strong>Add basurahan</strong> — name, address, type (Residential / Commercial / Mixed), expected kg, and <strong>Pick on map</strong> for Socorro coordinates</div>
           </div>
           <div class="action-item">
             <div class="action-num" style="background:var(--dispatcher);">5</div>
@@ -645,16 +699,20 @@ body{
           </div>
           <div class="action-item">
             <div class="action-num" style="background:var(--driver);">3</div>
-            <div class="action-text">Ordered <strong>stop list</strong> — each stop shows its type, expected volume, and current status (pending)</div>
+            <div class="action-text">Ordered <strong>basurahan list</strong> — type, expected volume, status (pending / done / missed)</div>
           </div>
           <div class="action-item">
             <div class="action-num" style="background:var(--driver);">4</div>
-            <div class="action-text">Scroll down — <strong>route map</strong> shows all stops as gray markers (pending) on OpenStreetMap</div>
+            <div class="action-text"><strong>Route map</strong> on the same page — basurahan markers on OpenStreetMap</div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--driver);">5</div>
+            <div class="action-text">Browser asks for location — badge <strong>“Sharing your location”</strong> so residents see the truck on the public schedule map</div>
           </div>
         </div>
         <div class="rbac-callout">
           <div class="rbac-callout-label">RBAC in action</div>
-          The driver's sidebar shows only: <strong>Dashboard · My Route · Pickup History.</strong> Routes management, trucks, areas, and user accounts are completely invisible — the buttons and menu items do not exist for this role.
+          Driver sidebar: <strong>Dashboard · My Route · Pickup History</strong> only. No routes, trucks, areas, users, or reporting. Sign-in uses the same modern card UI as other staff.
         </div>
       </div>
     </div>
@@ -690,7 +748,7 @@ body{
           <div class="action-list-head">Actions</div>
           <div class="action-item">
             <div class="action-num" style="background:var(--driver);">1</div>
-            <div class="action-text">Click <strong>Mark Completed</strong> on the first stop — dialog opens</div>
+            <div class="action-text">Click <strong>Mark Completed</strong> on the first basurahan — dialog opens</div>
           </div>
           <div class="action-item">
             <div class="action-num" style="background:var(--driver);">2</div>
@@ -702,11 +760,11 @@ body{
           </div>
           <div class="action-item">
             <div class="action-num" style="background:var(--driver);">4</div>
-            <div class="action-text">Stop turns <strong>green ✓</strong> — progress bar advances — route status becomes <em>IN_PROGRESS</em></div>
+            <div class="action-text">Basurahan turns <strong>green ✓</strong> — progress bar advances — route status becomes <em>IN_PROGRESS</em></div>
           </div>
           <div class="action-item">
             <div class="action-num" style="background:var(--driver);">5</div>
-            <div class="action-text">Map marker for that stop turns <strong>green</strong> in real time</div>
+            <div class="action-text">Map marker for that basurahan turns <strong>green</strong> — public schedule map updates too</div>
           </div>
         </div>
         <div class="rbac-callout">
@@ -718,12 +776,12 @@ body{
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════════ SCENE 6 — MISSED STOP ══ -->
-<section class="slide scene-slide" id="sc6" data-title="Missed Stop" style="background:var(--deep);">
+<!-- ══════════════════════════════════════════════ SCENE 6 — MISSED BASURAHAN ══ -->
+<section class="slide scene-slide" id="sc6" data-title="Missed Basurahan" style="background:var(--deep);">
   <div class="slide-inner">
     <div class="reveal">
       <div class="scene-num">Scene 6 · Field</div>
-      <h2 class="scene-title">Driver Marks a Stop as Missed</h2>
+      <h2 class="scene-title">Driver Marks a Basurahan as Missed</h2>
     </div>
     <div class="scene-body reveal" style="--role-color:var(--driver);--role-bg:var(--driver-bg);--role-border:var(--driver-border);">
       <div class="role-block">
@@ -737,7 +795,7 @@ body{
         <div class="role-badge" style="background:var(--driver);">driver</div>
         <div class="role-module">Action: <span>Mark Missed</span></div>
         <div style="font-size:12px;color:var(--t70);margin-top:6px;line-height:1.5;">
-          When a stop cannot be serviced — blocked road, no access, gate locked — the driver logs it as missed with a reason. The record is never lost.
+          When a basurahan cannot be serviced — blocked road, no access, gate locked — the driver logs it as missed with a reason. The record is never lost.
         </div>
       </div>
       <div class="actions-block">
@@ -745,7 +803,7 @@ body{
           <div class="action-list-head">Actions</div>
           <div class="action-item">
             <div class="action-num" style="background:var(--driver);">1</div>
-            <div class="action-text">Click <strong>Mark Missed</strong> on a pending stop — dialog opens</div>
+            <div class="action-text">Click <strong>Mark Missed</strong> on a pending basurahan — dialog opens</div>
           </div>
           <div class="action-item">
             <div class="action-num" style="background:var(--driver);">2</div>
@@ -753,16 +811,16 @@ body{
           </div>
           <div class="action-item">
             <div class="action-num" style="background:var(--driver);">3</div>
-            <div class="action-text">Stop shows a <strong>missed indicator</strong> with the reason logged alongside the timestamp</div>
+            <div class="action-text">Basurahan shows a <strong>missed indicator</strong> with reason and timestamp</div>
           </div>
           <div class="action-item">
             <div class="action-num" style="background:var(--driver);">4</div>
-            <div class="action-text">Now switch to the <strong>Public Schedule</strong> — the missed stop is already visible to residents</div>
+            <div class="action-text">Open <strong>/schedule</strong> — residents already see the missed basurahan and reason on the public map and table</div>
           </div>
         </div>
         <div class="rbac-callout">
           <div class="rbac-callout-label">Accountability built in</div>
-          Missed stops are tracked with a reason and a driver attribution. Dispatchers and administrators can see exactly which stops were skipped, by whom, and why — replacing the informal verbal report of manual operations.
+          Missed basurahan are tracked with reason and driver attribution. Dispatchers and admins see exactly which collection points were skipped, by whom, and why — no informal verbal reports.
         </div>
       </div>
     </div>
@@ -793,28 +851,28 @@ body{
           <div class="action-list-head">Actions</div>
           <div class="action-item">
             <div class="action-num" style="background:var(--dispatcher);">1</div>
-            <div class="action-text"><strong>Dashboard</strong> — KPI cards: Total Pickups · Total Volume (kg) · Today's Pickups</div>
+            <div class="action-text"><strong>Dashboard</strong> — polished hero and KPI cards: Total Pickups · Volume (kg) · Today’s Pickups (Admin sees the same view)</div>
           </div>
           <div class="action-item">
             <div class="action-num" style="background:var(--dispatcher);">2</div>
-            <div class="action-text"><strong>Recent Days Activity</strong> — trend view of pickup counts and volume with progress bars</div>
+            <div class="action-text"><strong>Recent Days Activity</strong> — trend of pickups and volume with progress bars</div>
           </div>
           <div class="action-item">
             <div class="action-num" style="background:var(--dispatcher);">3</div>
-            <div class="action-text"><strong>Top Barangays</strong> — ranked list by pickup activity with missed-stop indicators</div>
+            <div class="action-text"><strong>Top Barangays</strong> — ranked activity with missed-basurahan indicators</div>
           </div>
           <div class="action-item">
             <div class="action-num" style="background:var(--dispatcher);">4</div>
-            <div class="action-text"><strong>Routes list</strong> — filter by date, see real-time status badge and completion progress bar per route</div>
+            <div class="action-text"><strong>Routes</strong> — filter by date, status badges, completion % per route</div>
           </div>
           <div class="action-item">
             <div class="action-num" style="background:var(--dispatcher);">5</div>
-            <div class="action-text"><strong>Route Detail</strong> — click a route, see stop-by-stop log, map, and pickup notes from the driver</div>
+            <div class="action-text"><strong>Route Detail</strong> — basurahan-by-basurahan log, map, driver notes; sidebar matches the modern staff UI</div>
           </div>
         </div>
         <div class="rbac-callout">
           <div class="rbac-callout-label">Real-time visibility</div>
-          Every pickup the driver logs appears here within seconds — no end-of-day report needed. The dispatcher can see progress in the field without leaving the office or calling the driver.
+          Every pickup the driver logs appears within seconds. Dispatchers monitor basurahan progress and maps without calling the driver — especially while GPS sharing is active on My Route.
         </div>
       </div>
     </div>
@@ -852,7 +910,7 @@ body{
           </div>
           <div class="action-item">
             <div class="action-num" style="background:var(--admin);">2</div>
-            <div class="action-text">KPI summary: <strong>total pickups · total volume (kg) · missed stops</strong> for the period</div>
+            <div class="action-text">KPI summary: <strong>total pickups · total volume (kg) · missed basurahan</strong> for the period</div>
           </div>
           <div class="action-item">
             <div class="action-num" style="background:var(--admin);">3</div>
@@ -870,6 +928,53 @@ body{
         <div class="rbac-callout">
           <div class="rbac-callout-label">RBAC in action</div>
           Dispatchers and Drivers do not see the Reporting menu at all. The Admin uses this data for LGU operational reviews, budget justification, and accountability records — no manual Excel consolidation required.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════ SCENE 8b — SYSTEM MAP ══ -->
+<section class="slide scene-slide" id="sc8b" data-title="System Map" style="background:#f5f3ff;">
+  <div class="slide-inner">
+    <div class="reveal">
+      <div class="scene-num">Scene 8b · Admin Reference</div>
+      <h2 class="scene-title">Admin Opens the System Map</h2>
+    </div>
+    <div class="scene-body reveal" style="--role-color:var(--admin);--role-bg:#f5f3ff;--role-border:#ddd6fe;">
+      <div class="role-block">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div class="role-avatar" style="background:var(--admin);">A</div>
+          <div>
+            <div class="role-name">LGU System Admin</div>
+            <div class="role-title">Administrator · Full Access</div>
+          </div>
+        </div>
+        <div class="role-badge" style="background:var(--admin);">admin</div>
+        <div class="role-module">Module: <span>System Map</span> · <span>/system-map</span></div>
+        <div style="font-size:12px;color:var(--t70);margin-top:6px;line-height:1.5;">
+          Printable role-and-module flowchart for capstone documentation and LGU onboarding — who does what, and how data flows from dispatch to public transparency.
+        </div>
+      </div>
+      <div class="actions-block">
+        <div class="action-list">
+          <div class="action-list-head">Actions</div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--admin);">1</div>
+            <div class="action-text"><strong>System Map</strong> in the sidebar (Admin only) — full-page SVG flowchart</div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--admin);">2</div>
+            <div class="action-text">Shows <strong>Admin / Dispatcher / Driver / Public</strong> lanes — trucks, areas, routes, basurahan, pickups, reporting</div>
+          </div>
+          <div class="action-item">
+            <div class="action-num" style="background:var(--admin);">3</div>
+            <div class="action-text"><strong>Print</strong> — export for thesis appendix or municipal orientation packet</div>
+          </div>
+        </div>
+        <div class="rbac-callout">
+          <div class="rbac-callout-label">RBAC in action</div>
+          Dispatchers and drivers never see this menu item. It complements the live app during defense Q&amp;A — “which role can do X?”
         </div>
       </div>
     </div>
@@ -900,36 +1005,36 @@ body{
           <div class="action-list-head">Everything that happened today — all in one view</div>
           <div class="action-item">
             <div class="action-num" style="background:var(--public);">✓</div>
-            <div class="action-text"><strong>Resident</strong> checked the public schedule — saw today's barangay routes</div>
+            <div class="action-text"><strong>Resident</strong> visited <strong>/</strong> (home) and <strong>/schedule</strong> — saw routes, basurahan status, and live truck when GPS is on</div>
           </div>
           <div class="action-item">
             <div class="action-num" style="background:var(--admin);">✓</div>
-            <div class="action-text"><strong>Admin</strong> registered trucks, barangays, and staff accounts</div>
+            <div class="action-text"><strong>Admin</strong> registered trucks, barangays, and staff accounts (activate / deactivate)</div>
           </div>
           <div class="action-item">
             <div class="action-num" style="background:var(--dispatcher);">✓</div>
-            <div class="action-text"><strong>Dispatcher</strong> created the route — assigned truck, barangay, driver, and all stops</div>
+            <div class="action-text"><strong>Dispatcher</strong> created the route — truck, barangay, driver, ordered basurahan with map coordinates</div>
           </div>
           <div class="action-item">
             <div class="action-num" style="background:var(--driver);">✓</div>
-            <div class="action-text"><strong>Driver 1</strong> logged pickups stop by stop — volumes and notes recorded in real time</div>
+            <div class="action-text"><strong>Driver 1</strong> shared GPS on My Route and logged pickups basurahan by basurahan</div>
           </div>
           <div class="action-item">
             <div class="action-num" style="background:var(--driver);">✓</div>
-            <div class="action-text"><strong>Driver 1</strong> marked one stop missed — reason logged with timestamp</div>
+            <div class="action-text"><strong>Driver 1</strong> marked one basurahan missed — reason and timestamp on record</div>
           </div>
           <div class="action-item">
             <div class="action-num" style="background:var(--dispatcher);">✓</div>
-            <div class="action-text"><strong>Dispatcher</strong> monitored progress live on the dashboard — no phone calls needed</div>
+            <div class="action-text"><strong>Dispatcher</strong> monitored progress on the dashboard and route detail — no phone calls needed</div>
           </div>
           <div class="action-item">
             <div class="action-num" style="background:var(--admin);">✓</div>
-            <div class="action-text"><strong>Admin</strong> reviewed analytics — total volume, barangay breakdown, missed stops</div>
+            <div class="action-text"><strong>Admin</strong> reviewed reporting and the System Map — volume, barangays, missed basurahan</div>
           </div>
         </div>
         <div class="rbac-callout">
           <div class="rbac-callout-label">The governance promise</div>
-          Every action carries: <strong>who did it · what role · when · on which stop.</strong> The LGU can trace any pickup — or any missed collection — back to the person responsible. No paper, no guesswork.
+          Every action carries: <strong>who · role · when · which basurahan.</strong> The LGU can trace any pickup or missed collection to the responsible person. Dates follow <strong>Asia/Manila</strong> — no UTC day-shift bugs on deploy.
         </div>
       </div>
     </div>
@@ -956,13 +1061,13 @@ body{
       </div>
       <div class="summary-card">
         <div class="summary-icon">🗺️</div>
-        <div class="summary-title">Live Map View</div>
-        <div class="summary-desc">Stop markers turn green as pickups are logged — dispatchers see field progress without calling the driver.</div>
+        <div class="summary-title">Live Maps &amp; GPS</div>
+        <div class="summary-desc">Basurahan markers turn green as pickups are logged. Drivers share location; residents see a blue truck on the public schedule map.</div>
       </div>
       <div class="summary-card">
         <div class="summary-icon">🌐</div>
         <div class="summary-title">Public Transparency</div>
-        <div class="summary-desc">Residents check their barangay's schedule and real-time status without any account or login.</div>
+        <div class="summary-desc">Home page, live schedule, and basurahan status — no login. Collection day always uses Philippines time (Asia/Manila).</div>
       </div>
       <div class="summary-card">
         <div class="summary-icon">⚡</div>
@@ -972,12 +1077,17 @@ body{
       <div class="summary-card">
         <div class="summary-icon">📊</div>
         <div class="summary-title">Real-time Analytics</div>
-        <div class="summary-desc">Volume, barangay breakdown, and missed stops are always current — no end-of-day data entry.</div>
+        <div class="summary-desc">Volume, barangay breakdown, and missed basurahan stay current — Admin reporting, no Excel consolidation.</div>
       </div>
       <div class="summary-card">
         <div class="summary-icon">🛡️</div>
         <div class="summary-title">Full Audit Trail</div>
-        <div class="summary-desc">Every pickup and missed stop is timestamped and tied to the driver who logged it. Nothing hidden.</div>
+        <div class="summary-desc">Pickup History ties every completed or missed basurahan to the driver, time, volume, and notes.</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-icon">✨</div>
+        <div class="summary-title">Modern Staff UI</div>
+        <div class="summary-desc">Polished sign-in, sidebar, and dashboard pages for routes, trucks, areas, and field work — same LGU branding throughout.</div>
       </div>
     </div>
     <p style="font-size:12px;color:var(--t45);margin-top:28px;text-align:center;">
